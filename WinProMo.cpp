@@ -9,6 +9,7 @@
 
 #include "../WinProMo/DiagramEditor/Tokenizer.h"
 #include "../WinProMo/WinProMoDoc.h"
+//#include "../WinProMo/WinProMoDocTemplate.h"
 
 
 #ifdef _DEBUG
@@ -92,7 +93,8 @@ BOOL CWinProMoApp::InitInstance()
 	m_pMainFrame->ShowWindow(m_nCmdShow);
 	m_pMainFrame->UpdateWindow();
 	
-	OnFileNew();
+	//Commented out as it causes a crash
+	//OnFileNew();
 	
 	return TRUE;
 }
@@ -108,7 +110,11 @@ void CWinProMoApp::LoadExtensions() {
 
 	// Append "*.dll" to search in that directory
 	TCHAR searchPath[MAX_PATH];
+#if _MSC_VER < 1200
+	_stprintf(searchPath, _T("%s*.dll"), exePath);
+#else
 	_stprintf_s(searchPath, _T("%s*.dll"), exePath);
+#endif
 
 	//std::wcout << L"Searching for DLLs in: " << searchPath << std::endl;
 
@@ -132,7 +138,20 @@ void CWinProMoApp::LoadExtensions() {
 					CString docType = pluginInterface->GetDocumentType();
 					CObArray* elements = pluginInterface->GetElements();
 					UINT docID = pluginInterface->GetDocumentID();
-					CMultiDocTemplate* pTemplate = pluginInterface->RegisterPlugin(RUNTIME_CLASS(CChildFrame), &m_clip);
+					CMultiDocTemplate* pTemplate = NULL;
+
+					
+					if (!pTemplate)
+					{
+						pTemplate = new CMultiDocTemplate(
+							pluginInterface->GetDocumentID(),
+							pluginInterface->GetPluginDoc(),
+							RUNTIME_CLASS(CChildFrame),
+							pluginInterface->GetPluginView()
+						);
+					}
+
+					//CMultiDocTemplate* pTemplate = pluginInterface->RegisterPlugin(RUNTIME_CLASS(CChildFrame), &m_clip);
 					if (pTemplate) {
 						AddDocTemplate(pTemplate);
 						ExtensionDLL* ext = new ExtensionDLL;
@@ -145,10 +164,13 @@ void CWinProMoApp::LoadExtensions() {
 						m_Extensions.Add(ext);
 					}
 				}
+			
 			}
 			else {
 				FreeLibrary(hModule);
 			}
+			
+			
 		}
 	} while (FindNextFile(hFind, &findFileData));
 
@@ -198,7 +220,7 @@ CDocument* CWinProMoApp::OpenDocumentFile(LPCTSTR lpszFileName)
 	}
 	
 	AfxMessageBox(_T("No suitable plugin found for this file."));
-	return nullptr;
+	return NULL;
 }
 
 //Custom
@@ -219,7 +241,13 @@ CString CWinProMoApp::DetectDocTypeFromFile(LPCTSTR lpszFileName)
 		int pos = 0;
 		while (pos >= 0)
 		{
-			int next = content.Find(_T("\r\n"), pos);
+			int next = content.Mid(pos).Find(_T("\r\n"));
+
+			if (next != -1)
+			{
+				next += pos;  // adjust to full string position
+			}
+
 			CString line;
 			if (next == -1)
 			{
@@ -229,7 +257,7 @@ CString CWinProMoApp::DetectDocTypeFromFile(LPCTSTR lpszFileName)
 			else
 			{
 				line = content.Mid(pos, next - pos);
-				pos = next + 2;
+				pos = next + 2; // skip past "\r\n"
 			}
 			CTokenizer main(line, _T(":"));
 			CString header;

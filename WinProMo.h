@@ -6,7 +6,6 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include <vector>
 #include "../WinProMo/ProMoEditor/ProMoClipboardHandler.h"
 #include "../WinProMo/WinProMoPluginInterface.h"
 

@@ -83,7 +83,7 @@ void CChildFrame::CreateMenuEntry(CMenu* menu, CObArray* commandList, BOOL creat
 					CMenu* dynamicMenu = new CMenu;
 					m_dynamicMenus.Add(dynamicMenu);
 					dynamicMenu->CreatePopupMenu();
-					CreateMenuEntry(dynamicMenu, command->m_subCommands, false);
+					CreateMenuEntry(dynamicMenu, command->m_subCommands, FALSE);
 					menu->AppendMenu(MF_BYPOSITION | MF_POPUP, (UINT_PTR)dynamicMenu->m_hMenu, command->m_caption);
 				}
 				else {
