@@ -41,6 +41,7 @@ CWinProMoApp::CWinProMoApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+	m_pMainFrame = NULL;
 }
 
 CWinProMoApp::~CWinProMoApp()
@@ -138,20 +139,7 @@ void CWinProMoApp::LoadExtensions() {
 					CString docType = pluginInterface->GetDocumentType();
 					CObArray* elements = pluginInterface->GetElements();
 					UINT docID = pluginInterface->GetDocumentID();
-					CMultiDocTemplate* pTemplate = NULL;
-
-					
-					if (!pTemplate)
-					{
-						pTemplate = new CMultiDocTemplate(
-							pluginInterface->GetDocumentID(),
-							pluginInterface->GetPluginDoc(),
-							RUNTIME_CLASS(CChildFrame),
-							pluginInterface->GetPluginView()
-						);
-					}
-
-					//CMultiDocTemplate* pTemplate = pluginInterface->RegisterPlugin(RUNTIME_CLASS(CChildFrame), &m_clip);
+					CMultiDocTemplate* pTemplate = pluginInterface->RegisterPlugin(RUNTIME_CLASS(CChildFrame), &m_clip);
 					if (pTemplate) {
 						AddDocTemplate(pTemplate);
 						ExtensionDLL* ext = new ExtensionDLL;
