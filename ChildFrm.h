@@ -32,6 +32,7 @@ public:
 	//CString docType;
 	ExtensionDLL* m_pluginInterface;
 	CObArray m_dynamicMenus;
+	HMENU m_hDefaultMenu;
 
 // Generated message map functions
 protected:

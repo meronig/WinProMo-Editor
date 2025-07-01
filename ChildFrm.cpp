@@ -33,10 +33,13 @@ END_MESSAGE_MAP()
 CChildFrame::CChildFrame()
 {
 	m_pluginInterface = NULL;
+	m_hDefaultMenu = ::LoadMenu(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
+
 }
 
 CChildFrame::~CChildFrame()
 {
+	
 }
 
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -124,14 +127,15 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 	CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
 
 	// TODO: Add your message handler code here
+	CMainFrame* pMainFrame = (CMainFrame*)GetParentFrame();
+	CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
+
 	if (bActivate) {
 		// Set the new menu in the MDI frame
-		CMainFrame* pMainFrame = (CMainFrame*)GetParentFrame();
-		CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
-
+		
 		if (m_pluginInterface) {
 			CMenu* pNewMenu = new CMenu;
-			if (pNewMenu->LoadMenu(m_pluginInterface->docID))
+			if (pNewMenu->LoadMenu(IDR_WPDPLUGIN))
 			{
 				//Insert is at position 3, revise if it changes
 				CMenu* pInsertMenu = pNewMenu->GetSubMenu(3);
@@ -160,13 +164,18 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 
 	}
 	else {
+
+		// Restore old menu
 		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
 			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
 			if (menu->m_hMenu)
 				menu->DestroyMenu();
 			delete menu;
 			m_dynamicMenus.RemoveAt(i);
-
+		}
+		if (pMDIFrame)
+		{
+			pMDIFrame->SetMenu(CMenu::FromHandle(m_hDefaultMenu));
 		}
 
 	}
