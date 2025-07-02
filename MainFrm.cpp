@@ -5,6 +5,8 @@
 #include "WinProMo.h"
 
 #include "MainFrm.h"
+#include "../WinProMo/WinProMoView.h"
+#include "../WinProMo/ProMoEditor/ProMoEditor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,6 +24,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	ON_WM_CREATE()
+	ON_MESSAGE(WM_SELECTION_CHANGED, &CMainFrame::OnSelectionChanged)
+	ON_COMMAND(ID_VIEW_PROPERTIES, &CMainFrame::OnViewProperties)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_PROPERTIES, &CMainFrame::OnUpdateViewProperties)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -39,7 +44,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
-	
+	//m_pPropertyDlg = NULL;
 }
 
 CMainFrame::~CMainFrame()
@@ -76,6 +81,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
+	CreatePropertyDialog();
+    
 	return 0;
 }
 
@@ -85,6 +92,38 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 
 	return CMDIFrameWnd::PreCreateWindow(cs);
+}
+
+BOOL CMainFrame::CreatePropertyDialog()
+{
+	m_pPropertyDlg.Create(CDynamicPropertyDlg::IDD, this);
+	m_pPropertyDlg.ShowWindow(SW_SHOW);
+	
+	return TRUE;
+}
+
+void CMainFrame::UpdatePropertyDialog(CDiagramEntity* pEntity)
+{
+	if (pEntity)
+	{
+		m_pPropertyDlg.SetEntity(pEntity);
+		m_pPropertyDlg.SetValues();
+		m_pPropertyDlg.EnableWindow(TRUE);
+	}
+	else
+	{
+		ClearPropertyDialog();
+	}
+}
+
+void CMainFrame::ClearPropertyDialog()
+{
+	if (m_pPropertyDlg)
+	{
+		m_pPropertyDlg.SetEntity(NULL);
+		m_pPropertyDlg.EnableWindow(FALSE);
+		// Optionally clear controls inside the dialog here
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -105,3 +144,27 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame message handlers
+
+afx_msg LRESULT CMainFrame::OnSelectionChanged(WPARAM wParam, LPARAM lParam)
+{
+	CDiagramEntity* pEntity = reinterpret_cast<CDiagramEntity*>(lParam);
+
+	UpdatePropertyDialog(pEntity);
+
+	return 0;
+}
+
+void CMainFrame::OnViewProperties()
+{
+	// Toggle visibility
+	if (m_pPropertyDlg.IsWindowVisible())
+		m_pPropertyDlg.ShowWindow(SW_HIDE);
+	else
+		m_pPropertyDlg.ShowWindow(SW_SHOW);
+	
+}
+
+void CMainFrame::OnUpdateViewProperties(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_pPropertyDlg.IsWindowVisible() ? TRUE : FALSE);
+}

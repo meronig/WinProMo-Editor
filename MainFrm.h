@@ -2,6 +2,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#include "DynamicPropertyDlg.h"
 class CMainFrame : public CMDIFrameWnd
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -11,8 +12,14 @@ public:
 // Attributes
 public:
 
+protected:
+	CDynamicPropertyDlg m_pPropertyDlg;
+
 // Operations
 public:
+	BOOL CreatePropertyDialog();
+	void UpdatePropertyDialog(CDiagramEntity* pEntity);
+	void ClearPropertyDialog();
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -36,10 +43,15 @@ protected:  // control bar embedded members
 protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT OnSelectionChanged(WPARAM wParam, LPARAM lParam);
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+	
+public:
+	afx_msg void OnViewProperties();
+	afx_msg void OnUpdateViewProperties(CCmdUI* pCmdUI);
 };
 
 /////////////////////////////////////////////////////////////////////////////
