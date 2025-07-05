@@ -102,18 +102,11 @@ BOOL CMainFrame::CreatePropertyDialog()
 	return TRUE;
 }
 
-void CMainFrame::UpdatePropertyDialog(CDiagramEntity* pEntity)
+void CMainFrame::UpdatePropertyDialog(CObArray* pProps)
 {
-	if (pEntity)
-	{
-		m_pPropertyDlg.SetEntity(pEntity);
-		m_pPropertyDlg.SetValues();
-		m_pPropertyDlg.EnableWindow(TRUE);
-	}
-	else
-	{
-		ClearPropertyDialog();
-	}
+	m_pPropertyDlg.SetProperties(pProps);
+	m_pPropertyDlg.EnableWindow(TRUE);
+	delete pProps;
 }
 
 void CMainFrame::ClearPropertyDialog()
@@ -147,9 +140,9 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 afx_msg LRESULT CMainFrame::OnSelectionChanged(WPARAM wParam, LPARAM lParam)
 {
-	CDiagramEntity* pEntity = reinterpret_cast<CDiagramEntity*>(lParam);
+	CObArray* pProps = reinterpret_cast<CObArray*>(lParam);
 
-	UpdatePropertyDialog(pEntity);
+	UpdatePropertyDialog(pProps);
 
 	return 0;
 }
