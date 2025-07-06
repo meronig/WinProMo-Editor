@@ -227,6 +227,15 @@ CString CWinProMoApp::DetectDocTypeFromFile(LPCTSTR lpszFileName)
 		buffer[size] = '\0';
 
 		CString content(buffer);
+		if ((BYTE)buffer[0] == 0xEF && (BYTE)buffer[1] == 0xBB && (BYTE)buffer[2] == 0xBF)
+		{
+			content = buffer + 3; // skip BOM
+		}
+		else
+		{
+			content = buffer;
+		}
+
 		delete[] buffer;
 
 		int pos = 0;
