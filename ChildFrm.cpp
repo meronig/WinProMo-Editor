@@ -7,6 +7,7 @@
 #include "ChildFrm.h"
 #include "MainFrm.h"
 #include "../WinProMo/WinProMoDoc.h"
+#include "../WinProMo/WinProMoView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -131,8 +132,13 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 	CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
 
 	if (bActivate) {
-		// Set the new menu in the MDI frame
+		// Trigger property dialog refresh
+		CWinProMoView* view = dynamic_cast<CWinProMoView*>(GetActiveView());
+		if (view) {
+			view->GetEditor()->NotifySelectionChanged();
+		}
 		
+		// Set the new menu in the MDI frame
 		if (m_pluginInterface) {
 			CMenu* pNewMenu = new CMenu;
 			if (pNewMenu->LoadMenu(IDR_WPDPLUGIN))
@@ -164,6 +170,8 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 
 	}
 	else {
+		// Clear property dialog
+		pMainFrame->UpdatePropertyDialog(NULL);
 
 		// Restore old menu
 		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {

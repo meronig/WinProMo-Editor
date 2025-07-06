@@ -37,23 +37,22 @@ void CDynamicPropertyDlg::SetProperties(CObArray* properties)
 {
 
     ClearProperties();
-    if (!properties)
-        return;
+    
+    if (properties) {
 
-    for (int i = 0; i < properties->GetSize(); ++i)
-    {
-        CPropertyItem* pi = (CPropertyItem*)properties->GetAt(i);
-        m_properties.Add(pi);
+        for (int i = 0; i < properties->GetSize(); ++i)
+        {
+            CPropertyItem* pi = (CPropertyItem*)properties->GetAt(i);
+            m_properties.Add(pi);
+        }
     }
     
     CWnd* pMainFrame = AfxGetMainWnd();
     if (pMainFrame && ::IsWindow(pMainFrame->GetSafeHwnd())) {
         pMainFrame->SetFocus();
     }
-
-    RebuildControls();
     
-
+    RebuildControls();
 }
 
 void CDynamicPropertyDlg::SetValues() {
