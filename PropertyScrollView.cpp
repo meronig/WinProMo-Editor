@@ -45,8 +45,7 @@ BOOL CPropertyScrollView::Create(CWnd* pParentWnd, UINT nID, const CRect& rect)
 
     m_Frame.Create(className, _T(""), WS_CHILD | WS_VISIBLE, CRect(0, 0, rect.Width(), rect.Height()), this, 0);
 	m_Frame.SetWindowPos(NULL, 0, 0, rect.Width(), rect.Height(), SWP_NOZORDER);
-    m_Frame.ModifyStyleEx(0, WS_EX_CONTROLPARENT);
-
+    
     CClientDC dc(this);
     CFont* pFont = GetParent()->GetFont();
     CFont* pOldFont = dc.SelectObject(pFont);
@@ -287,13 +286,37 @@ BOOL CPropertyScrollView::PreTranslateMessage(MSG* pMsg)
     {
         BOOL bShift = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
         CWnd* pFocus = GetFocus();
-        CWnd* pNext = GetNextDlgTabItem(pFocus, bShift);
+        
+        const int count = m_Controls.GetSize();
+        if (count == 0)
+            return FALSE;
 
-        if (pNext && ::IsChild(this->GetSafeHwnd(), pNext->GetSafeHwnd()))
+        int currentIndex = -1;
+        for (int i = 0; i < count; ++i)
         {
-            pNext->SetFocus();
-            return TRUE;
+            if (m_Controls[i] == pFocus)
+            {
+                currentIndex = i;
+                break;
+            }
         }
+
+        int nextIndex;
+        if (currentIndex == -1)
+        {
+            nextIndex = 0;
+        }
+        else if (bShift)
+        {
+            nextIndex = (currentIndex == 0) ? count - 1 : currentIndex - 1;
+        }
+        else
+        {
+            nextIndex = (currentIndex == count - 1) ? 0 : currentIndex + 1;
+        }
+
+        m_Controls[nextIndex]->SetFocus();
+        return TRUE;
     }
 
     return CWnd::PreTranslateMessage(pMsg);

@@ -9,6 +9,7 @@
 BEGIN_MESSAGE_MAP(CDynamicPropertyDlg, CDiagramPropertyDlg)
 ON_CONTROL_RANGE(EN_KILLFOCUS, 1000, 1099, OnPropertyControlChanged)
 ON_WM_SIZE()
+ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 CDynamicPropertyDlg::CDynamicPropertyDlg(CWnd* pParent)
@@ -96,8 +97,11 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
 
             if (newVal != pItem->m_value)
             {
-                pItem->SetValue(newVal);
-                
+                BOOL result = pItem->SetValue(newVal);
+                if (!result) {
+                    ctl->SetWindowText(pItem->m_value);
+                    Invalidate();
+                }   
             }
         }
     }
@@ -159,6 +163,40 @@ BOOL CDynamicPropertyDlg::OnInitDialog()
 {
     CDiagramPropertyDlg::OnInitDialog();
 
+    int left = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Left"), -1);
+    int top = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Top"), -1);
+    int width = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Width"), -1);
+    int height = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Height"), -1);
+
+    if (left != -1 && top != -1 && width > 0 && height > 0)
+    {
+        CRect desired(left, top, left + width, top + height);
+
+        // Optional: Clamp to virtual screen to avoid placing the dialog off-screen
+        
+		CRect virtualScreen;
+        virtualScreen.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
+        virtualScreen.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+        virtualScreen.right = virtualScreen.left + GetSystemMetrics(SM_CXVIRTUALSCREEN);
+        virtualScreen.bottom = virtualScreen.top + GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+        if (!virtualScreen.IsRectEmpty())
+        {
+            // Ensure dialog fits at least partially on screen
+            if (desired.right > virtualScreen.right)
+                desired.OffsetRect(virtualScreen.right - desired.right, 0);
+            if (desired.bottom > virtualScreen.bottom)
+                desired.OffsetRect(0, virtualScreen.bottom - desired.bottom);
+            if (desired.left < virtualScreen.left)
+                desired.OffsetRect(virtualScreen.left - desired.left, 0);
+            if (desired.top < virtualScreen.top)
+                desired.OffsetRect(0, virtualScreen.top - desired.top);
+        }
+
+        MoveWindow(desired);
+    
+    }
+
     CRect clientRect;
     GetClientRect(&clientRect);
 
@@ -169,4 +207,19 @@ BOOL CDynamicPropertyDlg::OnInitDialog()
     }
 
     return TRUE;
+}
+
+void CDynamicPropertyDlg::OnDestroy()
+{
+    
+    CRect rect;
+    GetWindowRect(&rect);
+
+    AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Left"), rect.left);
+    AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Top"), rect.top);
+    AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Width"), rect.Width());
+    AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Height"), rect.Height());
+
+    CDiagramPropertyDlg::OnDestroy();
+
 }

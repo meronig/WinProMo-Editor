@@ -5,6 +5,15 @@
 #include "resource.h"
 #include "PropertyScrollView.h"
 
+#if _MSC_VER <= 1200  // MSVC 6.0 or earlier
+#ifndef SM_XVIRTUALSCREEN
+#define SM_XVIRTUALSCREEN 76
+#define SM_YVIRTUALSCREEN 77
+#define SM_CXVIRTUALSCREEN 78
+#define SM_CYVIRTUALSCREEN 79
+#endif
+#endif
+
 class CDynamicPropertyDlg : public CDiagramPropertyDlg
 {
 public:
@@ -47,6 +56,7 @@ public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     afx_msg void OnSize(UINT nType, int cx, int cy);
     virtual BOOL OnInitDialog();
+    afx_msg void OnDestroy();
 };
 
 #endif //_DIAGRAMPROPERTYDIALOG_H_

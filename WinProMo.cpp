@@ -64,6 +64,8 @@ BOOL CWinProMoApp::InitInstance()
 	//  of your final executable, you should remove from the following
 	//  the specific initialization routines you do not need.
 
+	SetRegistryKey(_T("DTU Compute"));
+
 #if (_MSC_VER <= 1200) 
 #ifdef _AFXDLL
 	Enable3dControls();			// Call this when using MFC in a shared DLL
@@ -72,6 +74,7 @@ BOOL CWinProMoApp::InitInstance()
 #endif
 #endif
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
+
 
 	// create main MDI Frame window
 	m_pMainFrame = new CMainFrame;
@@ -95,7 +98,7 @@ BOOL CWinProMoApp::InitInstance()
 	m_pMainFrame->UpdateWindow();
 	
 	//Commented out as it causes a crash
-	//OnFileNew();
+	OnFileNew();
 	
 	return TRUE;
 }
