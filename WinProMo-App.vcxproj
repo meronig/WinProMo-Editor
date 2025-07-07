@@ -200,6 +200,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="DynamicElementListDlg.h" />
     <ClInclude Include="DynamicPropertyDlg.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PropertyScrollFrame.h" />
@@ -210,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="DynamicElementListDlg.cpp" />
     <ClCompile Include="DynamicPropertyDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PropertyScrollFrame.cpp" />

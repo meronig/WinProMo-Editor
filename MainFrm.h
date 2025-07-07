@@ -3,6 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "DynamicPropertyDlg.h"
+#include "DynamicElementListDlg.h"
 class CMainFrame : public CMDIFrameWnd
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -14,10 +15,12 @@ public:
 
 protected:
 	CDynamicPropertyDlg m_pPropertyDlg;
+	CDynamicElementListDlg m_pElementListDlg;
 
 // Operations
 public:
 	BOOL CreatePropertyDialog();
+	BOOL CreateElementListDialog();
 	void UpdatePropertyDialog(CObArray* pProps);
 	void ClearPropertyDialog();
 
@@ -52,6 +55,8 @@ protected:
 public:
 	afx_msg void OnViewProperties();
 	afx_msg void OnUpdateViewProperties(CCmdUI* pCmdUI);
+	afx_msg void OnViewElementlist();
+	afx_msg void OnUpdateViewElementlist(CCmdUI* pCmdUI);
 };
 
 /////////////////////////////////////////////////////////////////////////////

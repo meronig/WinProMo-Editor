@@ -28,6 +28,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_VIEW_PROPERTIES, &CMainFrame::OnViewProperties)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_PROPERTIES, &CMainFrame::OnUpdateViewProperties)
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_VIEW_ELEMENTLIST, &CMainFrame::OnViewElementlist)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ELEMENTLIST, &CMainFrame::OnUpdateViewElementlist)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -82,6 +84,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndToolBar);
 
 	CreatePropertyDialog();
+	CreateElementListDialog();
     
 	return 0;
 }
@@ -99,6 +102,14 @@ BOOL CMainFrame::CreatePropertyDialog()
 	m_pPropertyDlg.Create(CDynamicPropertyDlg::IDD, this);
 	m_pPropertyDlg.ShowWindow(SW_SHOW);
 	
+	return TRUE;
+}
+
+BOOL CMainFrame::CreateElementListDialog()
+{
+	m_pElementListDlg.Create(CDynamicElementListDlg::IDD, this);
+	m_pElementListDlg.ShowWindow(SW_SHOW);
+
 	return TRUE;
 }
 
@@ -160,4 +171,18 @@ void CMainFrame::OnViewProperties()
 void CMainFrame::OnUpdateViewProperties(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_pPropertyDlg.IsWindowVisible() ? TRUE : FALSE);
+}
+
+void CMainFrame::OnViewElementlist()
+{
+	// Toggle visibility
+	if (m_pElementListDlg.IsWindowVisible())
+		m_pElementListDlg.ShowWindow(SW_HIDE);
+	else
+		m_pElementListDlg.ShowWindow(SW_SHOW);
+}
+
+void CMainFrame::OnUpdateViewElementlist(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_pElementListDlg.IsWindowVisible() ? TRUE : FALSE);
 }

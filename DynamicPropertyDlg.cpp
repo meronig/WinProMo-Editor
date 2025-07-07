@@ -4,10 +4,13 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "../WinProMo/ProMoEditor/PropertyItem.h"
+#include "../WinProMo/PropertyItem/PropertyItem.h"
+#include "../WinProMo/PropertyItem/StringPropertyItem.h"
+#include "../WinProMo/PropertyItem/CustomPropertyItem.h"
 
 BEGIN_MESSAGE_MAP(CDynamicPropertyDlg, CDiagramPropertyDlg)
 ON_CONTROL_RANGE(EN_KILLFOCUS, 1000, 1099, OnPropertyControlChanged)
+ON_CONTROL_RANGE(BN_CLICKED, 1000, 1099, OnPropertyControlChanged)
 ON_WM_SIZE()
 ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -42,7 +45,7 @@ void CDynamicPropertyDlg::SetProperties(CObArray* properties)
 
         for (int i = 0; i < properties->GetSize(); ++i)
         {
-            CPropertyItem* pi = (CPropertyItem*)properties->GetAt(i);
+            CPropertyItem* pi = dynamic_cast<CPropertyItem*>(properties->GetAt(i));
             m_properties.Add(pi);
         }
     }
@@ -65,17 +68,27 @@ void CDynamicPropertyDlg::RebuildControls()
 
     for (int i = 0; i < m_properties.GetSize(); ++i)
     {
-        CPropertyItem* pi = (CPropertyItem*)m_properties[i];
+        CPropertyItem* pi = dynamic_cast<CPropertyItem*>(m_properties[i]);
 
         // Control ID
         UINT ctrlID = m_nextCtrlID++;
-        pi->m_ctrlID = ctrlID;
+        pi->SetCtrlID(ctrlID);
 
         // Create control based on type
         CWnd* ctrl = NULL;
 
-        ctrl = m_ScrollView.AddControl(ctrlID, pi->m_name, RUNTIME_CLASS(CEdit));
-        ctrl->SetWindowText(pi->m_value);
+        CStringPropertyItem* spi = dynamic_cast<CStringPropertyItem*>(pi);
+        if (spi) {
+            ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+            ctrl->SetWindowText(spi->GetValue());
+
+        }
+
+        CCustomPropertyItem* cpi = dynamic_cast<CCustomPropertyItem*>(pi);
+        if (cpi) {
+            ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CButton));
+        }
+
     }
 
     Invalidate();
@@ -86,21 +99,31 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
     int index = ctrlID - 1000;
     if (index >= 0 && index < m_properties.GetSize())
     {
-        CPropertyItem* pItem = static_cast<CPropertyItem*>(m_properties.GetAt(index));
+        CPropertyItem* pItem = dynamic_cast<CPropertyItem*>(m_properties.GetAt(index));
         CWnd* ctl = m_ScrollView.GetControl(ctrlID);
 
         if (pItem && ctl)
         {
-            CString newVal;
-            ctl->GetWindowText(newVal);
+            CStringPropertyItem* spItem = dynamic_cast<CStringPropertyItem*>(pItem);
+            if (spItem) {
+                CString newVal;
+                ctl->GetWindowText(newVal);
 
-            if (newVal != pItem->m_value)
-            {
-                BOOL result = pItem->SetValue(newVal);
+                if (newVal != spItem->GetValue())
+                {
+                    BOOL result = spItem->SetValue(newVal);
+                    if (!result) {
+                        ctl->SetWindowText(spItem->GetValue());
+                        Invalidate();
+                    }
+                }
+            }
+            CCustomPropertyItem* cpItem = dynamic_cast<CCustomPropertyItem*>(pItem);
+            if (cpItem) {
+                BOOL result = cpItem->SetValue();
                 if (!result) {
-                    ctl->SetWindowText(pItem->m_value);
                     Invalidate();
-                }   
+                }
             }
         }
     }

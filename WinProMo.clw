@@ -14,13 +14,14 @@ Class2=CWinProMoDoc
 Class3=CWinProMoView
 Class4=CMainFrame
 
-ResourceCount=8
+ResourceCount=9
 Resource1=IDD_ABOUTBOX
 Resource2=IDR_MAINFRAME
 Resource3=IDR_WINPROTYPE
 Class5=CAboutDlg
 Class6=CChildFrame
 Resource8=IDD_DIALOG_PROPERTY_DYNAMIC
+Resource9=IDD_DIALOG_ELEMENTLIST_DYNAMIC
 
 [CLS:CWinProMoApp]
 Type=0
@@ -142,6 +143,10 @@ CommandCount=14
 
 [DLG:IDD_DIALOG_PROPERTY_DYNAMIC]
 Type=1
+ControlCount=0
+
+[DLG:IDD_DIALOG_ELEMENTLIST_DYNAMIC]
+Type=1
 ControlCount=1
-Control1=IDC_EDIT1,edit,1350631552
+Control1=IDC_LIST_ELEMENTS,listbox,1353777931
 

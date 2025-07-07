@@ -92,6 +92,24 @@ CWnd* CPropertyScrollView::AddControl(UINT ctrlID, const CString& labelText, CRu
         }
         pControl = edit;
     }
+    else if (pControlClass == RUNTIME_CLASS(CButton)) {
+        CButton* btn = new CButton();
+        if (!btn)
+        {
+            delete label;
+            return NULL;
+        }
+        if (!btn->Create(_T("Set..."), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | WS_TABSTOP,
+            CRect(10 + m_LabelWidth + m_Spacing, m_nNextY,
+                10 + m_LabelWidth + m_Spacing + m_CtrlWidth,
+                m_nNextY + m_CtrlHeight), &m_Frame, ctrlID))
+        {
+            delete pControl;
+            delete label;
+            return NULL;
+        }
+        pControl = btn;
+    }
     else if (pControlClass && pControlClass->IsDerivedFrom(RUNTIME_CLASS(CWnd))) {
         pControl = (CWnd*)pControlClass->CreateObject();
         if (!pControl)
