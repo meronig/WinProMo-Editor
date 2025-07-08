@@ -170,9 +170,7 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 
 	}
 	else {
-		// Clear property dialog
-		pMainFrame->UpdatePropertyDialog(NULL);
-
+		
 		// Restore old menu
 		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
 			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
@@ -184,7 +182,13 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 		if (pMDIFrame)
 		{
 			pMDIFrame->SetMenu(CMenu::FromHandle(m_hDefaultMenu));
+			
 		}
+
+		if (!AfxGetMainWnd()->IsWindowVisible())
+			return;
+
+		pMainFrame->UpdatePropertyDialog(NULL);
 
 	}
 

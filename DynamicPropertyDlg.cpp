@@ -11,6 +11,7 @@
 BEGIN_MESSAGE_MAP(CDynamicPropertyDlg, CDiagramPropertyDlg)
 ON_CONTROL_RANGE(EN_KILLFOCUS, 1000, 1099, OnPropertyControlChanged)
 ON_CONTROL_RANGE(BN_CLICKED, 1000, 1099, OnPropertyControlChanged)
+ON_CONTROL_RANGE(CBN_KILLFOCUS, 1000, 1099, OnPropertyControlChanged)
 ON_WM_SIZE()
 ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -79,7 +80,18 @@ void CDynamicPropertyDlg::RebuildControls()
 
         CStringPropertyItem* spi = dynamic_cast<CStringPropertyItem*>(pi);
         if (spi) {
-            ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+            if (spi->GetOptionsCount() > 0) {
+                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
+                if (ctrl) {
+                    CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
+                    for (int i = 0; i < spi->GetOptionsCount(); i++) {
+                        box->AddString(spi->GetOption(i));
+                    }
+                }
+            }
+            else {
+                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+            }
             ctrl->SetWindowText(spi->GetValue());
 
         }

@@ -11,7 +11,7 @@ class CDynamicElementListDlg : public CDialog
 	DECLARE_DYNAMIC(CDynamicElementListDlg)
 
 public:
-	CDynamicElementListDlg(CWnd* pParent = nullptr);   // standard constructor
+	CDynamicElementListDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDynamicElementListDlg();
 
 // Dialog Data

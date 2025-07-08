@@ -15,6 +15,7 @@ CPropertyScrollView::CPropertyScrollView()
     m_CtrlWidth = 150;
     m_CtrlHeight = 25;
     m_Spacing = 5;
+    m_ComboBoxHeight = 200;
 }
 
 CPropertyScrollView::~CPropertyScrollView()
@@ -91,6 +92,24 @@ CWnd* CPropertyScrollView::AddControl(UINT ctrlID, const CString& labelText, CRu
             return NULL;
         }
         pControl = edit;
+    }
+    else if (pControlClass == RUNTIME_CLASS(CComboBox)) {
+        CComboBox* combo = new CComboBox();
+        if (!combo)
+        {
+            delete label;
+            return NULL;
+        }
+        if (!combo->Create(WS_CHILD | WS_VISIBLE | CBS_AUTOHSCROLL | WS_TABSTOP | CBS_DROPDOWN,
+            CRect(10 + m_LabelWidth + m_Spacing, m_nNextY,
+                10 + m_LabelWidth + m_Spacing + m_CtrlWidth,
+                m_nNextY + m_CtrlHeight + m_ComboBoxHeight), &m_Frame, ctrlID))
+        {
+            delete pControl;
+            delete label;
+            return NULL;
+        }
+        pControl = combo;
     }
     else if (pControlClass == RUNTIME_CLASS(CButton)) {
         CButton* btn = new CButton();
@@ -288,7 +307,7 @@ BOOL CPropertyScrollView::OnCommand(WPARAM wParam, LPARAM lParam)
     switch (notificationCode)
     {
     case EN_KILLFOCUS:
-    case EN_CHANGE:
+    case CBN_KILLFOCUS:
     case BN_CLICKED:
         if (pParent)
             return pParent->SendMessage(WM_COMMAND, wParam, lParam);

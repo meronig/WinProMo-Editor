@@ -37,6 +37,7 @@ private:
     int m_CtrlWidth;
     int m_CtrlHeight;
     int m_Spacing;
+    int m_ComboBoxHeight;
 
 public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
