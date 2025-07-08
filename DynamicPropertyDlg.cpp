@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "DynamicPropertyDlg.h"
+#include "../WinProMo/PropertyItem/TypedPropertyItem.h"
+#include "../WinProMo/PropertyItem/CustomPropertyItem.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "../WinProMo/PropertyItem/PropertyItem.h"
-#include "../WinProMo/PropertyItem/StringPropertyItem.h"
-#include "../WinProMo/PropertyItem/CustomPropertyItem.h"
 
 BEGIN_MESSAGE_MAP(CDynamicPropertyDlg, CDiagramPropertyDlg)
 ON_CONTROL_RANGE(EN_KILLFOCUS, 1000, 1099, OnPropertyControlChanged)
@@ -78,7 +77,7 @@ void CDynamicPropertyDlg::RebuildControls()
         // Create control based on type
         CWnd* ctrl = NULL;
 
-        CStringPropertyItem* spi = dynamic_cast<CStringPropertyItem*>(pi);
+        CTypedPropertyItem<CString>* spi = dynamic_cast<CTypedPropertyItem<CString>*>(pi);
         if (spi) {
             if (spi->GetOptionsCount() > 0) {
                 ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
@@ -116,7 +115,7 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
 
         if (pItem && ctl)
         {
-            CStringPropertyItem* spItem = dynamic_cast<CStringPropertyItem*>(pItem);
+            CTypedPropertyItem<CString>* spItem = dynamic_cast<CTypedPropertyItem<CString>*>(pItem);
             if (spItem) {
                 CString newVal;
                 ctl->GetWindowText(newVal);

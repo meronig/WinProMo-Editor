@@ -55,6 +55,7 @@ ALL : "..\Release\WinProMo.exe"
 
 CLEAN : 
 	-@erase "$(INTDIR)\ChildFrm.obj"
+	-@erase "$(INTDIR)\DynamicElementListDlg.obj"
 	-@erase "$(INTDIR)\DynamicPropertyDlg.obj"
 	-@erase "$(INTDIR)\MainFrm.obj"
 	-@erase "$(INTDIR)\PropertyScrollFrame.obj"
@@ -95,6 +96,7 @@ LINK32_FLAGS=../WinPromo/Release/WinProMo.lib /nologo /subsystem:windows\
  /out:"../Release/WinProMo.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\ChildFrm.obj" \
+	"$(INTDIR)\DynamicElementListDlg.obj" \
 	"$(INTDIR)\DynamicPropertyDlg.obj" \
 	"$(INTDIR)\MainFrm.obj" \
 	"$(INTDIR)\PropertyScrollFrame.obj" \
@@ -127,6 +129,7 @@ ALL : "..\Debug\WinProMo.exe"
 
 CLEAN : 
 	-@erase "$(INTDIR)\ChildFrm.obj"
+	-@erase "$(INTDIR)\DynamicElementListDlg.obj"
 	-@erase "$(INTDIR)\DynamicPropertyDlg.obj"
 	-@erase "$(INTDIR)\MainFrm.obj"
 	-@erase "$(INTDIR)\PropertyScrollFrame.obj"
@@ -171,6 +174,7 @@ LINK32_FLAGS=../WinPromo/Debug/WinProMo.lib /nologo /subsystem:windows\
  /out:"../Debug/WinProMo.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\ChildFrm.obj" \
+	"$(INTDIR)\DynamicElementListDlg.obj" \
 	"$(INTDIR)\DynamicPropertyDlg.obj" \
 	"$(INTDIR)\MainFrm.obj" \
 	"$(INTDIR)\PropertyScrollFrame.obj" \
@@ -250,6 +254,7 @@ DEP_CPP_WINPR=\
 	"..\WinProMo\WinProMoDoc.h"\
 	"..\WinProMo\WinProMoPluginInterface.h"\
 	".\ChildFrm.h"\
+	".\DynamicElementListDlg.h"\
 	".\DynamicPropertyDlg.h"\
 	".\MainFrm.h"\
 	".\PropertyScrollFrame.h"\
@@ -335,6 +340,7 @@ DEP_CPP_MAINF=\
 	"..\WinProMo\WinProMoDoc.h"\
 	"..\WinProMo\WinProMoPluginInterface.h"\
 	"..\WinProMo\WinProMoView.h"\
+	".\DynamicElementListDlg.h"\
 	".\DynamicPropertyDlg.h"\
 	".\MainFrm.h"\
 	".\PropertyScrollFrame.h"\
@@ -378,6 +384,7 @@ DEP_CPP_CHILD=\
 	"..\WinProMo\WinProMoPluginInterface.h"\
 	"..\WinProMo\WinProMoView.h"\
 	".\ChildFrm.h"\
+	".\DynamicElementListDlg.h"\
 	".\DynamicPropertyDlg.h"\
 	".\MainFrm.h"\
 	".\PropertyScrollFrame.h"\
@@ -419,7 +426,10 @@ DEP_CPP_DYNAM=\
 	"..\WinProMo\DiagramEditor\DiagramMenu.h"\
 	"..\WinProMo\DiagramEditor\DiagramPropertyDlg.h"\
 	"..\WinProMo\DiagramEditor\UndoItem.h"\
-	"..\WinProMo\ProMoEditor\PropertyItem.h"\
+	"..\WinProMo\PropertyItem\CustomPropertyItem.h"\
+	"..\WinProMo\PropertyItem\PropertyItem.h"\
+	"..\WinProMo\PropertyItem\TypedPropertyItem.h"\
+	"..\WinProMo\PropertyItem\TypedPropertyItem.hxx"\
 	"..\WinProMo\StdAfx.h"\
 	".\DynamicPropertyDlg.h"\
 	".\PropertyScrollFrame.h"\
@@ -457,6 +467,20 @@ DEP_CPP_PROPER=\
 	
 
 "$(INTDIR)\PropertyScrollFrame.obj" : $(SOURCE) $(DEP_CPP_PROPER) "$(INTDIR)"\
+ "$(INTDIR)\WinProMo.pch"
+
+
+# End Source File
+################################################################################
+# Begin Source File
+
+SOURCE=.\DynamicElementListDlg.cpp
+DEP_CPP_DYNAMI=\
+	".\DynamicElementListDlg.h"\
+	".\StdAfx.h"\
+	
+
+"$(INTDIR)\DynamicElementListDlg.obj" : $(SOURCE) $(DEP_CPP_DYNAMI) "$(INTDIR)"\
  "$(INTDIR)\WinProMo.pch"
 
 
