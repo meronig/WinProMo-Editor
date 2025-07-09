@@ -33,6 +33,7 @@ public:
 	ExtensionDLL* m_pluginInterface;
 	CObArray m_dynamicMenus;
 	HMENU m_hDefaultMenu;
+	HACCEL m_hAccel;
 
 // Generated message map functions
 protected:

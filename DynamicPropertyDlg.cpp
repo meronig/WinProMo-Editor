@@ -2,6 +2,7 @@
 #include "DynamicPropertyDlg.h"
 #include "../WinProMo/PropertyItem/TypedPropertyItem.h"
 #include "../WinProMo/PropertyItem/CustomPropertyItem.h"
+#include <errno.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -95,6 +96,30 @@ void CDynamicPropertyDlg::RebuildControls()
 
         }
 
+        CTypedPropertyItem<UINT>* uipi = dynamic_cast<CTypedPropertyItem<UINT>*>(pi);
+        if (uipi) {
+            CString value;
+            if (uipi->GetOptionsCount() > 0) {
+                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
+                if (ctrl) {
+                    CString option;
+                    CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
+                    for (int i = 0; i < uipi->GetOptionsCount(); i++) {
+                        option.Format(_T("%u"), uipi->GetOption(i));
+                        box->AddString(option);
+                    }
+                }
+            }
+            
+            else {
+                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+            }
+            
+            value.Format(_T("%u"), uipi->GetValue());
+            ctrl->SetWindowText(value);
+            ctrl->ModifyStyle(0, ES_NUMBER);
+        }
+
         CCustomPropertyItem* cpi = dynamic_cast<CCustomPropertyItem*>(pi);
         if (cpi) {
             ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CButton));
@@ -129,6 +154,32 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
                     }
                 }
             }
+            
+            CTypedPropertyItem<UINT>* uipItem = dynamic_cast<CTypedPropertyItem<UINT>*>(pItem);
+            if (uipItem) {
+                CString newVal;
+                UINT newValUINT;
+                BOOL result = FALSE;
+                TCHAR* endPtr = NULL;
+                ctl->GetWindowText(newVal);
+                errno = 0;
+                //newValUINT = static_cast<UINT>(_ttoi(newVal));
+                unsigned long newValULong = _tcstoul((LPCTSTR)newVal, &endPtr, 10);
+                BOOL isValid = (*endPtr == _T('\0')) && (errno != ERANGE) && (newValULong <= UINT_MAX);
+                newValUINT = static_cast<UINT>(newValULong);
+
+                if (newValUINT != uipItem->GetValue() && isValid)
+                {
+                    result = uipItem->SetValue(newValUINT);
+                }
+                if (!result || !isValid) {
+                    CString oldValStr;
+                    oldValStr.Format(_T("%u"), uipItem->GetValue());
+                    ctl->SetWindowText(oldValStr);
+                    Invalidate();
+                }
+            }
+
             CCustomPropertyItem* cpItem = dynamic_cast<CCustomPropertyItem*>(pItem);
             if (cpItem) {
                 BOOL result = cpItem->SetValue();

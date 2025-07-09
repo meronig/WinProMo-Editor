@@ -130,6 +130,7 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 	// TODO: Add your message handler code here
 	CMainFrame* pMainFrame = (CMainFrame*)GetParentFrame();
 	CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
+	CWinProMoApp* app = dynamic_cast<CWinProMoApp*>(AfxGetApp());
 
 	if (bActivate) {
 		// Trigger property dialog refresh
@@ -140,6 +141,11 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 		
 		// Set the new menu in the MDI frame
 		if (m_pluginInterface) {
+
+			HINSTANCE hPlugin = m_pluginInterface->hModule;
+			m_hAccel = ::LoadAccelerators(hPlugin, MAKEINTRESOURCE(IDR_WPDPLUGIN));
+			app->g_hCurrentAccel = m_hAccel;
+
 			CMenu* pNewMenu = new CMenu;
 			if (pNewMenu->LoadMenu(IDR_WPDPLUGIN))
 			{
@@ -184,6 +190,8 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 			pMDIFrame->SetMenu(CMenu::FromHandle(m_hDefaultMenu));
 			
 		}
+
+		app->g_hCurrentAccel = NULL;
 
 		if (!AfxGetMainWnd()->IsWindowVisible())
 			return;

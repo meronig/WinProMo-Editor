@@ -37,6 +37,7 @@ public:
 	CObArray m_Extensions;
 	CMDIFrameWnd* m_pMainFrame;
 	CProMoClipboardHandler	m_clip;
+	HACCEL g_hCurrentAccel;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -60,6 +61,8 @@ protected:
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 

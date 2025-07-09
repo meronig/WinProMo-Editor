@@ -4,12 +4,14 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
+#define IDR_WPDPLUGIN                   129
 #define IDR_WINPROTYPE                  130
 #define IDD_DIALOG_PROPERTY_DYNAMIC     135
 #define IDD_DIALOG_ELEMENTLIST_DYNAMIC  136
 #define IDC_LIST_ELEMENTS               2000
 #define ID_VIEW_PROPERTIES              32771
 #define ID_VIEW_ELEMENTLIST             32772
+#define ID_EDIT_DELETE                  32775
 
 // Next default values for new objects
 // 

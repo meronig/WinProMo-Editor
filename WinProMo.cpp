@@ -42,6 +42,7 @@ CWinProMoApp::CWinProMoApp()
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 	m_pMainFrame = NULL;
+	g_hCurrentAccel = NULL;
 }
 
 CWinProMoApp::~CWinProMoApp()
@@ -170,6 +171,9 @@ void CWinProMoApp::LoadExtensions() {
 
 void CWinProMoApp::UnloadExtensions()
 {
+	// Clear the clipboard to avoid lingering objects
+	m_clip.ClearPaste();
+
 	for (int i = m_Extensions.GetSize() - 1; i >= 0; i--) {
 		ExtensionDLL* ext = static_cast<ExtensionDLL*>(m_Extensions.GetAt(i));
 		if (ext) {
@@ -329,3 +333,11 @@ void CWinProMoApp::OnAppAbout()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoApp commands
+
+BOOL CWinProMoApp::PreTranslateMessage(MSG* pMsg)
+{
+	if (g_hCurrentAccel && ::TranslateAccelerator(AfxGetMainWnd()->m_hWnd, g_hCurrentAccel, pMsg))
+		return TRUE;
+
+	return CWinApp::PreTranslateMessage(pMsg);
+}
