@@ -1,3 +1,10 @@
+/* ==========================================================================
+
+    Copyright © 2025 Technical University of Denmark
+
+    Author :		Giovanni Meroni
+
+   ========================================================================*/
 // CPropertyScrollView.h
 #include "PropertyScrollFrame.h"
 #ifndef _PROPERTYSCROLLVIEW_H_

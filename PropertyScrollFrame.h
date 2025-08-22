@@ -1,3 +1,10 @@
+/* ==========================================================================
+
+	Copyright © 2025 Technical University of Denmark
+
+	Author :		Giovanni Meroni
+
+   ========================================================================*/
 #ifndef _PROPERTYSCROLLFRAME_H_
 #define _PROPERTYSCROLLFRAME_H_
 
