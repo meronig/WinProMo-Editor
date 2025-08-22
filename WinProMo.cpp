@@ -9,6 +9,7 @@
 
 #include "../WinProMo/DiagramEditor/Tokenizer.h"
 #include "../WinProMo/WinProMoDoc.h"
+#include "../WinProMo/WinProMoView.h"
 //#include "../WinProMo/WinProMoDocTemplate.h"
 
 
@@ -31,7 +32,7 @@ BEGIN_MESSAGE_MAP(CWinProMoApp, CWinApp)
 	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
 	// Standard print setup command
-	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinProMoApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -97,7 +98,7 @@ BOOL CWinProMoApp::InitInstance()
 	// The main window has been initialized, so show and update it.
 	m_pMainFrame->ShowWindow(m_nCmdShow);
 	m_pMainFrame->UpdateWindow();
-	
+
 	//Commented out as it causes a crash
 	OnFileNew();
 	
@@ -329,6 +330,29 @@ void CWinProMoApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
+}
+
+void CWinProMoApp::OnFilePrintSetup()
+{
+	CWinApp::OnFilePrintSetup();
+
+	// Notify changes to all child windows
+	POSITION pos = AfxGetApp()->GetFirstDocTemplatePosition();
+	while (pos)
+	{
+		CDocTemplate* pTemplate = AfxGetApp()->GetNextDocTemplate(pos);
+		POSITION docPos = pTemplate->GetFirstDocPosition();
+		while (docPos)
+		{
+			CDocument* pDoc = pTemplate->GetNextDoc(docPos);
+			POSITION viewPos = pDoc->GetFirstViewPosition();
+			while (viewPos)
+			{
+				CWinProMoView* pView = static_cast<CWinProMoView*>(pDoc->GetNextView(viewPos));
+				pView->SetPageSize();
+			}
+		}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
