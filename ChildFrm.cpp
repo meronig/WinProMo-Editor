@@ -151,8 +151,8 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 			{
 				//Insert is at position 3, revise if it changes
 				CMenu* pInsertMenu = pNewMenu->GetSubMenu(3);
-				//Window is at position 4, revise if it changes
-				CMenu* pWindowMenu = pNewMenu->GetSubMenu(4);
+				//Window is at position 5, revise if it changes
+				CMenu* pWindowMenu = pNewMenu->GetSubMenu(5);
 				m_dynamicMenus.Add(pNewMenu);
 
 				if (pInsertMenu) {

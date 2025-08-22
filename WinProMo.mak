@@ -32,9 +32,9 @@ NULL=nul
 ################################################################################
 # Begin Project
 # PROP Target_Last_Scanned "WinProMo - Win32 Debug"
-MTL=mktyplib.exe
-RSC=rc.exe
 CPP=cl.exe
+RSC=rc.exe
+MTL=mktyplib.exe
 
 !IF  "$(CFG)" == "WinProMo - Win32 Release"
 
@@ -238,21 +238,29 @@ SOURCE=.\ReadMe.txt
 SOURCE=.\WinProMo.cpp
 DEP_CPP_WINPR=\
 	"..\WinProMo\DiagramEditor\DiagramClipboardHandler.h"\
+	"..\WinProMo\DiagramEditor\DiagramEditor.h"\
 	"..\WinProMo\DiagramEditor\DiagramEntity.h"\
 	"..\WinProMo\DiagramEditor\DiagramEntityContainer.h"\
+	"..\WinProMo\DiagramEditor\DiagramLine.h"\
+	"..\WinProMo\DiagramEditor\DiagramMenu.h"\
 	"..\WinProMo\DiagramEditor\DiagramPropertyDlg.h"\
+	"..\WinProMo\DiagramEditor\HitParams.h"\
+	"..\WinProMo\DiagramEditor\HitParamsRect.h"\
 	"..\WinProMo\DiagramEditor\Tokenizer.h"\
 	"..\WinProMo\DiagramEditor\UndoItem.h"\
 	"..\WinProMo\ProMoEditor\ProMoBlockModel.h"\
 	"..\WinProMo\ProMoEditor\ProMoBlockView.h"\
 	"..\WinProMo\ProMoEditor\ProMoClipboardHandler.h"\
 	"..\WinProMo\ProMoEditor\ProMoControlFactory.h"\
+	"..\WinProMo\ProMoEditor\ProMoEdgeView.h"\
+	"..\WinProMo\ProMoEditor\ProMoEditor.h"\
 	"..\WinProMo\ProMoEditor\ProMoEntityContainer.h"\
 	"..\WinProMo\ProMoEditor\ProMoModel.h"\
 	"..\WinProMo\ProMoEditor\PropertyDialog.h"\
 	"..\WinProMo\StdAfx.h"\
 	"..\WinProMo\WinProMoDoc.h"\
 	"..\WinProMo\WinProMoPluginInterface.h"\
+	"..\WinProMo\WinProMoView.h"\
 	".\ChildFrm.h"\
 	".\DynamicElementListDlg.h"\
 	".\DynamicPropertyDlg.h"\
