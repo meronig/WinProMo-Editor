@@ -26,13 +26,23 @@ END_MESSAGE_MAP()
 CDynamicPropertyDlg::CDynamicPropertyDlg(CWnd* pParent)
     : CDiagramPropertyDlg(CDynamicPropertyDlg::IDD, pParent), m_nextCtrlID(1000) // Resource ID = 0, since we don’t use a template
 {
-    
+    m_visible = FALSE;
 }
 
 CDynamicPropertyDlg::~CDynamicPropertyDlg()
 {
     m_ScrollView.ClearControls();
 	ClearProperties();
+}
+
+void CDynamicPropertyDlg::Show(BOOL visible)
+{
+    // Toggle visibility
+    m_visible = visible;
+    if (visible)
+        ShowWindow(SW_SHOW);
+    else
+        ShowWindow(SW_HIDE);
 }
 
 void CDynamicPropertyDlg::ClearProperties()
@@ -297,11 +307,24 @@ BOOL CDynamicPropertyDlg::OnInitDialog()
         return FALSE;
     }
 
+    BOOL m_visible = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Visible"), FALSE);
+    if (m_visible) {
+        ShowWindow(SW_SHOW);
+    }
+    else {
+        ShowWindow(SW_HIDE);
+    }
+
     return TRUE;
 }
 
 void CDynamicPropertyDlg::OnDestroy()
 {
+
+    if (m_visible)
+        AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Visible"), TRUE);
+    else
+        AfxGetApp()->WriteProfileInt(_T("PropertyDialog"), _T("Visible"), FALSE);
     
     CRect rect;
     GetWindowRect(&rect);

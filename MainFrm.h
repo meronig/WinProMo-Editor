@@ -64,6 +64,7 @@ public:
 	afx_msg void OnUpdateViewProperties(CCmdUI* pCmdUI);
 	afx_msg void OnViewElementlist();
 	afx_msg void OnUpdateViewElementlist(CCmdUI* pCmdUI);
+	afx_msg void OnClose();
 };
 
 /////////////////////////////////////////////////////////////////////////////

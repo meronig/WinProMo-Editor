@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_VIEW_ELEMENTLIST, &CMainFrame::OnViewElementlist)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ELEMENTLIST, &CMainFrame::OnUpdateViewElementlist)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -91,6 +92,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CreatePropertyDialog();
 	CreateElementListDialog();
+
+	BOOL standardToolBarVisible = AfxGetApp()->GetProfileInt(_T("Settings"), _T("Standard ToolBar Visible"), TRUE);
+	
+	if (standardToolBarVisible) {
+		m_wndToolBar.ShowWindow(SW_SHOW);
+	}
+	else {
+		m_wndToolBar.ShowWindow(SW_HIDE);
+	}
+
+	BOOL statusBarVisible = AfxGetApp()->GetProfileInt(_T("Settings"), _T("Status Bar Visible"), TRUE);
+
+	if (statusBarVisible) {
+		m_wndStatusBar.ShowWindow(SW_SHOW);
+	}
+	else {
+		m_wndStatusBar.ShowWindow(SW_HIDE);
+	}
     
 	return 0;
 }
@@ -106,15 +125,13 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 BOOL CMainFrame::CreatePropertyDialog()
 {
 	m_pPropertyDlg.Create(CDynamicPropertyDlg::IDD, this);
-	m_pPropertyDlg.ShowWindow(SW_SHOW);
-	
+
 	return TRUE;
 }
 
 BOOL CMainFrame::CreateElementListDialog()
 {
 	m_pElementListDlg.Create(CDynamicElementListDlg::IDD, this);
-	m_pElementListDlg.ShowWindow(SW_SHOW);
 
 	return TRUE;
 }
@@ -168,9 +185,9 @@ void CMainFrame::OnViewProperties()
 {
 	// Toggle visibility
 	if (m_pPropertyDlg.IsWindowVisible())
-		m_pPropertyDlg.ShowWindow(SW_HIDE);
+		m_pPropertyDlg.Show(FALSE);
 	else
-		m_pPropertyDlg.ShowWindow(SW_SHOW);
+		m_pPropertyDlg.Show(TRUE);
 	
 }
 
@@ -183,12 +200,31 @@ void CMainFrame::OnViewElementlist()
 {
 	// Toggle visibility
 	if (m_pElementListDlg.IsWindowVisible())
-		m_pElementListDlg.ShowWindow(SW_HIDE);
+		m_pElementListDlg.Show(FALSE);
 	else
-		m_pElementListDlg.ShowWindow(SW_SHOW);
+		m_pElementListDlg.Show(TRUE);
 }
 
 void CMainFrame::OnUpdateViewElementlist(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_pElementListDlg.IsWindowVisible() ? TRUE : FALSE);
+}
+
+void CMainFrame::OnClose()
+{
+	if (m_wndToolBar.IsVisible()) {
+		AfxGetApp()->WriteProfileInt(_T("Settings"), _T("Standard ToolBar Visible"), TRUE);
+	}
+	else {
+		AfxGetApp()->WriteProfileInt(_T("Settings"), _T("Standard ToolBar Visible"), FALSE);
+	}
+
+	if (m_wndStatusBar.IsVisible()) {
+		AfxGetApp()->WriteProfileInt(_T("Settings"), _T("Status Bar Visible"), TRUE);
+	}
+	else {
+		AfxGetApp()->WriteProfileInt(_T("Settings"), _T("Status Bar Visible"), FALSE);
+	}
+
+	CMDIFrameWnd::OnClose();
 }

@@ -24,11 +24,21 @@ IMPLEMENT_DYNAMIC(CDynamicElementListDlg, CDialog)
 CDynamicElementListDlg::CDynamicElementListDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDynamicElementListDlg::IDD, pParent)
 {
-
+    m_visible = FALSE;
 }
 
 CDynamicElementListDlg::~CDynamicElementListDlg()
 {
+}
+
+void CDynamicElementListDlg::Show(BOOL visible)
+{
+    // Toggle visibility
+    m_visible = visible;
+    if (visible)
+        ShowWindow(SW_SHOW);
+    else
+        ShowWindow(SW_HIDE);
 }
 
 void CDynamicElementListDlg::DoDataExchange(CDataExchange* pDX)
@@ -46,7 +56,12 @@ END_MESSAGE_MAP()
 
 void CDynamicElementListDlg::OnDestroy()
 {
-	CRect rect;
+    if (m_visible)
+        AfxGetApp()->WriteProfileInt(_T("ElementListDialog"), _T("Visible"), TRUE);
+    else
+        AfxGetApp()->WriteProfileInt(_T("ElementListDialog"), _T("Visible"), FALSE);
+
+    CRect rect;
 	GetWindowRect(&rect);
 
 	AfxGetApp()->WriteProfileInt(_T("ElementListDialog"), _T("Left"), rect.left);
@@ -94,6 +109,14 @@ BOOL CDynamicElementListDlg::OnInitDialog()
 
         MoveWindow(desired);
 
+    }
+
+    m_visible = AfxGetApp()->GetProfileInt(_T("ElementListDialog"), _T("Visible"), FALSE);
+    if (m_visible) {
+        ShowWindow(SW_SHOW);
+    }
+    else {
+        ShowWindow(SW_HIDE);
     }
 
     return TRUE;

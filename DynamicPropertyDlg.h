@@ -18,6 +18,8 @@ public:
     CDynamicPropertyDlg(CWnd* pParent = NULL);
     virtual ~CDynamicPropertyDlg();
 
+    void Show(BOOL visible);
+
     virtual void SetValues();
 
     void ClearProperties();
@@ -49,6 +51,9 @@ protected:
     afx_msg void OnPropertyControlChanged(UINT ctrlID);
 
     DECLARE_MESSAGE_MAP()
+
+private:
+    BOOL m_visible;
 
 public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
