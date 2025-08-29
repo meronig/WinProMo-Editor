@@ -7,8 +7,8 @@
    ========================================================================*/
 #include "stdafx.h"
 #include "DynamicPropertyDlg.h"
-#include "../WinProMo/PropertyItem/TypedPropertyItem.h"
-#include "../WinProMo/PropertyItem/CustomPropertyItem.h"
+#include "../../WinProMo/src/PropertyItem/TypedPropertyItem.h"
+#include "../../WinProMo/src/PropertyItem/CustomPropertyItem.h"
 #include <errno.h>
 
 #ifdef _DEBUG

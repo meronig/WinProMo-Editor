@@ -12,8 +12,8 @@
 #include "WinProMo.h"
 
 #include "MainFrm.h"
-#include "../WinProMo/WinProMoView.h"
-#include "../WinProMo/ProMoEditor/ProMoEditor.h"
+#include "../../WinProMo/src/WinProMoView.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoEditor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

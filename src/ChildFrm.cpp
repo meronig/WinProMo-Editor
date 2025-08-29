@@ -13,8 +13,8 @@
 
 #include "ChildFrm.h"
 #include "MainFrm.h"
-#include "../WinProMo/WinProMoDoc.h"
-#include "../WinProMo/WinProMoView.h"
+#include "../../WinProMo/src/WinProMoDoc.h"
+#include "../../WinProMo/src/WinProMoView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

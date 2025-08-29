@@ -13,8 +13,8 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include "../WinProMo/ProMoEditor/ProMoClipboardHandler.h"
-#include "../WinProMo/WinProMoPluginInterface.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoClipboardHandler.h"
+#include "../../WinProMo/src/WinProMoPluginInterface.h"
 
 typedef CWinProMoPluginInterface* (*CreatePluginInstanceFunc)();
 

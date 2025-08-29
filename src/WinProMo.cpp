@@ -14,10 +14,9 @@
 #include "MainFrm.h"
 #include "ChildFrm.h"
 
-#include "../WinProMo/DiagramEditor/Tokenizer.h"
-#include "../WinProMo/WinProMoDoc.h"
-#include "../WinProMo/WinProMoView.h"
-//#include "../WinProMo/WinProMoDocTemplate.h"
+#include "../../WinProMo/src/DiagramEditor/Tokenizer.h"
+#include "../../WinProMo/src/WinProMoDoc.h"
+#include "../../WinProMo/src/WinProMoView.h"
 
 
 #ifdef _DEBUG

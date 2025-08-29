@@ -8,7 +8,7 @@
 #ifndef _DIAGRAMPROPERTYDIALOG_H_
 #define _DIAGRAMPROPERTYDIALOG_H_
 
-#include "../WinProMo/DiagramEditor/DiagramPropertyDlg.h"
+#include "../../WinProMo/src/DiagramEditor/DiagramPropertyDlg.h"
 #include "resource.h"
 #include "PropertyScrollView.h"
 
