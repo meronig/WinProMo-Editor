@@ -307,7 +307,7 @@ BOOL CDynamicPropertyDlg::OnInitDialog()
         return FALSE;
     }
 
-    BOOL m_visible = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Visible"), FALSE);
+    m_visible = AfxGetApp()->GetProfileInt(_T("PropertyDialog"), _T("Visible"), FALSE);
     if (m_visible) {
         ShowWindow(SW_SHOW);
     }
