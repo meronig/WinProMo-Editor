@@ -23,7 +23,7 @@ public:
     virtual void SetValues();
 
     void ClearProperties();
-    void SetProperties(CObArray* properties);
+    void SetProperties(CDiagramEntity* entity);
 
     // Called externally to rebuild dialog controls for the new properties
     void RebuildControls();

@@ -28,7 +28,7 @@ protected:
 public:
 	BOOL CreatePropertyDialog();
 	BOOL CreateElementListDialog();
-	void UpdatePropertyDialog(CObArray* pProps);
+	void UpdatePropertyDialog(CDiagramEntity* entity);
 	void ClearPropertyDialog();
 
 // Overrides

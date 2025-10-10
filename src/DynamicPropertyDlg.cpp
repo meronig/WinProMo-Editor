@@ -10,6 +10,12 @@
 #include "../../WinProMo/src/PropertyItem/TypedPropertyItem.h"
 #include "../../WinProMo/src/PropertyItem/CustomPropertyItem.h"
 #include <errno.h>
+#include "../../WinProMo/src/ProMoEditor/ProMoBlockView.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoEdgeView.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoBlockModel.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoEdgeModel.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoModel.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoProperty.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,33 +53,41 @@ void CDynamicPropertyDlg::Show(BOOL visible)
 
 void CDynamicPropertyDlg::ClearProperties()
 {
-    for (int i = 0; i < m_properties.GetSize(); ++i)
-        delete (CPropertyItem*)m_properties[i];
     m_properties.RemoveAll();
-
     m_nextCtrlID = 1000;
 }
 
-void CDynamicPropertyDlg::SetProperties(CObArray* properties)
+void CDynamicPropertyDlg::SetProperties(CDiagramEntity* entity)
 {
-
     ClearProperties();
-    
-    if (properties) {
 
-        for (int i = 0; i < properties->GetSize(); ++i)
-        {
-            CPropertyItem* pi = dynamic_cast<CPropertyItem*>(properties->GetAt(i));
-            m_properties.Add(pi);
-        }
+    CProMoModel* pModel = NULL;
+
+
+	CProMoBlockView* pBlockView = dynamic_cast<CProMoBlockView*>(entity);
+    if (pBlockView) {
+        pModel = dynamic_cast<CProMoModel*>(pBlockView->GetModel());
     }
-    
+    CProMoEdgeView* pEdgeView = dynamic_cast<CProMoEdgeView*>(entity);
+    if (pEdgeView) {
+        pModel = dynamic_cast<CProMoModel*>(pEdgeView->GetModel());
+    }
+
+    if (pModel) {
+        for (int i = 0; i < pModel->GetPropertiesCount(); ++i)
+        {
+            CProMoProperty* prop = pModel->GetProperty(i);
+            if (prop) {
+                m_properties.Add(prop);
+            }
+		}
+    }
+
     CWnd* pMainFrame = AfxGetMainWnd();
     if (pMainFrame && ::IsWindow(pMainFrame->GetSafeHwnd())) {
         pMainFrame->SetFocus();
     }
-    
-    RebuildControls();
+	RebuildControls();
 }
 
 void CDynamicPropertyDlg::SetValues() {
@@ -86,62 +100,62 @@ void CDynamicPropertyDlg::RebuildControls()
 
     for (int i = 0; i < m_properties.GetSize(); ++i)
     {
-        CPropertyItem* pi = dynamic_cast<CPropertyItem*>(m_properties[i]);
+        CProMoProperty* pi = dynamic_cast<CProMoProperty*>(m_properties[i]);
 
         // Control ID
         UINT ctrlID = m_nextCtrlID++;
-        pi->SetCtrlID(ctrlID);
-
+        
         // Create control based on type
         CWnd* ctrl = NULL;
+        CString value;
 
-        CTypedPropertyItem<CString>* spi = dynamic_cast<CTypedPropertyItem<CString>*>(pi);
-        if (spi) {
-            if (spi->GetOptionsCount() > 0) {
-                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
-                if (ctrl) {
-                    CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
-                    for (int i = 0; i < spi->GetOptionsCount(); i++) {
-                        box->AddString(spi->GetOption(i));
-                    }
-                }
+        if (pi) {
+            if (pi->HasHandler()) {
+                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CButton));
             }
             else {
-                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
-            }
-            ctrl->SetWindowText(spi->GetValue());
-
-        }
-
-        CTypedPropertyItem<UINT>* uipi = dynamic_cast<CTypedPropertyItem<UINT>*>(pi);
-        if (uipi) {
-            CString value;
-            if (uipi->GetOptionsCount() > 0) {
-                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
-                if (ctrl) {
-                    CString option;
-                    CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
-                    for (int i = 0; i < uipi->GetOptionsCount(); i++) {
-                        option.Format(_T("%u"), uipi->GetOption(i));
-                        box->AddString(option);
+                switch (pi->GetType())
+                {
+                case TYPE_STRING:
+                    if (pi->GetOptionsCount() > 0) {
+                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
+                        if (ctrl) {
+                            CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
+                            for (int i = 0; i < pi->GetOptionsCount(); i++) {
+                                box->AddString(pi->GetOption(i).bstrVal);
+                            }
+                        }
                     }
+                    else {
+                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+                    }
+                    ctrl->SetWindowText(pi->GetValue().bstrVal);
+                    break;
+                case TYPE_INT:
+                    if (pi->GetOptionsCount() > 0) {
+                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
+                        if (ctrl) {
+                            CString option;
+                            CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
+                            for (int i = 0; i < pi->GetOptionsCount(); i++) {
+                                option.Format(_T("%u"), pi->GetOption(i).intVal);
+                                box->AddString(option);
+                            }
+                        }
+                    }
+
+                    else {
+                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
+                    }
+                    value.Format(_T("%u"), pi->GetValue().intVal);
+                    ctrl->SetWindowText(value);
+                    ctrl->ModifyStyle(0, ES_NUMBER);
+					// add other types here
+                default:
+                    break;
                 }
             }
-            
-            else {
-                ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
-            }
-            
-            value.Format(_T("%u"), uipi->GetValue());
-            ctrl->SetWindowText(value);
-            ctrl->ModifyStyle(0, ES_NUMBER);
         }
-
-        CCustomPropertyItem* cpi = dynamic_cast<CCustomPropertyItem*>(pi);
-        if (cpi) {
-            ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CButton));
-        }
-
     }
 
     Invalidate();
@@ -152,56 +166,40 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
     int index = ctrlID - 1000;
     if (index >= 0 && index < m_properties.GetSize())
     {
-        CPropertyItem* pItem = dynamic_cast<CPropertyItem*>(m_properties.GetAt(index));
+        CProMoProperty* pItem = dynamic_cast<CProMoProperty*>(m_properties.GetAt(index));
         CWnd* ctl = m_ScrollView.GetControl(ctrlID);
 
         if (pItem && ctl)
         {
-            CTypedPropertyItem<CString>* spItem = dynamic_cast<CTypedPropertyItem<CString>*>(pItem);
-            if (spItem) {
-                CString newVal;
-                ctl->GetWindowText(newVal);
-
-                if (newVal != spItem->GetValue())
-                {
-                    BOOL result = spItem->SetValue(newVal);
-                    if (!result) {
-                        ctl->SetWindowText(spItem->GetValue());
-                        Invalidate();
-                    }
-                }
-            }
-            
-            CTypedPropertyItem<UINT>* uipItem = dynamic_cast<CTypedPropertyItem<UINT>*>(pItem);
-            if (uipItem) {
-                CString newVal;
-                UINT newValUINT;
-                BOOL result = FALSE;
-                TCHAR* endPtr = NULL;
-                ctl->GetWindowText(newVal);
-                errno = 0;
-                //newValUINT = static_cast<UINT>(_ttoi(newVal));
-                unsigned long newValULong = _tcstoul((LPCTSTR)newVal, &endPtr, 10);
-                BOOL isValid = (*endPtr == _T('\0')) && (errno != ERANGE) && (newValULong <= UINT_MAX);
-                newValUINT = static_cast<UINT>(newValULong);
-
-                if (newValUINT != uipItem->GetValue() && isValid)
-                {
-                    result = uipItem->SetValue(newValUINT);
-                }
-                if (!result || !isValid) {
-                    CString oldValStr;
-                    oldValStr.Format(_T("%u"), uipItem->GetValue());
-                    ctl->SetWindowText(oldValStr);
-                    Invalidate();
-                }
-            }
-
-            CCustomPropertyItem* cpItem = dynamic_cast<CCustomPropertyItem*>(pItem);
-            if (cpItem) {
-                BOOL result = cpItem->SetValue();
+            if (pItem->HasHandler()) {
+                //TODO: set correct handler
+                BOOL result = pItem->InvokeHandler(NULL);
                 if (!result) {
                     Invalidate();
+				}
+            }
+            else {
+                CString newVal;
+                switch (pItem->GetType())
+                {
+                    case TYPE_STRING:
+                    case TYPE_INT:
+                        {
+                            ctl->GetWindowText(newVal);
+                            if (newVal != pItem->GetValue().bstrVal)
+                            {
+                                COleVariant varNew(newVal);
+                                BOOL result = pItem->SetValue(varNew);
+                                if (!result) {
+                                    ctl->SetWindowText(pItem->GetValue().bstrVal);
+                                    Invalidate();
+                                }
+                            }
+                        }
+						break;
+                    
+                default:
+                    break;
                 }
             }
         }
