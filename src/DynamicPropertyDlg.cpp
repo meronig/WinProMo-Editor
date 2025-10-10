@@ -183,21 +183,33 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
                 switch (pItem->GetType())
                 {
                     case TYPE_STRING:
-                    case TYPE_INT:
+                    {
+                        ctl->GetWindowText(newVal);
+                        if (newVal != pItem->GetValue())
                         {
-                            ctl->GetWindowText(newVal);
-                            if (newVal != pItem->GetValue().bstrVal)
-                            {
-                                COleVariant varNew(newVal);
-                                BOOL result = pItem->SetValue(varNew);
-                                if (!result) {
-                                    ctl->SetWindowText(pItem->GetValue().bstrVal);
-                                    Invalidate();
-                                }
+                            COleVariant varNew(newVal);
+                            BOOL result = pItem->SetValue(varNew);
+                            if (!result) {
+                                ctl->SetWindowText(pItem->GetValue().bstrVal);
+                                Invalidate();
                             }
                         }
-						break;
-                    
+                    }
+					break;
+                    case TYPE_INT:
+                    {
+                        ctl->GetWindowText(newVal);
+                        if (newVal != pItem->GetValue())
+                        {
+                            COleVariant varNew((long)_ttoi(newVal));
+                            BOOL result = pItem->SetValue(varNew);
+                            if (!result) {
+                                newVal.Format(_T("%u"), pItem->GetValue().intVal);
+                                ctl->SetWindowText(newVal);
+                                Invalidate();
+                            }
+                        }
+                    }
                 default:
                     break;
                 }
