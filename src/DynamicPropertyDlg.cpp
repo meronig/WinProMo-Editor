@@ -7,8 +7,6 @@
    ========================================================================*/
 #include "stdafx.h"
 #include "DynamicPropertyDlg.h"
-#include "../../WinProMo/src/PropertyItem/TypedPropertyItem.h"
-#include "../../WinProMo/src/PropertyItem/CustomPropertyItem.h"
 #include <errno.h>
 #include "../../WinProMo/src/ProMoEditor/ProMoBlockView.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoEdgeView.h"
@@ -116,41 +114,26 @@ void CDynamicPropertyDlg::RebuildControls()
             else {
                 switch (pi->GetType())
                 {
+                case TYPE_INT:
                 case TYPE_STRING:
                     if (pi->GetOptionsCount() > 0) {
                         ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
                         if (ctrl) {
                             CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
                             for (int i = 0; i < pi->GetOptionsCount(); i++) {
-                                box->AddString(pi->GetOption(i).bstrVal);
+                                box->AddString(pi->GetOption(i).GetString());
                             }
                         }
                     }
                     else {
                         ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
                     }
-                    ctrl->SetWindowText(pi->GetValue().bstrVal);
+                    ctrl->SetWindowText(pi->GetValue().GetString());
+                    if (pi->GetType() == TYPE_INT) {
+                        ctrl->ModifyStyle(0, ES_NUMBER);
+                    }
                     break;
-                case TYPE_INT:
-                    if (pi->GetOptionsCount() > 0) {
-                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
-                        if (ctrl) {
-                            CString option;
-                            CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
-                            for (int i = 0; i < pi->GetOptionsCount(); i++) {
-                                option.Format(_T("%u"), pi->GetOption(i).intVal);
-                                box->AddString(option);
-                            }
-                        }
-                    }
-
-                    else {
-                        ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
-                    }
-                    value.Format(_T("%u"), pi->GetValue().intVal);
-                    ctrl->SetWindowText(value);
-                    ctrl->ModifyStyle(0, ES_NUMBER);
-					// add other types here
+                    // add other types here
                 default:
                     break;
                 }
@@ -180,39 +163,32 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
             }
             else {
                 CString newVal;
-                switch (pItem->GetType())
+                CVariantWrapper wrapper;
+                ctl->GetWindowText(newVal);
+                if (newVal != pItem->GetValue().GetString())
                 {
+                    switch (pItem->GetType())
+                    {
                     case TYPE_STRING:
                     {
-                        ctl->GetWindowText(newVal);
-                        if (newVal != pItem->GetValue())
-                        {
-                            COleVariant varNew(newVal);
-                            BOOL result = pItem->SetValue(varNew);
-                            if (!result) {
-                                ctl->SetWindowText(pItem->GetValue().bstrVal);
-                                Invalidate();
-                            }
-                        }
+                        wrapper.SetString(newVal);
+
                     }
-					break;
+                    break;
                     case TYPE_INT:
                     {
-                        ctl->GetWindowText(newVal);
-                        if (newVal != pItem->GetValue())
-                        {
-                            COleVariant varNew((long)_ttoi(newVal));
-                            BOOL result = pItem->SetValue(varNew);
-                            if (!result) {
-                                newVal.Format(_T("%u"), pItem->GetValue().intVal);
-                                ctl->SetWindowText(newVal);
-                                Invalidate();
-                            }
-                        }
+                        wrapper.SetFromString(newVal, VT_I4);
                     }
-                default:
-                    break;
+                    default:
+                        break;
+                    }
+                    BOOL result = pItem->SetValue(wrapper);
+                    if (!result) {
+                        ctl->SetWindowText(pItem->GetValue().GetString());
+                        Invalidate();
+                    }
                 }
+
             }
         }
     }
