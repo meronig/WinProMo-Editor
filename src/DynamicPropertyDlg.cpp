@@ -121,7 +121,7 @@ void CDynamicPropertyDlg::RebuildControls()
                         if (ctrl) {
                             CComboBox* box = dynamic_cast<CComboBox*>(ctrl);
                             for (int i = 0; i < pi->GetOptionsCount(); i++) {
-                                box->AddString(pi->GetOption(i).GetString());
+                                box->AddString(pi->GetOption(i)->GetValue().GetString());
                             }
                         }
                     }
