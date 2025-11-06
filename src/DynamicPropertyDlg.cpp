@@ -114,8 +114,8 @@ void CDynamicPropertyDlg::RebuildControls()
             else {
                 switch (pi->GetType())
                 {
-                case TYPE_INT:
-                case TYPE_STRING:
+                case PROPTYPE_INT:
+                case PROPTYPE_STRING:
                     if (pi->GetOptionsCount() > 0) {
                         ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CComboBox));
                         if (ctrl) {
@@ -129,7 +129,7 @@ void CDynamicPropertyDlg::RebuildControls()
                         ctrl = m_ScrollView.AddControl(ctrlID, pi->GetName(), RUNTIME_CLASS(CEdit));
                     }
                     ctrl->SetWindowText(pi->GetValue().GetString());
-                    if (pi->GetType() == TYPE_INT) {
+                    if (pi->GetType() == PROPTYPE_INT) {
                         ctrl->ModifyStyle(0, ES_NUMBER);
                     }
                     break;
@@ -169,13 +169,13 @@ void CDynamicPropertyDlg::OnPropertyControlChanged(UINT ctrlID)
                 {
                     switch (pItem->GetType())
                     {
-                    case TYPE_STRING:
+                    case PROPTYPE_STRING:
                     {
                         wrapper.SetString(newVal);
 
                     }
                     break;
-                    case TYPE_INT:
+                    case PROPTYPE_INT:
                     {
                         wrapper.SetFromString(newVal, VT_I4);
                     }
