@@ -60,25 +60,29 @@ void CDynamicPropertyDlg::SetProperties(CDiagramEntity* entity)
     ClearProperties();
 
     CProMoModel* pModel = NULL;
+    CProMoProperty* prop = NULL;
 
-
-	CProMoBlockView* pBlockView = dynamic_cast<CProMoBlockView*>(entity);
-    if (pBlockView) {
-        pModel = dynamic_cast<CProMoModel*>(pBlockView->GetModel());
-    }
-    CProMoEdgeView* pEdgeView = dynamic_cast<CProMoEdgeView*>(entity);
-    if (pEdgeView) {
-        pModel = dynamic_cast<CProMoModel*>(pEdgeView->GetModel());
+    IProMoView* pEntity = dynamic_cast<IProMoView*>(entity);
+    if (pEntity) {
+        pModel = pEntity->GetModel();
     }
 
     if (pModel) {
         for (int i = 0; i < pModel->GetPropertiesCount(); ++i)
         {
-            CProMoProperty* prop = pModel->GetProperty(i);
+            prop = pModel->GetProperty(i);
             if (prop) {
                 m_properties.Add(prop);
             }
 		}
+    }
+
+    CProMoLabel* pLabel = dynamic_cast<CProMoLabel*>(entity);
+    if (pLabel) {
+        prop = pLabel->GetProperty();
+        if (prop) {
+			m_properties.Add(prop);
+        }
     }
 
     CWnd* pMainFrame = AfxGetMainWnd();
