@@ -5,8 +5,8 @@
     Author :		Giovanni Meroni
 
    ========================================================================*/
-#ifndef _DIAGRAMPROPERTYDIALOG_H_
-#define _DIAGRAMPROPERTYDIALOG_H_
+#ifndef _DYNAMICPROPERTYDIALOG_H_
+#define _DYNAMICPROPERTYDIALOG_H_
 
 #include "../../WinProMo/src/DiagramEditor/DiagramPropertyDlg.h"
 #include "resource.h"
@@ -62,4 +62,4 @@ public:
     afx_msg void OnDestroy();
 };
 
-#endif //_DIAGRAMPROPERTYDIALOG_H_
+#endif //_DYNAMICPROPERTYDIALOG_H_

@@ -12,7 +12,7 @@
 #include "WinProMo.h"
 
 #include "MainFrm.h"
-#include "../../WinProMo/src/WinProMoView.h"
+#include "WinProMoView.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoEditor.h"
 
 #ifdef _DEBUG
@@ -110,7 +110,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	else {
 		m_wndStatusBar.ShowWindow(SW_HIDE);
 	}
-    
+
 	return 0;
 }
 
@@ -118,7 +118,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
-
 	return CMDIFrameWnd::PreCreateWindow(cs);
 }
 

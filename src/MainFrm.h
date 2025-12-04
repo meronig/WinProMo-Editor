@@ -8,9 +8,12 @@
 // MainFrm.h : interface of the CMainFrame class
 //
 /////////////////////////////////////////////////////////////////////////////
+#ifndef _MAINFRAME_H_
+#define _MAINFRAME_H_
 
 #include "DynamicPropertyDlg.h"
 #include "DynamicElementListDlg.h"
+
 class CMainFrame : public CMDIFrameWnd
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -68,3 +71,4 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////////////
+#endif //_MAINFRAME_H_

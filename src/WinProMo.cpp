@@ -13,11 +13,12 @@
 
 #include "MainFrm.h"
 #include "ChildFrm.h"
+#include "IpFrame.h"
 
 #include "../../WinProMo/src/DiagramEditor/Tokenizer.h"
-#include "../../WinProMo/src/WinProMoDoc.h"
-#include "../../WinProMo/src/WinProMoView.h"
-
+#include "WinProMoDoc.h"
+#include "WinProMoView.h"
+#include "../../WinProMo/src/Resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,6 +51,7 @@ CWinProMoApp::CWinProMoApp()
 	// Place all significant initialization in InitInstance
 	m_pMainFrame = NULL;
 	g_hCurrentAccel = NULL;
+	m_docTemplate = NULL;
 }
 
 CWinProMoApp::~CWinProMoApp()
@@ -62,11 +64,25 @@ CWinProMoApp::~CWinProMoApp()
 
 CWinProMoApp theApp;
 
+// This identifier was generated to be statistically unique for your app.
+// You may change it if you prefer to choose a specific identifier.
+
+// {E107DF9E-CD1A-11F0-9739-000C2976A615}
+static const CLSID clsid =
+{ 0xe107df9e, 0xcd1a, 0x11f0, { 0x97, 0x39, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoApp initialization
 
 BOOL CWinProMoApp::InitInstance()
 {
+	// Initialize OLE libraries
+	if (!AfxOleInit())
+	{
+		AfxMessageBox(IDP_OLE_INIT_FAILED);
+		return FALSE;
+	}
+
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following
@@ -83,6 +99,34 @@ BOOL CWinProMoApp::InitInstance()
 #endif
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
+	// Load and register available documents from plug-in libraries
+	LoadExtensions();
+
+	// Register the application's document templates.  Document templates
+	//  serve as the connection between documents, frame windows and views.
+
+	m_docTemplate = new CMultiDocTemplate(
+		IDR_WINPROTYPE,
+		RUNTIME_CLASS(CWinProMoDoc),
+		RUNTIME_CLASS(CChildFrame),
+		RUNTIME_CLASS(CWinProMoView));
+	m_docTemplate->SetServerInfo(
+		IDR_WINPROTYPE_SRVR_EMB, IDR_WINPROTYPE_SRVR_IP,
+		RUNTIME_CLASS(CInPlaceFrame));
+
+	AddDocTemplate(m_docTemplate);
+
+	// Connect the COleTemplateServer to the document template.
+	//  The COleTemplateServer creates new documents on behalf
+	//  of requesting OLE containers by using information
+	//  specified in the document template.
+	m_server.ConnectTemplate(clsid, m_docTemplate, FALSE);
+
+	// Register all OLE server factories as running.  This enables the
+	//  OLE libraries to create objects from other applications.
+	COleTemplateServer::RegisterAll();
+	// Note: MDI applications register all server objects without regard
+	//  to the /Embedding or /Automation on the command line.
 
 	// create main MDI Frame window
 	m_pMainFrame = new CMainFrame;
@@ -94,20 +138,27 @@ BOOL CWinProMoApp::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
+	// Check to see if launched as OLE server
+	if (cmdInfo.m_bRunEmbedded || cmdInfo.m_bRunAutomated)
+	{
+		// Application was run with /Embedding or /Automation.  Don't show the
+		//  main window in this case.
+		return TRUE;
+	}
+
+	// When a server application is launched stand-alone, it is a good idea
+	//  to update the system registry in case it has been damaged.
+	m_server.UpdateRegistry(OAT_INPLACE_SERVER);
+	COleObjectFactory::UpdateRegistryAll();
+
 	// Dispatch commands specified on the command line
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
-
-	// Load and register available documents from plug-in libraries
-	LoadExtensions();
-
+	
 	// The main window has been initialized, so show and update it.
 	m_pMainFrame->ShowWindow(m_nCmdShow);
 	m_pMainFrame->UpdateWindow();
 
-	//Commented out as it causes a crash
-	OnFileNew();
-	
 	return TRUE;
 }
 
@@ -135,12 +186,18 @@ void CWinProMoApp::LoadExtensions() {
 
 	if (hFind == INVALID_HANDLE_VALUE) {
 		DWORD err = GetLastError();
-		//std::wcerr << L"No DLLs found. Error Code: " << err << std::endl;
 		return;
 	}
 
 	do {
-		HMODULE hModule = LoadLibrary(findFileData.cFileName);
+		//create full path
+		TCHAR fullFilePath[MAX_PATH];
+#if _MSC_VER < 1200
+		_stprintf(fullFilePath, _T("%s%s"), exePath, findFileData.cFileName);
+#else
+		_stprintf_s(fullFilePath, _T("%s%s"), exePath, findFileData.cFileName);
+#endif
+		HMODULE hModule = LoadLibrary(fullFilePath);
 		if (hModule) {
 			CreatePluginInstanceFunc createPluginInterface = (CreatePluginInstanceFunc)GetProcAddress(hModule, "CreatePluginInstance");
 
@@ -150,18 +207,13 @@ void CWinProMoApp::LoadExtensions() {
 					CString docType = pluginInterface->GetDocumentType();
 					CObArray* elements = pluginInterface->GetElements();
 					UINT docID = pluginInterface->GetDocumentID();
-					CMultiDocTemplate* pTemplate = pluginInterface->RegisterPlugin(RUNTIME_CLASS(CChildFrame), &m_clip);
-					if (pTemplate) {
-						AddDocTemplate(pTemplate);
-						ExtensionDLL* ext = new ExtensionDLL;
-						ext->hModule = hModule;
-						ext->docType = docType;
-						ext->docID = docID;
-						ext->elements = elements;
-						ext->pTemplate = pTemplate;
-						ext->pluginInterface = pluginInterface;
-						m_Extensions.Add(ext);
-					}
+					ExtensionDLL* ext = new ExtensionDLL;
+					ext->hModule = hModule;
+					ext->docType = docType;
+					ext->docID = docID;
+					ext->elements = elements;
+					ext->pluginInterface = pluginInterface;
+					m_Extensions.Add(ext);
 				}
 			
 			}
@@ -205,84 +257,6 @@ void CWinProMoApp::DeleteCommands(CObArray* commands)
 		}
 		delete commands;
 	}
-}
-
-//Override
-CDocument* CWinProMoApp::OpenDocumentFile(LPCTSTR lpszFileName)
-{
-	CString docType = DetectDocTypeFromFile(lpszFileName);
-	for (size_t i = 0; i < m_Extensions.GetSize(); ++i) {
-		ExtensionDLL* ext = static_cast<ExtensionDLL*>(m_Extensions.GetAt(i));
-		if (ext) {
-			if (ext->docType == docType) {
-				CDocument* doc = ext->pTemplate->OpenDocumentFile(lpszFileName);
-				return doc;
-			}
-		}
-	}
-	
-	AfxMessageBox(_T("No suitable plugin found for this file."));
-	return NULL;
-}
-
-//Custom
-CString CWinProMoApp::DetectDocTypeFromFile(LPCTSTR lpszFileName)
-{
-	
-	CFile file;
-	CFileException feError;
-	if (file.Open(lpszFileName, CFile::modeRead, &feError)) {
-		DWORD size = (DWORD)file.GetLength();
-		char* buffer = new char[size + 1];
-		file.Read(buffer, size);
-		buffer[size] = '\0';
-
-		CString content(buffer);
-		if ((BYTE)buffer[0] == 0xEF && (BYTE)buffer[1] == 0xBB && (BYTE)buffer[2] == 0xBF)
-		{
-			content = buffer + 3; // skip BOM
-		}
-		else
-		{
-			content = buffer;
-		}
-
-		delete[] buffer;
-
-		int pos = 0;
-		while (pos >= 0)
-		{
-			int next = content.Mid(pos).Find(_T("\r\n"));
-
-			if (next != -1)
-			{
-				next += pos;  // adjust to full string position
-			}
-
-			CString line;
-			if (next == -1)
-			{
-				line = content.Mid(pos);
-				pos = -1;
-			}
-			else
-			{
-				line = content.Mid(pos, next - pos);
-				pos = next + 2; // skip past "\r\n"
-			}
-			CTokenizer main(line, _T(":"));
-			CString header;
-			if (main.GetSize() == 2)
-			{
-				main.GetAt(0, header);
-				header.TrimLeft();
-				header.TrimRight();
-				return header;
-			}
-		}
-	}
-	AfxMessageBox(_T("Cannot read input file or input file is malformed"));
-	return _T("");
 }
 
 /////////////////////////////////////////////////////////////////////////////

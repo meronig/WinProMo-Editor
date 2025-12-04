@@ -200,25 +200,37 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CanvasSizeDialog.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="DynamicElementListDlg.h" />
     <ClInclude Include="DynamicPropertyDlg.h" />
+    <ClInclude Include="GridSizeDialog.h" />
+    <ClInclude Include="IpFrame.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PropertyScrollFrame.h" />
     <ClInclude Include="PropertyScrollView.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="OleSrvItem.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="WinProMo.h" />
+    <ClInclude Include="WinProMoDoc.h" />
+    <ClInclude Include="WinProMoView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CanvasSizeDialog.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DynamicElementListDlg.cpp" />
     <ClCompile Include="DynamicPropertyDlg.cpp" />
+    <ClCompile Include="GridSizeDialog.cpp" />
+    <ClCompile Include="IpFrame.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PropertyScrollFrame.cpp" />
     <ClCompile Include="PropertyScrollView.cpp" />
+    <ClCompile Include="OleSrvItem.cpp" />
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="WinProMo.cpp" />
+    <ClCompile Include="WinProMoDoc.cpp" />
+    <ClCompile Include="WinProMoView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\WinProMoApp.rc2" />
@@ -231,6 +243,7 @@
     <Image Include="res\ico00001.ico" />
     <Image Include="res\ico00002.ico" />
     <Image Include="res\icon1.ico" />
+    <Image Include="res\mainfram.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\WinProMo-App.ico" />
     <Image Include="res\WinProMo-AppDoc.ico" />

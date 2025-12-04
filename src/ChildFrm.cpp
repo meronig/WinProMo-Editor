@@ -13,8 +13,9 @@
 
 #include "ChildFrm.h"
 #include "MainFrm.h"
-#include "../../WinProMo/src/WinProMoDoc.h"
-#include "../../WinProMo/src/WinProMoView.h"
+#include "WinProMoDoc.h"
+#include "WinProMoView.h"
+#include "../../WinProMo/src/Resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,6 +43,7 @@ CChildFrame::CChildFrame()
 {
 	m_pluginInterface = NULL;
 	m_hDefaultMenu = ::LoadMenu(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
+	m_hAccel = NULL;
 
 }
 
@@ -150,11 +152,11 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 		if (m_pluginInterface) {
 
 			HINSTANCE hPlugin = m_pluginInterface->hModule;
-			m_hAccel = ::LoadAccelerators(hPlugin, MAKEINTRESOURCE(IDR_WPDPLUGIN));
+			m_hAccel = ::LoadAccelerators(hPlugin, MAKEINTRESOURCE(IDR_WINPROTYPE));
 			app->g_hCurrentAccel = m_hAccel;
 
 			CMenu* pNewMenu = new CMenu;
-			if (pNewMenu->LoadMenu(IDR_WPDPLUGIN))
+			if (pNewMenu->LoadMenu(IDR_WINPROTYPE))
 			{
 				//Insert is at position 3, revise if it changes
 				CMenu* pInsertMenu = pNewMenu->GetSubMenu(3);

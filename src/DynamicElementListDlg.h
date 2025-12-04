@@ -5,8 +5,8 @@
 	Author :		Giovanni Meroni
 
    ========================================================================*/
-#ifndef _DIAGRAMELEMLISTYDIALOG_H_
-#define _DIAGRAMELEMLISTYDIALOG_H_
+#ifndef _DYNAMICLEMLISTYDIALOG_H_
+#define _DYNAMICLEMLISTYDIALOG_H_
 
 #include "resource.h"
 
@@ -38,4 +38,4 @@ public:
 	virtual BOOL OnInitDialog();
 };
 
-#endif //_DIAGRAMELEMLISTYDIALOG_H_
+#endif //_DYNAMICLEMLISTYDIALOG_H_

@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +25,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE MOVEABLE PURE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE MOVEABLE PURE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE MOVEABLE PURE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -66,22 +64,27 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\WinProMo.ico"
-IDR_WINPROTYPE          ICON    DISCARDABLE     "res\\WinProMoDoc.ico"
+IDR_MAINFRAME           ICON                    "res\\WinProMo.ico"
+
+IDR_WINPROTYPE          ICON                    "res\\WinProMoDoc.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+IDR_WINPROTYPE_SRVR_IP  BITMAP                  "res\\mainfram.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR MOVEABLE PURE  16, 15
+IDR_MAINFRAME TOOLBAR 16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -100,13 +103,25 @@ BEGIN
     BUTTON      ID_APP_ABOUT
 END
 
+IDR_WINPROTYPE_SRVR_IP TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_EDIT_UNDO
+    BUTTON      ID_EDIT_REDO
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_MAINFRAME MENU DISCARDABLE 
+IDR_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -132,13 +147,406 @@ BEGIN
     END
 END
 
+IDR_WINPROTYPE_SRVR_IP MENU
+BEGIN
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM "&Redo\tCtrl+Y",               ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "Delete\tDel",                 ID_EDIT_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Grid size...",                ID_EDIT_GRIDSIZE
+        MENUITEM "Canvas size...",              ID_EDIT_CANVASSIZE
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "Zoom"
+        BEGIN
+            MENUITEM "400%",                        ID_ZOOM_400
+            MENUITEM "200%",                        ID_ZOOM_200
+            MENUITEM "150%",                        ID_ZOOM_150
+            MENUITEM "100%",                        ID_ZOOM_100
+            MENUITEM "75%",                         ID_ZOOM_75
+            MENUITEM "50%",                         ID_ZOOM_50
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "Properties",                  ID_VIEW_PROPERTIES
+        MENUITEM "Element List",                ID_VIEW_ELEMENTLIST
+        MENUITEM SEPARATOR
+        MENUITEM "Grid",                        ID_VIEW_GRID
+        MENUITEM "Page breaks",                 ID_VIEW_PAGEBREAKS
+    END
+    POPUP "&Insert"
+    BEGIN
+        MENUITEM "(dummy)",                     ID_INSERT_
+    END
+    POPUP "F&ormat"
+    BEGIN
+        MENUITEM "&Font...",                    ID_FORMAT_FONT
+        POPUP "&Alignment"
+        BEGIN
+            MENUITEM "&Left",                       ID_ALIGNMENT_LEFT
+            MENUITEM "&Center",                     ID_ALIGNMENT_CENTER
+            MENUITEM "&Right",                      ID_ALIGNMENT_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "&Top",                        ID_ALIGNMENT_TOP
+            MENUITEM "&Middle",                     ID_ALIGNMENT_MIDDLE
+            MENUITEM "&Bottom",                     ID_ALIGNMENT_BOTTOM
+            MENUITEM SEPARATOR
+            MENUITEM "&Multiline",                  ID_ALIGNMENT_MULTILINE
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Background"
+        BEGIN
+            MENUITEM "&Color...",                   ID_BACKGROUND_COLOR
+            MENUITEM "&Transparent",                ID_BACKGROUND_TRANSPARENT
+        END
+        POPUP "&Line"
+        BEGIN
+            MENUITEM "&Color...",                   ID_LINE_COLOR
+            POPUP "Width"
+            BEGIN
+                MENUITEM "1 pt",                        ID_WIDTH_1PT
+                MENUITEM "2 pt",                        ID_WIDTH_2PT
+                MENUITEM "4 pt",                        ID_WIDTH_4PT
+            END
+            POPUP "Style"
+            BEGIN
+                MENUITEM "Solid",                       ID_STYLE_SOLID
+                MENUITEM "Dashed",                      ID_STYLE_DASHED
+                MENUITEM "Dotted",                      ID_STYLE_DOTTED
+                MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
+                MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+            END
+        END
+        POPUP "&Fill"
+        BEGIN
+            MENUITEM "&Color...",                   ID_FILL_COLOR
+            POPUP "Pattern"
+            BEGIN
+                MENUITEM "Solid",                       ID_PATTERN_SOLID
+                MENUITEM "Horizontal",                  ID_PATTERN_HORIZONTAL
+                MENUITEM "Vertical",                    ID_PATTERN_VERTICAL
+                MENUITEM "Downward hatch",              ID_PATTERN_DIAGONALLEFT
+                MENUITEM "Upward hatch",                ID_PATTERN_DIAGONALRIGHT
+                MENUITEM "Crosshatch",                  ID_PATTERN_CROSSHATCH
+                MENUITEM "Diagonal crosshatch",         ID_PATTERN_DIAGONALCROSSHATCH
+            END
+        END
+    END
+    POPUP "&Arrange"
+    BEGIN
+        MENUITEM "Group",                       ID_ARRANGE_GROUP
+        MENUITEM "Ungroup",                     ID_ARRANGE_UNGROUP
+        MENUITEM SEPARATOR
+        POPUP "Align"
+        BEGIN
+            MENUITEM "Left",                        ID_ALIGN_LEFT
+            MENUITEM "Center",                      ID_ALIGN_CENTER
+            MENUITEM "Right",                       ID_ALIGN_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "Top",                         ID_ALIGN_TOP
+            MENUITEM "Middle",                      ID_ALIGN_MIDDLE
+            MENUITEM "Bottom",                      ID_ALIGN_BOTTOM
+        END
+        MENUITEM "Snap to Grid",                ID_ARRANGE_SNAPTOGRID
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About WinProMo...",          ID_APP_ABOUT
+    END
+END
+
+IDR_WINPROTYPE_SRVR_EMB MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Update\tCtrl+S",             ID_FILE_UPDATE
+        MENUITEM "Save Copy &As...",            ID_FILE_SAVE_COPY_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM "&Redo\tCtrl+Y",               ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "Delete\tDel",                 ID_EDIT_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Grid size...",                ID_EDIT_GRIDSIZE
+        MENUITEM "Canvas size...",              ID_EDIT_CANVASSIZE
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "Zoom"
+        BEGIN
+            MENUITEM "400%",                        ID_ZOOM_400
+            MENUITEM "200%",                        ID_ZOOM_200
+            MENUITEM "150%",                        ID_ZOOM_150
+            MENUITEM "100%",                        ID_ZOOM_100
+            MENUITEM "75%",                         ID_ZOOM_75
+            MENUITEM "50%",                         ID_ZOOM_50
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Properties",                  ID_VIEW_PROPERTIES
+        MENUITEM "Element List",                ID_VIEW_ELEMENTLIST
+        MENUITEM SEPARATOR
+        MENUITEM "Grid",                        ID_VIEW_GRID
+        MENUITEM "Page breaks",                 ID_VIEW_PAGEBREAKS
+    END
+    POPUP "&Insert"
+    BEGIN
+        MENUITEM "(dummy)",                     ID_INSERT_
+    END
+    POPUP "F&ormat"
+    BEGIN
+        MENUITEM "&Font...",                    ID_FORMAT_FONT
+        POPUP "&Alignment"
+        BEGIN
+            MENUITEM "&Left",                       ID_ALIGNMENT_LEFT
+            MENUITEM "&Center",                     ID_ALIGNMENT_CENTER
+            MENUITEM "&Right",                      ID_ALIGNMENT_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "&Top",                        ID_ALIGNMENT_TOP
+            MENUITEM "&Middle",                     ID_ALIGNMENT_MIDDLE
+            MENUITEM "&Bottom",                     ID_ALIGNMENT_BOTTOM
+            MENUITEM SEPARATOR
+            MENUITEM "&Multiline",                  ID_ALIGNMENT_MULTILINE
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Background"
+        BEGIN
+            MENUITEM "&Color...",                   ID_BACKGROUND_COLOR
+            MENUITEM "&Transparent",                ID_BACKGROUND_TRANSPARENT
+        END
+        POPUP "&Line"
+        BEGIN
+            MENUITEM "&Color...",                   ID_LINE_COLOR
+            POPUP "Width"
+            BEGIN
+                MENUITEM "1 pt",                        ID_WIDTH_1PT
+                MENUITEM "2 pt",                        ID_WIDTH_2PT
+                MENUITEM "4 pt",                        ID_WIDTH_4PT
+            END
+            POPUP "Style"
+            BEGIN
+                MENUITEM "Solid",                       ID_STYLE_SOLID
+                MENUITEM "Dashed",                      ID_STYLE_DASHED
+                MENUITEM "Dotted",                      ID_STYLE_DOTTED
+                MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
+                MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+            END
+        END
+        POPUP "&Fill"
+        BEGIN
+            MENUITEM "&Color...",                   ID_FILL_COLOR
+            POPUP "Pattern"
+            BEGIN
+                MENUITEM "Solid",                       ID_PATTERN_SOLID
+                MENUITEM "Horizontal",                  ID_PATTERN_HORIZONTAL
+                MENUITEM "Vertical",                    ID_PATTERN_VERTICAL
+                MENUITEM "Downward hatch",              ID_PATTERN_DIAGONALLEFT
+                MENUITEM "Upward hatch",                ID_PATTERN_DIAGONALRIGHT
+                MENUITEM "Crosshatch",                  ID_PATTERN_CROSSHATCH
+                MENUITEM "Diagonal crosshatch",         ID_PATTERN_DIAGONALCROSSHATCH
+            END
+        END
+    END
+    POPUP "&Arrange"
+    BEGIN
+        MENUITEM "Group",                       ID_ARRANGE_GROUP
+        MENUITEM "Ungroup",                     ID_ARRANGE_UNGROUP
+        MENUITEM SEPARATOR
+        POPUP "Align"
+        BEGIN
+            MENUITEM "Left",                        ID_ALIGN_LEFT
+            MENUITEM "Center",                      ID_ALIGN_CENTER
+            MENUITEM "Right",                       ID_ALIGN_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "Top",                         ID_ALIGN_TOP
+            MENUITEM "Middle",                      ID_ALIGN_MIDDLE
+            MENUITEM "Bottom",                      ID_ALIGN_BOTTOM
+        END
+        MENUITEM "Snap to Grid",                ID_ARRANGE_SNAPTOGRID
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About WinProMo...",          ID_APP_ABOUT
+    END
+END
+
+IDR_WINPROTYPE MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM "&Redo\tCtrl+Y",               ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "Delete\tDel",                 ID_EDIT_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Grid size...",                ID_EDIT_GRIDSIZE
+        MENUITEM "Canvas size...",              ID_EDIT_CANVASSIZE
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "Zoom"
+        BEGIN
+            MENUITEM "400%",                        ID_ZOOM_400
+            MENUITEM "200%",                        ID_ZOOM_200
+            MENUITEM "150%",                        ID_ZOOM_150
+            MENUITEM "100%",                        ID_ZOOM_100
+            MENUITEM "75%",                         ID_ZOOM_75
+            MENUITEM "50%",                         ID_ZOOM_50
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Properties",                  ID_VIEW_PROPERTIES
+        MENUITEM "Element List",                ID_VIEW_ELEMENTLIST
+        MENUITEM SEPARATOR
+        MENUITEM "Grid",                        ID_VIEW_GRID
+        MENUITEM "Page breaks",                 ID_VIEW_PAGEBREAKS
+    END
+    POPUP "&Insert"
+    BEGIN
+        MENUITEM "(dummy)",                     ID_INSERT_
+    END
+    POPUP "F&ormat"
+    BEGIN
+        MENUITEM "&Font...",                    ID_FORMAT_FONT
+        POPUP "&Alignment"
+        BEGIN
+            MENUITEM "&Left",                       ID_ALIGNMENT_LEFT
+            MENUITEM "&Center",                     ID_ALIGNMENT_CENTER
+            MENUITEM "&Right",                      ID_ALIGNMENT_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "&Top",                        ID_ALIGNMENT_TOP
+            MENUITEM "&Middle",                     ID_ALIGNMENT_MIDDLE
+            MENUITEM "&Bottom",                     ID_ALIGNMENT_BOTTOM
+            MENUITEM SEPARATOR
+            MENUITEM "&Multiline",                  ID_ALIGNMENT_MULTILINE
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Background"
+        BEGIN
+            MENUITEM "&Color...",                   ID_BACKGROUND_COLOR
+            MENUITEM "&Transparent",                ID_BACKGROUND_TRANSPARENT
+        END
+        POPUP "&Line"
+        BEGIN
+            MENUITEM "&Color...",                   ID_LINE_COLOR
+            POPUP "Width"
+            BEGIN
+                MENUITEM "1 pt",                        ID_WIDTH_1PT
+                MENUITEM "2 pt",                        ID_WIDTH_2PT
+                MENUITEM "4 pt",                        ID_WIDTH_4PT
+            END
+            POPUP "Style"
+            BEGIN
+                MENUITEM "Solid",                       ID_STYLE_SOLID
+                MENUITEM "Dashed",                      ID_STYLE_DASHED
+                MENUITEM "Dotted",                      ID_STYLE_DOTTED
+                MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
+                MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+            END
+        END
+        POPUP "&Fill"
+        BEGIN
+            MENUITEM "&Color...",                   ID_FILL_COLOR
+            POPUP "Pattern"
+            BEGIN
+                MENUITEM "Solid",                       ID_PATTERN_SOLID
+                MENUITEM "Horizontal",                  ID_PATTERN_HORIZONTAL
+                MENUITEM "Vertical",                    ID_PATTERN_VERTICAL
+                MENUITEM "Downward hatch",              ID_PATTERN_DIAGONALLEFT
+                MENUITEM "Upward hatch",                ID_PATTERN_DIAGONALRIGHT
+                MENUITEM "Crosshatch",                  ID_PATTERN_CROSSHATCH
+                MENUITEM "Diagonal crosshatch",         ID_PATTERN_DIAGONALCROSSHATCH
+            END
+        END
+    END
+    POPUP "&Arrange"
+    BEGIN
+        MENUITEM "Group",                       ID_ARRANGE_GROUP
+        MENUITEM "Ungroup",                     ID_ARRANGE_UNGROUP
+        MENUITEM SEPARATOR
+        POPUP "Align"
+        BEGIN
+            MENUITEM "Left",                        ID_ALIGN_LEFT
+            MENUITEM "Center",                      ID_ALIGN_CENTER
+            MENUITEM "Right",                       ID_ALIGN_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "Top",                         ID_ALIGN_TOP
+            MENUITEM "Middle",                      ID_ALIGN_MIDDLE
+            MENUITEM "Bottom",                      ID_ALIGN_BOTTOM
+        END
+        MENUITEM "Snap to Grid",                ID_ARRANGE_SNAPTOGRID
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About WinProMo...",          ID_APP_ABOUT
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS MOVEABLE PURE 
+IDR_MAINFRAME ACCELERATORS
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
@@ -158,6 +566,68 @@ BEGIN
     "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
 END
 
+IDR_WINPROTYPE_SRVR_IP ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_ESCAPE,      ID_CANCEL_EDIT_SRVR,    VIRTKEY, NOINVERT
+END
+
+IDR_WINPROTYPE ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+IDR_WINPROTYPE_SRVR_EMB ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_ESCAPE,      ID_CANCEL_EDIT_SRVR,    VIRTKEY, NOINVERT
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -165,26 +635,21 @@ END
 //
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 269, 114
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About WinProMo"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
     LTEXT           "WinProMo Version 1.0",IDC_STATIC,41,7,119,8,SS_NOPREFIX
-    LTEXT           "Copyright © 2025 Technical University of Denmark",
-                    IDC_STATIC,41,25,185,11
+    LTEXT           "Copyright © 2025 Technical University of Denmark",IDC_STATIC,41,25,185,11
     DEFPUSHBUTTON   "OK",IDOK,230,7,32,14,WS_GROUP
-    LTEXT           "This computer program makes use of the CDiagramEditor public domain souce code by Johan Rosengren, Abstrakt Mekanik AB: http://www.abstraktmekanik.se/freebies.html",
-                    IDC_STATIC,41,58,182,32
-    LTEXT           "Written by Giovanni Meroni, PhD (giom@dtu.dk)",
-                    IDC_STATIC,41,42,152,8
-    LTEXT           "Published under MIT license terms",IDC_STATIC,41,99,109,
-                    8
+    LTEXT           "This computer program makes use of the CDiagramEditor public domain souce code by Johan Rosengren, Abstrakt Mekanik AB: http://www.abstraktmekanik.se/freebies.html",IDC_STATIC,41,58,182,32
+    LTEXT           "Written by Giovanni Meroni, PhD (giom@dtu.dk)",IDC_STATIC,41,42,152,8
+    LTEXT           "Published under MIT license terms",IDC_STATIC,41,99,109,8
 END
 
 IDD_DIALOG_PROPERTY_DYNAMIC DIALOGEX 0, 0, 186, 94
-STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Properties"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
@@ -192,19 +657,41 @@ BEGIN
 END
 
 IDD_DIALOG_ELEMENTLIST_DYNAMIC DIALOGEX 0, 0, 186, 94
-STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
-    WS_THICKFRAME
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Element list"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    LISTBOX         IDC_LIST_ELEMENTS,7,7,172,80,LBS_SORT | LBS_MULTIPLESEL | 
-                    LBS_NOINTEGRALHEIGHT | LBS_MULTICOLUMN | WS_VSCROLL | 
-                    WS_HSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_ELEMENTS,7,7,172,80,LBS_SORT | LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | LBS_MULTICOLUMN | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_DIALOG_GRID_SIZE DIALOG 0, 0, 152, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Grid size"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,95,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,95,22,50,14
+    LTEXT           "Width:",IDC_STATIC,5,5,25,10
+    LTEXT           "Height:",IDC_STATIC,5,25,25,10
+    EDITTEXT        IDC_EDIT_WIDTH,30,5,55,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HEIGHT,30,25,55,15,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_CANVAS_SIZE DIALOGEX 0, 0, 152, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Canvas size"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,95,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,95,22,50,14
+    LTEXT           "Width:",IDC_STATIC,5,5,25,10
+    LTEXT           "Height:",IDC_STATIC,5,25,25,10
+    EDITTEXT        IDC_EDIT_WIDTH,30,5,55,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HEIGHT,30,25,55,15,ES_AUTOHSCROLL
 END
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -225,15 +712,15 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "WINPROMO MFC Application\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "WINPROMO\0"
-            VALUE "LegalCopyright", "Copyright © 1925\0"
-            VALUE "OriginalFilename", "WINPROMO.EXE\0"
-            VALUE "ProductName", "WINPROMO Application\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "FileDescription", "WINPROMO MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "WINPROMO"
+            VALUE "LegalCopyright", "Copyright © 1925"
+            VALUE "OriginalFilename", "WINPROMO.EXE"
+            VALUE "ProductName", "WINPROMO Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -242,8 +729,6 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -251,7 +736,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO MOVEABLE PURE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -277,6 +762,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 87
     END
+
+    IDD_DIALOG_GRID_SIZE, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_CANVAS_SIZE, DIALOG
+    BEGIN
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -286,14 +779,19 @@ END
 // AFX_DIALOG_LAYOUT
 //
 
-IDD_DIALOG_PROPERTY_DYNAMIC AFX_DIALOG_LAYOUT MOVEABLE PURE 
+IDD_DIALOG_PROPERTY_DYNAMIC AFX_DIALOG_LAYOUT
 BEGIN
-    0x0000
+    0
 END
 
-IDD_ABOUTBOX AFX_DIALOG_LAYOUT MOVEABLE PURE 
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
 BEGIN
-    0x0000
+    0
+END
+
+IDD_DIALOG_CANVAS_SIZE AFX_DIALOG_LAYOUT
+BEGIN
+    0
 END
 
 
@@ -302,18 +800,20 @@ END
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "WinProMo"
+    IDR_WINPROTYPE          "\nWinProMo\nWinProMo\nWinProMo Document (*.wpd)\n.wpd\nWinProMo.Document\nWinProMo Document"
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_APP_TITLE       "WinProMo"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -323,20 +823,20 @@ BEGIN
     ID_INDICATOR_REC        "REC"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_NEW             "Create a new document\nNew"
     ID_FILE_OPEN            "Open an existing document\nOpen"
     ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_MRU_FILE1       "Open this document"
     ID_FILE_MRU_FILE2       "Open this document"
@@ -356,19 +856,19 @@ BEGIN
     ID_FILE_MRU_FILE16      "Open this document"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
     ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
     ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCSIZE          "Change the window size"
     AFX_IDS_SCMOVE          "Change the window position"
@@ -379,25 +879,49 @@ BEGIN
     AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
     AFX_IDS_MDICHILD        "Activate this window"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_PROPERTIES      "Show or hide the properties panel\nToggle Properties"
     ID_VIEW_ELEMENTLIST     "Show or hide the element list panel\nToggle Element List"
+    ID_ARRANGE_SNAPTOGRID   "Snaps elements to grid\nSnap to grid"
+    ID_EDIT_DELETE          "Delete selected elements\nDelete"
+    ID_VIEW_PAGEBREAKS      "Show page break indicators\nToggle page breaks"
+    ID_ZOOM_100             "Display the diagram at a 100% zoom\n100% zoom"
+    ID_ZOOM_75              "Display the diagram at a 75% zoom\n75% zoom"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE
+BEGIN
+    ID_ZOOM_50              "Display the diagram at a 50% zoom\n50% zoom"
+    ID_ZOOM_200             "Display the diagram at a 200% zoom\n200% zoom"
+    ID_ZOOM_400             "Display the diagram at a 400% zoom\n400% zoom"
+    ID_ZOOM_150             "Display the diagram at a 150% zoom\n150% zoom"
+    ID_ARRANGE_GROUP        "Combines the selected elements into a group so they behave as a single object\nGroup elements"
+    ID_ARRANGE_UNGROUP      "Breaks the selected group into its component elements\nUngroup"
+    ID_ALIGN_LEFT           "Align the leftmost edges of the selected elements\nAlign selected elements left"
+    ID_ALIGN_CENTER         "Vertically aligh the centers of the selected elements\nAlign selected elements center vertically"
+    ID_ALIGN_RIGHT          "Align the rightmost edges of the selected elements\nAlign selected elements right"
+    ID_ALIGN_TOP            "Align the topmost edges of the selected elements\nAlign selected elements top"
+    ID_ALIGN_MIDDLE         "Horizontally aligh the centers of the selected elements\nAlign selected elements middle horizontally"
+    ID_ALIGN_BOTTOM         "Align the bottommost edges of the selected elements\nAlign selected elements bottom"
+    ID_VIEW_GRID            "Show grid to ease positioning elements\nToggle grid"
+    ID_EDIT_CANVASSIZE      "Set the size of the drawing area\nCanvas size"
+    ID_EDIT_GRIDSIZE        "Set the size of the grid\nGrid size"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

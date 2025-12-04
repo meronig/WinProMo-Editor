@@ -6,9 +6,10 @@
 
    ========================================================================*/
 // CPropertyScrollView.h
-#include "PropertyScrollFrame.h"
 #ifndef _PROPERTYSCROLLVIEW_H_
 #define _PROPERTYSCROLLVIEW_H_
+
+#include "PropertyScrollFrame.h"
 
 class CPropertyScrollView : public CWnd
 {

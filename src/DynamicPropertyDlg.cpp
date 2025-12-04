@@ -5,6 +5,9 @@
     Author :		Giovanni Meroni
 
    ========================================================================*/
+// DynamicPropertyDlg.cpp : implementation file
+//
+
 #include "stdafx.h"
 #include "DynamicPropertyDlg.h"
 #include <errno.h>

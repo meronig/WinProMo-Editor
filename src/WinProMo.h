@@ -25,7 +25,6 @@ public:
 	CString docType;
 	UINT docID;
 	CObArray* elements;
-	CMultiDocTemplate* pTemplate;
 	CWinProMoPluginInterface* pluginInterface;
 };
 
@@ -45,20 +44,19 @@ public:
 	CMDIFrameWnd* m_pMainFrame;
 	CProMoClipboardHandler	m_clip;
 	HACCEL g_hCurrentAccel;
-
+	COleTemplateServer m_server;
+	CMultiDocTemplate* m_docTemplate;
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWinProMoApp)
 public:
 	virtual BOOL InitInstance();
-	CDocument* OpenDocumentFile(LPCTSTR lpszFileName);
 	//}}AFX_VIRTUAL
 
 protected:
 	void LoadExtensions();
 	void UnloadExtensions();
 	void DeleteCommands(CObArray* commands);
-	CString DetectDocTypeFromFile(LPCTSTR lpszFileName);
 
 // Implementation
 
