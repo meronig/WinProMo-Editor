@@ -22,12 +22,14 @@ public:
 	virtual ~CDynamicElementListDlg();
 	void Show(BOOL visible);
 
+	BOOL m_visible;
+
 // Dialog Data
 
 	enum { IDD = IDD_DIALOG_ELEMENTLIST_DYNAMIC };
 
 private:
-	BOOL m_visible;
+	
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

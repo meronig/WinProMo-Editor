@@ -142,7 +142,7 @@ BEGIN_MESSAGE_MAP(CWinProMoView, CView)
 
 CWinProMoView::CWinProMoView()
 {
-	//AfxMessageBox(CString("View intialized"));
+	AfxMessageBox(CString("View created"));
 	m_screenResolutionX = 0;
 	m_screenResolutionY = 0;
 	m_nHorzPages = 0;
@@ -186,30 +186,35 @@ void CWinProMoView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 
+	AfxMessageBox(CString("View initialized"));
+
 	CreateCmdHandler();
 
-	if (!GetEditor()->m_hWnd)
-	{
-		// Creating the editor window
-		CWinProMoDoc* pDoc = GetDocument();
+	if (GetEditor()) {
+		if (!GetEditor()->m_hWnd)
+		{
+			// Creating the editor window
+			CWinProMoDoc* pDoc = GetDocument();
 
-		CRect rect;
-		GetClientRect(rect);
-		GetEditor()->Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+			CRect rect;
+			GetClientRect(rect);
+			GetEditor()->Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
 
-		// We get the screen resolution, which we will use 
-		// for scaling to printer. See also OnDraw.
-		CClientDC dc(this);
-		m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-		m_screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
+			// We get the screen resolution, which we will use 
+			// for scaling to printer. See also OnDraw.
+			CClientDC dc(this);
+			m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
+			m_screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
 
-		SetPageSize();
+			SetPageSize();
 
-		GetEditor()->SetModified(FALSE);
+			GetEditor()->SetModified(FALSE);
 
+		}
+		else
+			GetEditor()->Clear();
 	}
-	else
-		GetEditor()->Clear();
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////

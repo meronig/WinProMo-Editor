@@ -22,10 +22,11 @@ public:
 
 // Attributes
 public:
-
-protected:
 	CDynamicPropertyDlg m_pPropertyDlg;
 	CDynamicElementListDlg m_pElementListDlg;
+
+protected:
+	
 
 // Operations
 public:

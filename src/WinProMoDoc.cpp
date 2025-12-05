@@ -13,6 +13,8 @@
 #include "WinProMo.h"
 #include "../../WinProMo/src/FileUtils/FileParser.h"
 #include "OleSrvItem.h"
+#include "SelectDocumentTypeDlg.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,7 +58,7 @@ END_INTERFACE_MAP()
 
 CWinProMoDoc::CWinProMoDoc()
 {
-	//AfxMessageBox(CString("Document created"));
+	AfxMessageBox(CString("Document created"));
 	// Use OLE compound files
 	EnableCompoundFile();
 
@@ -86,19 +88,21 @@ void CWinProMoDoc::CreateContainer()
 		if (m_objs) {
 			delete m_objs;
 		}
-		//m_objs = new CProMoEntityContainer("demoPlugin");
 		m_objs = m_pluginInterface->GetContainer();
+		m_objs->Clear();
 	}
 }
 
 void CWinProMoDoc::SelectPluginInterface(CString& docType)
 {
+	
 	CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
 	int i;
 	for (i = 0; i < pApp->m_Extensions.GetSize(); i++) {
 		ExtensionDLL* plug = dynamic_cast<ExtensionDLL*>(pApp->m_Extensions.GetAt(i));
 		if (plug) {
 			if (plug->docType == docType) {
+				AfxMessageBox(CString("Plugin selected"));
 				m_pluginInterface = plug->pluginInterface;
 				return;
 			}
@@ -122,7 +126,6 @@ void CWinProMoDoc::CreateControlFactory()
 		if (m_fact) {
 			delete m_fact;
 		}
-		//m_fact = new CProMoControlFactory;
 		m_fact = m_pluginInterface->GetControlFactory();
 	}
 }
@@ -138,56 +141,76 @@ CWinProMoDoc::~CWinProMoDoc()
 
 BOOL CWinProMoDoc::OnNewDocument()
 {
+	
+	if (IsEmbedded())  // true for OLE insertion, false for standalone/new user doc
+    {
+		CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
+		pApp->m_init++;
+		if ((pApp->m_init)%2 == 1) {
+			return TRUE;
+		}
+        
+    }
+	
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	SelectPluginInterface(CString("pnPlugin"));
-	CreateControlFactory();
-	CreateContainer();
+	AfxMessageBox(CString("New doc"));
+	
+	CSelectDocumentTypeDlg dlg;
+	if (dlg.DoModal() == IDOK) {
+		CString selectedDocType = dlg.GetSelectedDocType();
 
-	CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
+		SelectPluginInterface(selectedDocType);
+		CreateControlFactory();
+		CreateContainer();
 
-	SetClipboardHandler(&pApp->m_clip);
+		CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
 
-	if (!m_objs) {
-		return FALSE;
-	}
+		SetClipboardHandler(&pApp->m_clip);
 
-	m_objs->Clear();
-	CWinProMoView* pView = NULL;
-	POSITION pos = GetFirstViewPosition();
-	if (pos != NULL) {
-		pView = (CWinProMoView*)GetNextView(pos);
-		if (pView) {
-			CClientDC dc(pView);
-
-			int screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-			int screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
-
-			CDC printDC;
-			
-			// Canvas size equals to current page size
-			if (pView->GetPrinterDC(printDC)) {
-				int printResolutionX = printDC.GetDeviceCaps(LOGPIXELSX);
-				int printResolutionY = printDC.GetDeviceCaps(LOGPIXELSY);
-				
-				int horzSize = round((double)printDC.GetDeviceCaps(HORZRES) * (double)screenResolutionX / printResolutionX);
-				int vertSize = round((double)printDC.GetDeviceCaps(VERTRES) * (double)screenResolutionY / printResolutionY);
-
-				m_objs->SetVirtualSize(CSize(horzSize - 1, vertSize - 1));
-
-				printDC.DeleteDC();
-			}
-			// No printer, so default to 8x11
-			else {
-				m_objs->SetVirtualSize(CSize(8 * screenResolutionX, 11 * screenResolutionX));
-			}
-
+		if (!m_objs) {
+			return FALSE;
 		}
+
+		m_objs->Clear();
+		CWinProMoView* pView = NULL;
+		POSITION pos = GetFirstViewPosition();
+		if (pos != NULL) {
+			pView = (CWinProMoView*)GetNextView(pos);
+			if (pView) {
+				CClientDC dc(pView);
+
+				int screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
+				int screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
+
+				CDC printDC;
+
+				// Canvas size equals to current page size
+				if (pView->GetPrinterDC(printDC)) {
+					int printResolutionX = printDC.GetDeviceCaps(LOGPIXELSX);
+					int printResolutionY = printDC.GetDeviceCaps(LOGPIXELSY);
+
+					int horzSize = round((double)printDC.GetDeviceCaps(HORZRES) * (double)screenResolutionX / printResolutionX);
+					int vertSize = round((double)printDC.GetDeviceCaps(VERTRES) * (double)screenResolutionY / printResolutionY);
+
+					m_objs->SetVirtualSize(CSize(horzSize - 1, vertSize - 1));
+
+					printDC.DeleteDC();
+				}
+				// No printer, so default to 8x11
+				else {
+					m_objs->SetVirtualSize(CSize(8 * screenResolutionX, 11 * screenResolutionX));
+				}
+
+			}
+		}
+
+		return TRUE;
 	}
 	
-
-	return TRUE;
+	return FALSE;
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -195,6 +218,8 @@ BOOL CWinProMoDoc::OnNewDocument()
 
 void CWinProMoDoc::Serialize(CArchive& ar)
 {
+	AfxMessageBox(CString("Serialization"));
+
 	CString str;
 	CStringArray data;
 
@@ -243,11 +268,7 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 			}
 
 		}
-
-		/*if (m_fact) {
-			m_objs->Load(data, *m_fact);
-		}*/
-			
+	
 	}
 	
 }
@@ -283,39 +304,6 @@ BOOL CWinProMoDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
-	/*CFile file;
-
-	if (file.Open(lpszPathName, CFile::modeRead)) {
-
-		CStringArray data;
-
-		CArchive ar(&file, CArchive::load);
-
-		CFileSerializer::Load(ar, data);
-
-		if (data.GetSize() > 0) {
-
-			CString modelType;
-			CFileParser::GetHeaderFromString(data.GetAt(0), modelType);
-
-			SelectPluginInterface(modelType);
-			CreateControlFactory();
-			CreateContainer();
-
-			CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
-
-			SetClipboardHandler(&pApp->m_clip);
-
-			if (m_fact && m_objs) {
-				m_objs->Load(data, *m_fact);
-			}
-
-			return TRUE;
-
-		}
-	
-	}*/
-
 	return TRUE;
 }
 
@@ -327,4 +315,17 @@ COleServerItem* CWinProMoDoc::OnGetEmbeddedItem()
 	CWinProMoOleSrvItem* pItem = new CWinProMoOleSrvItem(this);
 	ASSERT_VALID(pItem);
 	return pItem;
+}
+
+void CWinProMoDoc::OnDeactivateUI(BOOL bUndoable)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	COleServerDoc::OnDeactivateUI(bUndoable);
+
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (pFrame) {
+		pFrame->m_pPropertyDlg.ShowWindow(SW_HIDE);
+		pFrame->m_pElementListDlg.ShowWindow(SW_HIDE);
+	}
 }

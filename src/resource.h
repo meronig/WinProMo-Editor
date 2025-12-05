@@ -7,6 +7,7 @@
 #define IDD_DIALOG_CANVAS_SIZE          102
 #define IDD_DIALOG_PROPERTY_DYNAMIC     103
 #define IDD_DIALOG_ELEMENTLIST_DYNAMIC  104
+#define IDD_SELECT_DOCUMENT_TYPE        105
 #define IDR_MAINFRAME                   128
 #define IDR_WINPROTYPE                  129
 #define IDR_WINPROTYPE_SRVR_IP          130
@@ -15,6 +16,7 @@
 #define IDC_EDIT_WIDTH                  1010
 #define IDC_EDIT_HEIGHT                 1011
 #define IDC_LIST_ELEMENTS               2000
+#define IDC_LIST_DOCUMENT_TYPES         2001
 #define ID_VIEW_PROPERTIES              32771
 #define ID_VIEW_ELEMENTLIST             32772
 #define ID_ARRANGE_SNAPTOGRID           32774
@@ -71,9 +73,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        137
-#define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         2000
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_COMMAND_VALUE         32850
+#define _APS_NEXT_CONTROL_VALUE         2002
+#define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

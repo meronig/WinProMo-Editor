@@ -36,6 +36,9 @@ public:
     enum { IDD = IDD_DIALOG_PROPERTY_DYNAMIC };
     //}}AFX_DATA
 
+    BOOL m_visible;
+
+
 protected:
     CObArray m_properties; // Array of CPropertyItem*
 
@@ -53,8 +56,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 private:
-    BOOL m_visible;
-
+    
 public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     afx_msg void OnSize(UINT nType, int cx, int cy);

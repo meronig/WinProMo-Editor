@@ -5,6 +5,9 @@
 #include "WinProMo.h"
 
 #include "IpFrame.h"
+#include "MainFrm.h"
+#include "WinProMoDoc.h"
+#include "WinProMoView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,6 +31,7 @@ END_MESSAGE_MAP()
 
 CInPlaceFrame::CInPlaceFrame()
 {
+	m_pluginInterface = NULL;
 }
 
 CInPlaceFrame::~CInPlaceFrame()
@@ -82,6 +86,16 @@ BOOL CInPlaceFrame::OnCreateControlBars(CFrameWnd* pWndFrame, CFrameWnd* pWndDoc
 	pWndFrame->EnableDocking(CBRS_ALIGN_ANY);
 	pWndFrame->DockControlBar(&m_wndToolBar);
 
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	if (pFrame) {
+		if (pFrame->m_pElementListDlg.m_visible) {
+			pFrame->m_pElementListDlg.ShowWindow(SW_SHOW);
+		}
+		if (pFrame->m_pPropertyDlg.m_visible) {
+			pFrame->m_pPropertyDlg.ShowWindow(SW_SHOW);
+		}
+	}
+
 	return TRUE;
 }
 
@@ -110,3 +124,4 @@ void CInPlaceFrame::Dump(CDumpContext& dc) const
 
 /////////////////////////////////////////////////////////////////////////////
 // CInPlaceFrame commands
+

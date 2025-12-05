@@ -30,6 +30,7 @@ public:
 #endif
 
 protected:
+	ExtensionDLL* m_pluginInterface;
 	CToolBar    m_wndToolBar;
 	COleResizeBar   m_wndResizeBar;
 	COleDropTarget m_dropTarget;

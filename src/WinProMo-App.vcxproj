@@ -211,6 +211,7 @@
     <ClInclude Include="PropertyScrollView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="OleSrvItem.h" />
+    <ClInclude Include="SelectDocumentTypeDlg.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="WinProMo.h" />
     <ClInclude Include="WinProMoDoc.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="PropertyScrollFrame.cpp" />
     <ClCompile Include="PropertyScrollView.cpp" />
     <ClCompile Include="OleSrvItem.cpp" />
+    <ClCompile Include="SelectDocumentTypeDlg.cpp" />
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="WinProMo.cpp" />
     <ClCompile Include="WinProMoDoc.cpp" />

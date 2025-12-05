@@ -84,7 +84,7 @@ protected:
 	CProMoControlFactory* m_fact;
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	
+	virtual void OnDeactivateUI(BOOL bUndoable);
 };
 
 #endif // _WINPROMODOC_H_

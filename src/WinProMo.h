@@ -46,6 +46,7 @@ public:
 	HACCEL g_hCurrentAccel;
 	COleTemplateServer m_server;
 	CMultiDocTemplate* m_docTemplate;
+	UINT m_init;
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWinProMoApp)

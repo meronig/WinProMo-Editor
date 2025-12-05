@@ -52,6 +52,7 @@ CWinProMoApp::CWinProMoApp()
 	m_pMainFrame = NULL;
 	g_hCurrentAccel = NULL;
 	m_docTemplate = NULL;
+	m_init = 0;
 }
 
 CWinProMoApp::~CWinProMoApp()
