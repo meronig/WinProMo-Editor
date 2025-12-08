@@ -183,7 +183,7 @@ BEGIN
     END
     POPUP "&Insert"
     BEGIN
-        MENUITEM "(dummy)",                     ID_INSERT_
+        MENUITEM "",                            ID_INSERT_
     END
     POPUP "F&ormat"
     BEGIN
@@ -317,7 +317,7 @@ BEGIN
     END
     POPUP "&Insert"
     BEGIN
-        MENUITEM "(dummy)",                     ID_INSERT_
+        MENUITEM "",                            ID_INSERT_
     END
     POPUP "F&ormat"
     BEGIN
@@ -456,7 +456,7 @@ BEGIN
     END
     POPUP "&Insert"
     BEGIN
-        MENUITEM "(dummy)",                     ID_INSERT_
+        MENUITEM "",                            ID_INSERT_
     END
     POPUP "F&ormat"
     BEGIN

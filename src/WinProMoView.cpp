@@ -142,7 +142,6 @@ BEGIN_MESSAGE_MAP(CWinProMoView, CView)
 
 CWinProMoView::CWinProMoView()
 {
-	AfxMessageBox(CString("View created"));
 	m_screenResolutionX = 0;
 	m_screenResolutionY = 0;
 	m_nHorzPages = 0;
@@ -185,9 +184,7 @@ BOOL CWinProMoView::PreCreateWindow(CREATESTRUCT& cs)
 void CWinProMoView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-
-	AfxMessageBox(CString("View initialized"));
-
+	
 	CreateCmdHandler();
 
 	if (GetEditor()) {
@@ -208,7 +205,7 @@ void CWinProMoView::OnInitialUpdate()
 
 			SetPageSize();
 
-			GetEditor()->SetModified(FALSE);
+			GetEditor()->SetModified(TRUE);
 
 		}
 		else

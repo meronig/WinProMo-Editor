@@ -58,7 +58,6 @@ END_INTERFACE_MAP()
 
 CWinProMoDoc::CWinProMoDoc()
 {
-	AfxMessageBox(CString("Document created"));
 	// Use OLE compound files
 	EnableCompoundFile();
 
@@ -102,7 +101,6 @@ void CWinProMoDoc::SelectPluginInterface(CString& docType)
 		ExtensionDLL* plug = dynamic_cast<ExtensionDLL*>(pApp->m_Extensions.GetAt(i));
 		if (plug) {
 			if (plug->docType == docType) {
-				AfxMessageBox(CString("Plugin selected"));
 				m_pluginInterface = plug->pluginInterface;
 				return;
 			}
@@ -141,7 +139,6 @@ CWinProMoDoc::~CWinProMoDoc()
 
 BOOL CWinProMoDoc::OnNewDocument()
 {
-	
 	if (IsEmbedded())  // true for OLE insertion, false for standalone/new user doc
     {
 		CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
@@ -152,11 +149,9 @@ BOOL CWinProMoDoc::OnNewDocument()
         
     }
 	
-	if (!CDocument::OnNewDocument())
+	if (!COleServerDoc::OnNewDocument())
 		return FALSE;
 
-	AfxMessageBox(CString("New doc"));
-	
 	CSelectDocumentTypeDlg dlg;
 	if (dlg.DoModal() == IDOK) {
 		CString selectedDocType = dlg.GetSelectedDocType();
@@ -218,8 +213,6 @@ BOOL CWinProMoDoc::OnNewDocument()
 
 void CWinProMoDoc::Serialize(CArchive& ar)
 {
-	AfxMessageBox(CString("Serialization"));
-
 	CString str;
 	CStringArray data;
 
@@ -228,13 +221,16 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 	
 	if (ar.IsStoring())
 	{
-		m_objs->Save(data);
-			
-		if (isOle) {
-			data.Serialize(ar);
+		if (m_objs) {
+			m_objs->Save(data);
 
-		}else {
-			CFileSerializer::Save(ar, data);
+			if (isOle) {
+				data.Serialize(ar);
+
+			}
+			else {
+				CFileSerializer::Save(ar, data);
+			}
 		}
 	}
 	else
@@ -278,7 +274,7 @@ BOOL CWinProMoDoc::SaveModified()
 	if (m_objs) {
 		SetModifiedFlag(m_objs->IsModified());
 	}
-	return CDocument::SaveModified();
+	return COleServerDoc::SaveModified();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -287,12 +283,12 @@ BOOL CWinProMoDoc::SaveModified()
 #ifdef _DEBUG
 void CWinProMoDoc::AssertValid() const
 {
-	CDocument::AssertValid();
+	COleServerDoc::AssertValid();
 }
 
 void CWinProMoDoc::Dump(CDumpContext& dc) const
 {
-	CDocument::Dump(dc);
+	COleServerDoc::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -301,7 +297,7 @@ void CWinProMoDoc::Dump(CDumpContext& dc) const
 
 BOOL CWinProMoDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	if (!CDocument::OnOpenDocument(lpszPathName))
+	if (!COleServerDoc::OnOpenDocument(lpszPathName))
 		return FALSE;
 
 	return TRUE;

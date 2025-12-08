@@ -136,6 +136,48 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 {
 	CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
 
+	if (bActivate) {
+		CWinProMoDoc* pDoc = (CWinProMoDoc*)GetActiveDocument();
+		ASSERT_KINDOF(CWinProMoDoc, pDoc);
+
+		// Locate the insert submenu
+		CMenu* pInsertMenu = NULL;
+		CMenu* pTopMenu = AfxGetMainWnd()->GetMenu();
+		int iPos;
+		for (iPos = pTopMenu->GetMenuItemCount() - 1; iPos >= 0; iPos--)
+		{
+			CMenu* pMenu = pTopMenu->GetSubMenu(iPos);
+			if (pMenu && pMenu->GetMenuItemID(0) == ID_INSERT_)
+			{
+				pInsertMenu = pMenu;
+				break;
+			}
+		}
+		ENSURE(pInsertMenu != NULL);
+
+		// Update the insert submenu to reflect the options available for
+		// the active document
+
+		// First, delete all items
+		for (iPos = pInsertMenu->GetMenuItemCount() - 1; iPos > 0; iPos--)
+			pInsertMenu->DeleteMenu(iPos, MF_BYPOSITION);
+
+		// Then, add a separator and an item for each available text color
+		CreateMenuEntry(pInsertMenu, m_pluginInterface->elements, FALSE);
+	}
+	else {
+		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
+			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
+			if (menu->m_hMenu)
+				menu->DestroyMenu();
+			delete menu;
+			m_dynamicMenus.RemoveAt(i);
+		}
+	}
+
+	// DISABLED TO DEBUG SERIALIZATION
+
+	/*
 	// TODO: Add your message handler code here
 	CMainFrame* pMainFrame = (CMainFrame*)GetParentFrame();
 	CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
@@ -208,5 +250,5 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 		pMainFrame->UpdatePropertyDialog(NULL);
 
 	}
-
+	*/
 }
