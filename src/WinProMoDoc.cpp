@@ -273,6 +273,7 @@ BOOL CWinProMoDoc::SaveModified()
 {
 	if (m_objs) {
 		SetModifiedFlag(m_objs->IsModified());
+		NotifyChanged();
 	}
 	return COleServerDoc::SaveModified();
 }
@@ -313,15 +314,3 @@ COleServerItem* CWinProMoDoc::OnGetEmbeddedItem()
 	return pItem;
 }
 
-void CWinProMoDoc::OnDeactivateUI(BOOL bUndoable)
-{
-	// TODO: Add your specialized code here and/or call the base class
-
-	COleServerDoc::OnDeactivateUI(bUndoable);
-
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-	if (pFrame) {
-		pFrame->m_pPropertyDlg.ShowWindow(SW_HIDE);
-		pFrame->m_pElementListDlg.ShowWindow(SW_HIDE);
-	}
-}

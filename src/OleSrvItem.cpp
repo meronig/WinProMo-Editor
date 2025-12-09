@@ -1,3 +1,10 @@
+/* ==========================================================================
+
+	Copyright © 2025 Technical University of Denmark
+
+	Author :		Giovanni Meroni
+
+   ========================================================================*/
 // SrvrItem.cpp : implementation of the COleTestSrvrItem class
 //
 
@@ -67,7 +74,17 @@ BOOL CWinProMoOleSrvItem::OnGetExtent(DVASPECT dwDrawAspect, CSize& rSize)
 
 	// TODO: replace this arbitrary size
 
-	rSize = CSize(3000, 3000);   // 3000 x 3000 HIMETRIC units
+	CSize logicalSize = pDoc->GetData()->GetVirtualSize();
+
+	CClientDC dc(NULL);
+
+	// use a mapping mode based on logical units
+//  (we can't use MM_LOENGLISH because MM_LOENGLISH uses physical inches)
+	dc.SetMapMode(MM_ANISOTROPIC);
+	dc.SetViewportExt(dc.GetDeviceCaps(LOGPIXELSX), dc.GetDeviceCaps(LOGPIXELSY));
+	dc.SetWindowExt(100, -100);
+	dc.LPtoHIMETRIC(&logicalSize);
+	rSize = logicalSize;
 
 	return TRUE;
 }
@@ -77,14 +94,24 @@ BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 	CWinProMoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	// TODO: set mapping mode and extent
-	//  (The extent is usually the same as the size returned from OnGetExtent)
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	pDC->SetWindowOrg(0,0);
-	pDC->SetWindowExt(3000, 3000);
+	CProMoEntityContainer* objs = pDoc->GetData();
 
-	// TODO: add drawing code here.  Optionally, fill in the HIMETRIC extent.
-	//  All drawing takes place in the metafile device context (pDC).
+	CSize docSize = objs->GetVirtualSize();
+
+	pDC->SetMapMode(MM_ANISOTROPIC);
+	pDC->SetWindowOrg(0, 0);
+	pDC->SetWindowExt(docSize);
+
+	if (objs)
+	{
+		objs->UnselectAll();
+		ASSERT(true);
+		int count = 0;
+		CDiagramEntity* obj;
+		while ((obj = objs->GetAt(count++))) {
+			obj->DrawObject(pDC, 1.0);
+		}
+	}
 
 	return TRUE;
 }

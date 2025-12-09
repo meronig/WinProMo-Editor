@@ -205,7 +205,6 @@
     <ClInclude Include="DynamicElementListDlg.h" />
     <ClInclude Include="DynamicPropertyDlg.h" />
     <ClInclude Include="GridSizeDialog.h" />
-    <ClInclude Include="IpFrame.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PropertyScrollFrame.h" />
     <ClInclude Include="PropertyScrollView.h" />
@@ -223,7 +222,6 @@
     <ClCompile Include="DynamicElementListDlg.cpp" />
     <ClCompile Include="DynamicPropertyDlg.cpp" />
     <ClCompile Include="GridSizeDialog.cpp" />
-    <ClCompile Include="IpFrame.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PropertyScrollFrame.cpp" />
     <ClCompile Include="PropertyScrollView.cpp" />

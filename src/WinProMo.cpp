@@ -13,7 +13,6 @@
 
 #include "MainFrm.h"
 #include "ChildFrm.h"
-#include "IpFrame.h"
 
 #include "../../WinProMo/src/DiagramEditor/Tokenizer.h"
 #include "WinProMoDoc.h"
@@ -113,7 +112,7 @@ BOOL CWinProMoApp::InitInstance()
 		RUNTIME_CLASS(CWinProMoView));
 	m_docTemplate->SetServerInfo(
 		IDR_WINPROTYPE_SRVR_EMB, IDR_WINPROTYPE_SRVR_IP,
-		RUNTIME_CLASS(CInPlaceFrame));
+		NULL);
 
 	AddDocTemplate(m_docTemplate);
 
