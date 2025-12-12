@@ -16,6 +16,7 @@
 #include "WinProMoDoc.h"
 #include "WinProMoView.h"
 #include "../../WinProMo/src/Resource.h"
+#include "SelectDocumentTypeDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,9 +42,6 @@ END_MESSAGE_MAP()
 
 CChildFrame::CChildFrame()
 {
-	m_pluginInterface = NULL;
-	m_hDefaultMenu = ::LoadMenu(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
-	m_hAccel = NULL;
 
 }
 
@@ -62,30 +60,8 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 void CChildFrame::ActivateFrame(int nCmdShow)
 {
-
-	if (!m_pluginInterface) {
-		CWinProMoApp* app = dynamic_cast<CWinProMoApp*>(AfxGetApp());
-		CDocument* pDoc = GetActiveDocument();
-		if (pDoc && app)
-		{
-			CWinProMoDoc* pMyDoc = dynamic_cast<CWinProMoDoc*>(pDoc);
-			if (pMyDoc)
-			{
-				for (size_t i = 0; i < app->m_Extensions.GetSize(); ++i) {
-					ExtensionDLL* plugin = dynamic_cast<ExtensionDLL*>(app->m_Extensions.GetAt(i));
-					if (plugin) {
-						if (plugin->docType == pMyDoc->GetData()->GetModelType()) {
-							m_pluginInterface = plugin;
-						}
-					}
-				}
-			}
-		}
-	}
-
 	CMDIChildWnd::ActivateFrame(nCmdShow);
 }
-
 
 void CChildFrame::CreateMenuEntry(CMenu* menu, CObArray* commandList, BOOL createTopMenus) {
 	if (commandList) {
@@ -110,6 +86,44 @@ void CChildFrame::CreateMenuEntry(CMenu* menu, CObArray* commandList, BOOL creat
 			}
 		}
 	}
+}
+
+BOOL CChildFrame::InitDocView()
+{
+	CWinProMoDoc* pDoc = (CWinProMoDoc*)GetActiveDocument();
+	ASSERT_KINDOF(CWinProMoDoc, pDoc);
+
+	CWinProMoView* pView = dynamic_cast<CWinProMoView*>(GetActiveView());
+
+	if (pView && pDoc) {
+		if (!pDoc->m_pluginReference) {
+			CSelectDocumentTypeDlg dlg;
+			if (dlg.DoModal() == IDOK) {
+				CString selectedDocType = dlg.GetSelectedDocType();
+
+				if (!pDoc->SelectPluginInterface(selectedDocType)) {
+					AfxMessageBox(CString("Cannot create data container for " + selectedDocType + "."));
+					return FALSE;
+				}
+
+				CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
+
+				pDoc->SetClipboardHandler(&pApp->m_clip);
+
+				pView->SetPageSizeFromPrinter();
+				
+			}
+			else {
+				return FALSE;
+			}
+
+		}
+
+		pView->CreateCmdHandler();
+
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -137,118 +151,57 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 	CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
 
 	if (bActivate) {
+
 		CWinProMoDoc* pDoc = (CWinProMoDoc*)GetActiveDocument();
 		ASSERT_KINDOF(CWinProMoDoc, pDoc);
-
-		// Locate the insert submenu
-		CMenu* pInsertMenu = NULL;
-		CMenu* pTopMenu = AfxGetMainWnd()->GetMenu();
-		int iPos;
-		for (iPos = pTopMenu->GetMenuItemCount() - 1; iPos >= 0; iPos--)
-		{
-			CMenu* pMenu = pTopMenu->GetSubMenu(iPos);
-			if (pMenu && pMenu->GetMenuItemID(0) == ID_INSERT_)
-			{
-				pInsertMenu = pMenu;
-				break;
-			}
-		}
-		ENSURE(pInsertMenu != NULL);
-
-		// Update the insert submenu to reflect the options available for
-		// the active document
-
-		// First, delete all items
-		for (iPos = pInsertMenu->GetMenuItemCount() - 1; iPos > 0; iPos--)
-			pInsertMenu->DeleteMenu(iPos, MF_BYPOSITION);
-
-		// Then, add a separator and an item for each available text color
-		CreateMenuEntry(pInsertMenu, m_pluginInterface->elements, FALSE);
-	}
-	else {
-		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
-			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
-			if (menu->m_hMenu)
-				menu->DestroyMenu();
-			delete menu;
-			m_dynamicMenus.RemoveAt(i);
-		}
-	}
-
-	// DISABLED TO DEBUG SERIALIZATION
-
-	/*
-	// TODO: Add your message handler code here
-	CMainFrame* pMainFrame = (CMainFrame*)GetParentFrame();
-	CMDIFrameWnd* pMDIFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainFrame);
-	CWinProMoApp* app = dynamic_cast<CWinProMoApp*>(AfxGetApp());
-
-	if (bActivate) {
-		// Trigger property dialog refresh
-		CWinProMoView* view = dynamic_cast<CWinProMoView*>(GetActiveView());
-		if (view) {
-			view->GetEditor()->NotifySelectionChanged();
-		}
 		
-		// Set the new menu in the MDI frame
-		if (m_pluginInterface) {
-
-			HINSTANCE hPlugin = m_pluginInterface->hModule;
-			m_hAccel = ::LoadAccelerators(hPlugin, MAKEINTRESOURCE(IDR_WINPROTYPE));
-			app->g_hCurrentAccel = m_hAccel;
-
-			CMenu* pNewMenu = new CMenu;
-			if (pNewMenu->LoadMenu(IDR_WINPROTYPE))
+		if (InitDocView()){
+			
+			// Locate the insert submenu
+			CMenu* pInsertMenu = NULL;
+			CMenu* pTopMenu = AfxGetMainWnd()->GetMenu();
+			int iPos;
+			for (iPos = pTopMenu->GetMenuItemCount() - 1; iPos >= 0; iPos--)
 			{
-				//Insert is at position 3, revise if it changes
-				CMenu* pInsertMenu = pNewMenu->GetSubMenu(3);
-				//Window is at position 5, revise if it changes
-				CMenu* pWindowMenu = pNewMenu->GetSubMenu(5);
-				m_dynamicMenus.Add(pNewMenu);
-
-				if (pInsertMenu) {
-					pInsertMenu->DeleteMenu(0, MF_BYPOSITION);
-					CreateMenuEntry(pInsertMenu, m_pluginInterface->elements, FALSE);
-				}
-
-				if (pMDIFrame)
+				CMenu* pMenu = pTopMenu->GetSubMenu(iPos);
+				if (pMenu && pMenu->GetMenuItemID(0) == ID_INSERT_)
 				{
-					pMDIFrame->MDISetMenu(pNewMenu, pWindowMenu);
-					pMDIFrame->DrawMenuBar();
-
+					pInsertMenu = pMenu;
+					break;
 				}
 			}
-			else
-			{
-				delete pNewMenu;
+			if (pInsertMenu != NULL) {
+				// Update the insert submenu to reflect the options available for
+				// the active document
+
+				// First, delete all items
+				for (iPos = pInsertMenu->GetMenuItemCount() - 1; iPos > 0; iPos--)
+					pInsertMenu->DeleteMenu(iPos, MF_BYPOSITION);
+
+				// Then, add a separator and an item for each available text color
+				CreateMenuEntry(pInsertMenu, pDoc->m_pluginReference->elements, FALSE);
+
+				// Set the icon specified by the plugin
+				HICON hNew = NULL;
+				hNew = AfxGetApp()->LoadIcon(pDoc->m_pluginReference->docID);
+				if (hNew)
+					SetIcon(hNew, TRUE);
 			}
-
-		}
-
-	}
-	else {
-		
-		// Restore old menu
-		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
-			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
-			if (menu->m_hMenu)
-				menu->DestroyMenu();
-			delete menu;
-			m_dynamicMenus.RemoveAt(i);
-		}
-		if (pMDIFrame)
-		{
-			pMDIFrame->SetMenu(CMenu::FromHandle(m_hDefaultMenu));
+			return;
 			
 		}
-
-		app->g_hCurrentAccel = NULL;
-
-		if (!AfxGetMainWnd()->IsWindowVisible())
-			return;
-
-		pMainFrame->UpdatePropertyDialog(NULL);
+		// User has canceled document creation, or something went wrong
+		PostMessage(WM_CLOSE);
 
 	}
-	*/
+	else {
+		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
+			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
+			if (menu->m_hMenu)
+				menu->DestroyMenu();
+			delete menu;
+			m_dynamicMenus.RemoveAt(i);
+		}
+	}
+
 }

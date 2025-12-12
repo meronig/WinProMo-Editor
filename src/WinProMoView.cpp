@@ -13,6 +13,8 @@
 #include "CanvasSizeDialog.h"
 
 #include <afxole.h>
+#include "WinProMo.h"
+#include "../../WinProMo/src/FileUtils/DibHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -135,7 +137,8 @@ BEGIN_MESSAGE_MAP(CWinProMoView, CView)
 	ON_UPDATE_COMMAND_UI(ID_WIDTH_4PT, &CWinProMoView::OnUpdateWidth4pt)
 	ON_COMMAND_RANGE(1000, 10000, OnPluginCommand)
 	ON_UPDATE_COMMAND_UI_RANGE(1000, 10000, OnUpdatePluginCommand)
-	END_MESSAGE_MAP()
+		ON_COMMAND(ID_FILE_EXPORT, &CWinProMoView::OnFileExport)
+		END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoView construction/destruction
@@ -184,34 +187,37 @@ BOOL CWinProMoView::PreCreateWindow(CREATESTRUCT& cs)
 void CWinProMoView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-	
-	CreateCmdHandler();
 
-	if (GetEditor()) {
-		if (!GetEditor()->m_hWnd)
-		{
-			// Creating the editor window
-			CWinProMoDoc* pDoc = GetDocument();
+}
 
-			CRect rect;
-			GetClientRect(rect);
-			GetEditor()->Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+void CWinProMoView::SetPageSizeFromPrinter()
+{
+	CClientDC viewDC(this);
+	CDC printDC;
 
-			// We get the screen resolution, which we will use 
-			// for scaling to printer. See also OnDraw.
-			CClientDC dc(this);
-			m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-			m_screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
+	CWinProMoDoc* pDoc = GetDocument();
+	if (viewDC && pDoc) {
+		int screenResolutionX = viewDC.GetDeviceCaps(LOGPIXELSX);
+		int screenResolutionY = viewDC.GetDeviceCaps(LOGPIXELSY);
 
-			SetPageSize();
+		if (GetPrinterDC(printDC)) {
 
-			GetEditor()->SetModified(TRUE);
+			// Canvas size equals to current page size
+			int printResolutionX = printDC.GetDeviceCaps(LOGPIXELSX);
+			int printResolutionY = printDC.GetDeviceCaps(LOGPIXELSY);
+
+			int horzSize = round((double)printDC.GetDeviceCaps(HORZRES) * (double)screenResolutionX / printResolutionX);
+			int vertSize = round((double)printDC.GetDeviceCaps(VERTRES) * (double)screenResolutionY / printResolutionY);
+
+			pDoc->GetData()->SetVirtualSize(CSize(horzSize - 1, vertSize - 1));
+			printDC.DeleteDC();
 
 		}
-		else
-			GetEditor()->Clear();
+		// No printer, so default to 8x11
+		else {
+			pDoc->GetData()->SetVirtualSize(CSize(8 * screenResolutionX, 11 * screenResolutionX));
+		}
 	}
-	
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -372,11 +378,36 @@ CWinProMoDoc* CWinProMoView::GetDocument() // non-debug version is inline
 void CWinProMoView::CreateCmdHandler()
 {
 	if (!m_cmdHandler) {
-		//GetEditor() = new CProMoEditor;
-		if (GetDocument()->m_pluginInterface) {
-			m_cmdHandler = GetDocument()->m_pluginInterface->GetCmdHandler();
+
+		if (GetDocument()->m_pluginReference) {
+			m_cmdHandler = GetDocument()->m_pluginReference->pluginInterface->GetCmdHandler();
 		}
 
+	}
+
+	if (GetEditor()) {
+		if (!GetEditor()->m_hWnd)
+		{
+			// Creating the editor window
+			CWinProMoDoc* pDoc = GetDocument();
+
+			CRect rect;
+			GetClientRect(rect);
+			GetEditor()->Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+
+			// We get the screen resolution, which we will use 
+			// for scaling to printer. See also OnDraw.
+			CClientDC dc(this);
+			m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
+			m_screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
+
+			SetPageSize();
+
+			GetEditor()->SetModified(TRUE);
+
+		}
+		else
+			GetEditor()->Clear();
 	}
 }
 
@@ -1351,4 +1382,102 @@ void CWinProMoView::OnUpdatePluginCommand(CCmdUI* pCmdUI)
 		return;
 
 	pCmdUI->ContinueRouting();
+}
+
+void CWinProMoView::OnFileExport()
+{
+	CFileDialog dlg(FALSE, _T("bmp"));
+	if (dlg.DoModal() == IDOK)
+	{
+		// Show hourglass cursor, as export may take several seconds
+		BeginWaitCursor();
+
+		// raster (bitmap) export
+		CDC memDC;
+		memDC.CreateCompatibleDC(NULL);
+
+		CDibHelper dib;
+
+		CProMoEntityContainer* objs = GetDocument()->GetData();
+
+		CSize docSize = objs->GetVirtualSize();
+
+		const double RASTER_RES = 300.0;
+		const double MAX_DIM = 6000.0;
+
+		unsigned long scaling = RASTER_RES / memDC.GetDeviceCaps(LOGPIXELSX);
+		unsigned long hSize = docSize.cx;
+		unsigned long vSize = docSize.cy;
+
+		double maxScaleW = MAX_DIM / hSize;
+		double maxScaleH = MAX_DIM / vSize;
+		double maxScale = min(maxScaleW, maxScaleH);
+
+		if (scaling > maxScale)
+			scaling = maxScale;
+
+		dib.Create(docSize.cx * scaling, docSize.cy * scaling, 24);
+
+		HBITMAP hOld = (HBITMAP)memDC.SelectObject(dib.GetBitmap());
+
+		memDC.FillSolidRect(0, 0, docSize.cx * scaling, docSize.cy * scaling, RGB(255, 255, 255));
+
+
+		if (objs)
+		{
+			objs->UnselectAll();
+			int count = 0;
+			CDiagramEntity* obj;
+			while ((obj = objs->GetAt(count++))) {
+				obj->DrawObject(&memDC, scaling);
+			}
+		}
+
+		BITMAPINFOHEADER bih = *dib.GetBitmapInfoHeader();
+		BITMAPINFO bmi;
+		ZeroMemory(&bmi, sizeof(bmi));
+		bmi.bmiHeader = bih;
+
+		dib.SaveBMP(dlg.GetPathName());
+
+		memDC.SelectObject(hOld);
+
+		/*
+		// metafile export
+		CClientDC	dc(this);
+		CMetaFileDC	metaDC;
+		CRect rect(0, 0,
+			GetEditor()->GetVirtualSize().cx,
+			GetEditor()->GetVirtualSize().cy);
+
+		// Himetric rect
+		CRect r(0, 0, 8 * 2540, 11 * 2540);
+
+		metaDC.Create(dlg.GetPathName());
+		
+		CDiagramEntityContainer* objs = GetEditor()->GetDiagramEntityContainer();
+
+		CSize docSize = objs->GetVirtualSize();
+
+		metaDC.SetMapMode(MM_ANISOTROPIC);
+		metaDC.SetWindowOrg(0, 0);
+		metaDC.SetWindowExt(docSize);
+
+		if (objs)
+		{
+			objs->UnselectAll();
+			int count = 0;
+			CDiagramEntity* obj;
+			while ((obj = objs->GetAt(count++))) {
+				obj->DrawObject(&metaDC, 1.0001);
+			}
+		}
+
+		HMETAFILE hmf = metaDC.Close();
+		DeleteMetaFile(hmf);
+		*/
+
+		// Restore normal cursor
+		EndWaitCursor();
+	}
 }

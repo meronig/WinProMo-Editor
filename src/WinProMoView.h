@@ -29,10 +29,11 @@ public:
 	CWinProMoView();
 	CProMoEditor* GetEditor();
 	void SetPageSize();
-	virtual BOOL GetPrinterDC(CDC& dc);
+	virtual void CreateCmdHandler();
+	virtual void SetPageSizeFromPrinter();
 
 protected:
-	virtual void CreateCmdHandler();
+	virtual BOOL GetPrinterDC(CDC& dc);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -165,6 +166,7 @@ protected:
 	
 	afx_msg void OnPluginCommand(UINT cmdID);
 	afx_msg void OnUpdatePluginCommand(CCmdUI* pCmdUI);
+	afx_msg void OnFileExport();
 	//}}AFX_MSG
 	//Commands
 	DECLARE_MESSAGE_MAP()
@@ -176,7 +178,7 @@ protected:
 	int				m_screenResolutionY;
 	int				m_nHorzPages;
 	int				m_nVertPages;
-public:
+	
 };
 
 #ifndef _DEBUG  // debug version in WinProMoView.cpp

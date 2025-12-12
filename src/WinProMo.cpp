@@ -18,6 +18,7 @@
 #include "WinProMoDoc.h"
 #include "WinProMoView.h"
 #include "../../WinProMo/src/Resource.h"
+#include <winreg.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,6 +116,19 @@ BOOL CWinProMoApp::InitInstance()
 		NULL);
 
 	AddDocTemplate(m_docTemplate);
+
+	// Register file extension
+	HKEY hKey;
+	CString key = _T(".wpd");
+	LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
+		REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
+	if (lRes == ERROR_SUCCESS)
+	{
+		RegSetValueEx(hKey, NULL, 0, REG_SZ,
+			(BYTE*)_T("WinProMo.Document"),
+			(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
+		RegCloseKey(hKey);
+	}
 
 	// Connect the COleTemplateServer to the document template.
 	//  The COleTemplateServer creates new documents on behalf

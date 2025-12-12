@@ -23,3 +23,6 @@
 #endif
 #endif
 
+#if (_MSC_VER <= 1020) && !defined(INVALID_FILE_ATTRIBUTES)
+#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+#endif

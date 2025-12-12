@@ -13,8 +13,7 @@
 #include "WinProMo.h"
 #include "../../WinProMo/src/FileUtils/FileParser.h"
 #include "OleSrvItem.h"
-#include "SelectDocumentTypeDlg.h"
-#include "MainFrm.h"
+#include <windows.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -63,7 +62,7 @@ CWinProMoDoc::CWinProMoDoc()
 
 	m_objs = NULL;
 	m_fact = NULL;
-	m_pluginInterface = NULL;
+	m_pluginReference = NULL;
 
 	EnableAutomation();
 
@@ -83,16 +82,16 @@ void CWinProMoDoc::SetClipboardHandler(CProMoClipboardHandler* clip)
 
 void CWinProMoDoc::CreateContainer()
 {
-	if (m_pluginInterface) {
+	if (m_pluginReference) {
 		if (m_objs) {
 			delete m_objs;
 		}
-		m_objs = m_pluginInterface->GetContainer();
+		m_objs = m_pluginReference->pluginInterface->GetContainer();
 		m_objs->Clear();
 	}
 }
 
-void CWinProMoDoc::SelectPluginInterface(CString& docType)
+BOOL CWinProMoDoc::SelectPluginInterface(CString& docType)
 {
 	
 	CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
@@ -101,30 +100,40 @@ void CWinProMoDoc::SelectPluginInterface(CString& docType)
 		ExtensionDLL* plug = dynamic_cast<ExtensionDLL*>(pApp->m_Extensions.GetAt(i));
 		if (plug) {
 			if (plug->docType == docType) {
-				m_pluginInterface = plug->pluginInterface;
-				return;
+				m_pluginReference = plug;
+				CreateControlFactory();
+				CreateContainer();
+				return TRUE;
 			}
 		}
 	}
 	CString str;
 	str.Format(_T("Cannot find a compatible plugin for " + docType + ". %i plugins were found."), i);
 	AfxMessageBox(str);
+	return FALSE;
 }
 
-void CWinProMoDoc::SetPluginInterface(CWinProMoPluginInterface* inter)
+void CWinProMoDoc::SetPluginInterface(ExtensionDLL* inter)
 {
-	if (!m_pluginInterface) {
-		m_pluginInterface = inter;
+	if (!m_pluginReference) {
+		m_pluginReference = inter;
 	}
+}
+
+BOOL CWinProMoDoc::IsFileExisting(const CString& path)
+{
+	DWORD attr = GetFileAttributes(path);
+	return (attr != INVALID_FILE_ATTRIBUTES) &&
+		!(attr & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 void CWinProMoDoc::CreateControlFactory()
 {
-	if (m_pluginInterface) {
+	if (m_pluginReference) {
 		if (m_fact) {
 			delete m_fact;
 		}
-		m_fact = m_pluginInterface->GetControlFactory();
+		m_fact = m_pluginReference->pluginInterface->GetControlFactory();
 	}
 }
 
@@ -139,73 +148,11 @@ CWinProMoDoc::~CWinProMoDoc()
 
 BOOL CWinProMoDoc::OnNewDocument()
 {
-	if (IsEmbedded())  // true for OLE insertion, false for standalone/new user doc
-    {
-		CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
-		pApp->m_init++;
-		if ((pApp->m_init)%2 == 1) {
-			return TRUE;
-		}
-        
-    }
 	
 	if (!COleServerDoc::OnNewDocument())
 		return FALSE;
 
-	CSelectDocumentTypeDlg dlg;
-	if (dlg.DoModal() == IDOK) {
-		CString selectedDocType = dlg.GetSelectedDocType();
-
-		SelectPluginInterface(selectedDocType);
-		CreateControlFactory();
-		CreateContainer();
-
-		CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
-
-		SetClipboardHandler(&pApp->m_clip);
-
-		if (!m_objs) {
-			return FALSE;
-		}
-
-		m_objs->Clear();
-		CWinProMoView* pView = NULL;
-		POSITION pos = GetFirstViewPosition();
-		if (pos != NULL) {
-			pView = (CWinProMoView*)GetNextView(pos);
-			if (pView) {
-				CClientDC dc(pView);
-
-				int screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-				int screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
-
-				CDC printDC;
-
-				// Canvas size equals to current page size
-				if (pView->GetPrinterDC(printDC)) {
-					int printResolutionX = printDC.GetDeviceCaps(LOGPIXELSX);
-					int printResolutionY = printDC.GetDeviceCaps(LOGPIXELSY);
-
-					int horzSize = round((double)printDC.GetDeviceCaps(HORZRES) * (double)screenResolutionX / printResolutionX);
-					int vertSize = round((double)printDC.GetDeviceCaps(VERTRES) * (double)screenResolutionY / printResolutionY);
-
-					m_objs->SetVirtualSize(CSize(horzSize - 1, vertSize - 1));
-
-					printDC.DeleteDC();
-				}
-				// No printer, so default to 8x11
-				else {
-					m_objs->SetVirtualSize(CSize(8 * screenResolutionX, 11 * screenResolutionX));
-				}
-
-			}
-		}
-
-		return TRUE;
-	}
-	
-	return FALSE;
-	
+	return TRUE;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -217,14 +164,14 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 	CStringArray data;
 
 	CFile* pFile = ar.GetFile();
-	BOOL isOle = (pFile == NULL);
-	
+	BOOL isOle = IsEmbedded();
+
 	if (ar.IsStoring())
 	{
 		if (m_objs) {
 			m_objs->Save(data);
 
-			if (isOle) {
+			if (isOle || ar.GetFile()->GetFilePath().IsEmpty()) {
 				data.Serialize(ar);
 
 			}
@@ -238,8 +185,7 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 		if (m_objs) {
 			m_objs->Clear();
 		}
-			
-		if (isOle) {
+		if (isOle && !IsFileExisting(ar.GetFile()->GetFilePath())) {
 			data.Serialize(ar);
 		}
 		else {
@@ -251,16 +197,15 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 			CString modelType;
 			CFileParser::GetHeaderFromString(data.GetAt(0), modelType);
 
-			SelectPluginInterface(modelType);
-			CreateControlFactory();
-			CreateContainer();
+			if (SelectPluginInterface(modelType)) {
 
-			CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
+				CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
 
-			SetClipboardHandler(&pApp->m_clip);
+				SetClipboardHandler(&pApp->m_clip);
 
-			if (m_fact && m_objs) {
-				m_objs->Load(data, *m_fact);
+				if (m_fact && m_objs) {
+					m_objs->Load(data, *m_fact);
+				}
 			}
 
 		}
@@ -298,9 +243,17 @@ void CWinProMoDoc::Dump(CDumpContext& dc) const
 
 BOOL CWinProMoDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	if (!COleServerDoc::OnOpenDocument(lpszPathName))
-		return FALSE;
+	BOOL isOle = IsEmbedded();
 
+	if (isOle && !IsFileExisting(lpszPathName)) 
+		return COleServerDoc::OnOpenDocument(lpszPathName);
+			
+	CFile file(lpszPathName, CFile::modeRead);
+	CArchive ar(&file, CArchive::load);
+	Serialize(ar);
+	if (isOle) {
+		SetModifiedFlag(TRUE);
+	}
 	return TRUE;
 }
 
@@ -314,3 +267,21 @@ COleServerItem* CWinProMoDoc::OnGetEmbeddedItem()
 	return pItem;
 }
 
+
+BOOL CWinProMoDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	BOOL isOle = IsEmbedded();
+
+	if (isOle || CString(lpszPathName).IsEmpty())
+		return COleServerDoc::OnSaveDocument(lpszPathName);
+
+	CFile file(lpszPathName, CFile::modeCreate | CFile::modeWrite);
+	CArchive ar(&file, CArchive::store);
+
+	Serialize(ar);   // your normal file serializer
+	ar.Close();
+	file.Close();
+
+	SetModifiedFlag(FALSE);
+	return TRUE;
+}

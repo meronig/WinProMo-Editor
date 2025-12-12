@@ -15,7 +15,7 @@
 #include "stdafx.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoEntityContainer.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoClipboardHandler.h"
-#include "../../WinProMo/src/WinProMoPluginInterface.h"
+#include "WinProMo.h"
 
 class CWinProMoOleSrvItem;
 
@@ -30,7 +30,7 @@ public:
 	CWinProMoOleSrvItem* GetEmbeddedItem()
 		{ return (CWinProMoOleSrvItem*)COleServerDoc::GetEmbeddedItem();}
 	
-	CWinProMoPluginInterface* m_pluginInterface;
+	ExtensionDLL* m_pluginReference;
 
 // Operations
 public:
@@ -38,11 +38,8 @@ public:
 	virtual CProMoEntityContainer* GetData();
 	virtual void SetClipboardHandler(CProMoClipboardHandler* clip);
 	
-	virtual void CreateControlFactory();
-	virtual void CreateContainer();
-	virtual void SelectPluginInterface(CString& docType);
-	virtual void SetPluginInterface(CWinProMoPluginInterface* inter);
-
+	virtual BOOL SelectPluginInterface(CString& docType);
+	
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWinProMoDoc)
@@ -52,6 +49,12 @@ public:
 protected:
 	virtual COleServerItem* OnGetEmbeddedItem();
 	virtual BOOL SaveModified();
+
+	virtual void CreateControlFactory();
+	virtual void CreateContainer();
+	virtual void SetPluginInterface(ExtensionDLL* inter);
+	virtual BOOL IsFileExisting(const CString& path);
+
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -84,6 +87,7 @@ protected:
 	CProMoControlFactory* m_fact;
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
 };
 
 #endif // _WINPROMODOC_H_

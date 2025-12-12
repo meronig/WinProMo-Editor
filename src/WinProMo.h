@@ -8,6 +8,9 @@
 // WinProMo.h : main header file for the WINPROMO application
 //
 
+#ifndef _WINPROMO_H_
+#define _WINPROMO_H_
+
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
 #endif
@@ -74,3 +77,4 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////
+#endif _WINPROMO_H_

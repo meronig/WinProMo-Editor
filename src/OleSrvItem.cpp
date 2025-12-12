@@ -13,6 +13,8 @@
 
 #include "WinProMoDoc.h"
 #include "OleSrvItem.h"
+#include "resource.h"
+#include "../../WinProMo/src/FileUtils/DibHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,48 +74,117 @@ BOOL CWinProMoOleSrvItem::OnGetExtent(DVASPECT dwDrawAspect, CSize& rSize)
 	CWinProMoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	// TODO: replace this arbitrary size
+	CProMoEntityContainer* objs = pDoc->GetData();
 
-	CSize logicalSize = pDoc->GetData()->GetVirtualSize();
+	if (objs) {
 
-	CClientDC dc(NULL);
+		CSize logicalSize = objs->GetVirtualSize();
 
-	// use a mapping mode based on logical units
-//  (we can't use MM_LOENGLISH because MM_LOENGLISH uses physical inches)
-	dc.SetMapMode(MM_ANISOTROPIC);
-	dc.SetViewportExt(dc.GetDeviceCaps(LOGPIXELSX), dc.GetDeviceCaps(LOGPIXELSY));
-	dc.SetWindowExt(100, -100);
-	dc.LPtoHIMETRIC(&logicalSize);
-	rSize = logicalSize;
+		CClientDC dc(NULL);
 
-	return TRUE;
+		// use a mapping mode based on logical units
+		// (we can't use MM_LOENGLISH because MM_LOENGLISH uses physical inches)
+		dc.SetMapMode(MM_ANISOTROPIC);
+		dc.SetViewportExt(dc.GetDeviceCaps(LOGPIXELSX), dc.GetDeviceCaps(LOGPIXELSY));
+		dc.SetWindowExt(100, -100);
+		dc.LPtoHIMETRIC(&logicalSize);
+		rSize = logicalSize;
+
+		return TRUE;
+	}
+	return FALSE;
 }
 
 BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 {
+	// TODO: merge this code with diagram export
+
 	CWinProMoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
+	CDibHelper dib;
+
 	CProMoEntityContainer* objs = pDoc->GetData();
 
-	CSize docSize = objs->GetVirtualSize();
+	if (objs) {
 
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	pDC->SetWindowOrg(0, 0);
-	pDC->SetWindowExt(docSize);
+		CSize docSize = objs->GetVirtualSize();
 
-	if (objs)
-	{
-		objs->UnselectAll();
-		ASSERT(true);
-		int count = 0;
-		CDiagramEntity* obj;
-		while ((obj = objs->GetAt(count++))) {
-			obj->DrawObject(pDC, 1.0);
+		pDC->SetMapMode(MM_ANISOTROPIC);
+		pDC->SetWindowOrg(0, 0);
+		pDC->SetWindowExt(docSize);
+
+		BOOL rasterize = TRUE;
+
+		if (rasterize) {
+			CDC memDC;
+			memDC.CreateCompatibleDC(NULL);
+
+			const double RASTER_RES = memDC.GetDeviceCaps(LOGPIXELSX);
+			const double MAX_DIM = 6000.0;
+
+			unsigned long scaling = RASTER_RES / memDC.GetDeviceCaps(LOGPIXELSX);
+			unsigned long hSize = docSize.cx;
+			unsigned long vSize = docSize.cy;
+
+			double maxScaleW = MAX_DIM / hSize;
+			double maxScaleH = MAX_DIM / vSize;
+			double maxScale = min(maxScaleW, maxScaleH);
+
+			if (scaling > maxScale)
+				scaling = maxScale;
+
+			dib.Create(docSize.cx * scaling, docSize.cy * scaling, 24);
+
+			HBITMAP hOld = (HBITMAP)memDC.SelectObject(dib.GetBitmap());
+
+			memDC.FillSolidRect(0, 0, docSize.cx * scaling, docSize.cy * scaling, RGB(255, 255, 255));
+
+
+			if (objs)
+			{
+				objs->UnselectAll();
+				int count = 0;
+				CDiagramEntity* obj;
+				while ((obj = objs->GetAt(count++))) {
+					obj->DrawObject(&memDC, scaling);
+				}
+			}
+
+			BITMAPINFOHEADER bih = *dib.GetBitmapInfoHeader();
+			BITMAPINFO bmi;
+			ZeroMemory(&bmi, sizeof(bmi));
+			bmi.bmiHeader = bih;
+
+			StretchDIBits(
+				*pDC,
+				0, 0, docSize.cx, docSize.cy,
+				0, 0, dib.GetWidth(), dib.GetHeight(),
+				dib.GetBits(),
+				&bmi,
+				DIB_RGB_COLORS,
+				SRCCOPY
+			);
+
+			memDC.SelectObject(hOld);
+
 		}
-	}
+		else {
+			if (objs)
+			{
+				objs->UnselectAll();
+				int count = 0;
+				CDiagramEntity* obj;
+				while ((obj = objs->GetAt(count++))) {
+					obj->DrawObject(pDC, 1.0);
+				}
+			}
+		}
 
-	return TRUE;
+		return TRUE;
+	}
+	return FALSE;
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////

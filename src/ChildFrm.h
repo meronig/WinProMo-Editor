@@ -36,11 +36,7 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	//CString docType;
-	ExtensionDLL* m_pluginInterface;
 	CObArray m_dynamicMenus;
-	HMENU m_hDefaultMenu;
-	HACCEL m_hAccel;
 
 // Generated message map functions
 protected:
@@ -50,7 +46,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	void CreateMenuEntry(CMenu* menu, CObArray* commandList, BOOL createTopMenus);
+	virtual void CreateMenuEntry(CMenu* menu, CObArray* commandList, BOOL createTopMenus);
+	virtual BOOL InitDocView();
 
 public:
 	afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
