@@ -114,7 +114,7 @@ BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 		pDC->SetWindowOrg(0, 0);
 		pDC->SetWindowExt(docSize);
 
-		BOOL rasterize = TRUE;
+		BOOL rasterize = FALSE;
 
 		if (rasterize) {
 			CDC memDC;
