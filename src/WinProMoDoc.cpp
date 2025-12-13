@@ -164,14 +164,13 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 	CStringArray data;
 
 	CFile* pFile = ar.GetFile();
-	BOOL isOle = IsEmbedded();
-
+	
 	if (ar.IsStoring())
 	{
 		if (m_objs) {
 			m_objs->Save(data);
 
-			if (isOle || ar.GetFile()->GetFilePath().IsEmpty()) {
+			if (ar.GetFile()->GetFilePath().IsEmpty()) {
 				data.Serialize(ar);
 
 			}
@@ -185,7 +184,7 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 		if (m_objs) {
 			m_objs->Clear();
 		}
-		if (isOle && !IsFileExisting(ar.GetFile()->GetFilePath())) {
+		if (!IsFileExisting(ar.GetFile()->GetFilePath())) {
 			data.Serialize(ar);
 		}
 		else {
@@ -245,7 +244,7 @@ BOOL CWinProMoDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	BOOL isOle = IsEmbedded();
 
-	if (isOle && !IsFileExisting(lpszPathName)) 
+	if (!IsFileExisting(lpszPathName)) 
 		return COleServerDoc::OnOpenDocument(lpszPathName);
 			
 	CFile file(lpszPathName, CFile::modeRead);
@@ -270,9 +269,7 @@ COleServerItem* CWinProMoDoc::OnGetEmbeddedItem()
 
 BOOL CWinProMoDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
-	BOOL isOle = IsEmbedded();
-
-	if (isOle || CString(lpszPathName).IsEmpty())
+	if (CString(lpszPathName).IsEmpty())
 		return COleServerDoc::OnSaveDocument(lpszPathName);
 
 	CFile file(lpszPathName, CFile::modeCreate | CFile::modeWrite);
