@@ -15,6 +15,7 @@
 #include <afxole.h>
 #include "WinProMo.h"
 #include "../../WinProMo/src/FileUtils/DibHelper.h"
+#include "../../WinProMo/src/ProMoEditor/ProMoRenderer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -401,6 +402,12 @@ void CWinProMoView::CreateCmdHandler()
 			m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
 			m_screenResolutionY = dc.GetDeviceCaps(LOGPIXELSY);
 
+			CProMoRenderer* renderer = pDoc->GetRenderer();
+
+			if (renderer) {
+				renderer->SetScreenResolution(m_screenResolutionX);
+			}
+
 			SetPageSize();
 
 			GetEditor()->SetModified(TRUE);
@@ -434,6 +441,69 @@ BOOL CWinProMoView::GetPrinterDC(CDC& dc)
 	return FALSE;
 }
 
+void CWinProMoView::CopyImageToClipboard()
+{
+	if (GetEditor()) {
+		CProMoRenderer* rend = GetDocument()->GetRenderer();
+		if (rend) {
+			// metafile HGLOBAL generation
+
+			CMetaFileDC	metaDC;
+			
+			metaDC.Create(NULL);
+			
+			rend->RenderSelectionAsMetafile(metaDC, 1.0);
+			
+			HMETAFILE hMeta = metaDC.Close();
+
+			if (!hMeta)
+				return;
+
+			HGLOBAL hGlobal = ::GlobalAlloc(GMEM_MOVEABLE, sizeof(METAFILEPICT));
+			if (!hGlobal)
+				return;
+
+			METAFILEPICT* pMfp =
+				(METAFILEPICT*)::GlobalLock(hGlobal);
+
+			if (!pMfp)
+			{
+				::GlobalFree(hGlobal);
+				return;
+			}
+
+			pMfp->mm = MM_TEXT;
+			pMfp->xExt = GetDocument()->GetData()->GetSelectionTotalSize().cx;
+			pMfp->yExt = GetDocument()->GetData()->GetSelectionTotalSize().cy;
+			pMfp->hMF = hMeta;
+
+			::GlobalUnlock(hGlobal);
+			
+			// DIB HGLOBAL generation
+
+			CDibHelper dib;
+			rend->RenderSelectionAsRaster(dib, 300);
+			
+			HGLOBAL hDib = dib.CreateDibGlobalForClipboard();
+			if (!hDib) return;
+
+			if (!::OpenClipboard(NULL))
+			{
+				::GlobalFree(hDib);
+				return;
+			}
+
+			::EmptyClipboard();
+			::SetClipboardData(CF_DIB, hDib);
+			::SetClipboardData(CF_METAFILEPICT, hGlobal);
+			::CloseClipboard();
+
+			DeleteMetaFile(hMeta);
+
+		}
+	}
+}
+
 void CWinProMoView::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
@@ -461,6 +531,7 @@ void CWinProMoView::OnButtonSnap()
 void CWinProMoView::OnEditCopy()
 {
 	if (GetEditor()) {
+		CopyImageToClipboard();
 		GetEditor()->Copy();
 	}
 
@@ -470,6 +541,7 @@ void CWinProMoView::OnEditCut()
 {
 
 	if (GetEditor()) {
+		CopyImageToClipboard();
 		GetEditor()->Cut();
 	}
 
@@ -1386,98 +1458,58 @@ void CWinProMoView::OnUpdatePluginCommand(CCmdUI* pCmdUI)
 
 void CWinProMoView::OnFileExport()
 {
+	
+	CFileDialog dlg(FALSE, _T("wmf"));
+	if (dlg.DoModal() == IDOK)
+	{
+		CProMoRenderer* rend = GetDocument()->GetRenderer();
+		CMetaFileDC	metaDC;
+		CMetaFileDC	metaDC2;
+
+		metaDC.Create(dlg.GetPathName());
+		metaDC2.Create(dlg.GetPathName()+CString(".d.wmf"));
+
+		CDiagramEntityContainer* objs = GetEditor()->GetDiagramEntityContainer();
+
+		rend->RenderSelectionAsMetafile(metaDC2, 1.0);
+		rend->RenderCanvasAsMetafile(metaDC, 1.0);
+		
+		HMETAFILE hmf = metaDC.Close();
+		DeleteMetaFile(hmf);
+		HMETAFILE hmf2 = metaDC2.Close();
+		DeleteMetaFile(hmf2);
+	}
+	
+	
+	/*
 	CFileDialog dlg(FALSE, _T("bmp"));
 	if (dlg.DoModal() == IDOK)
 	{
 		// Show hourglass cursor, as export may take several seconds
 		BeginWaitCursor();
 
+		CProMoRenderer rend;
+
 		// raster (bitmap) export
-		CDC memDC;
-		memDC.CreateCompatibleDC(NULL);
-
 		CDibHelper dib;
+		CDibHelper dibD;
 
-		CProMoEntityContainer* objs = GetDocument()->GetData();
-
-		CSize docSize = objs->GetVirtualSize();
-
-		const double RASTER_RES = 300.0;
-		const double MAX_DIM = 6000.0;
-
-		unsigned long scaling = RASTER_RES / memDC.GetDeviceCaps(LOGPIXELSX);
-		unsigned long hSize = docSize.cx;
-		unsigned long vSize = docSize.cy;
-
-		double maxScaleW = MAX_DIM / hSize;
-		double maxScaleH = MAX_DIM / vSize;
-		double maxScale = min(maxScaleW, maxScaleH);
-
-		if (scaling > maxScale)
-			scaling = maxScale;
-
-		dib.Create(docSize.cx * scaling, docSize.cy * scaling, 24);
-
-		HBITMAP hOld = (HBITMAP)memDC.SelectObject(dib.GetBitmap());
-
-		memDC.FillSolidRect(0, 0, docSize.cx * scaling, docSize.cy * scaling, RGB(255, 255, 255));
-
-
-		if (objs)
-		{
-			objs->UnselectAll();
-			int count = 0;
-			CDiagramEntity* obj;
-			while ((obj = objs->GetAt(count++))) {
-				obj->DrawObject(&memDC, scaling);
-			}
-		}
-
-		BITMAPINFOHEADER bih = *dib.GetBitmapInfoHeader();
-		BITMAPINFO bmi;
-		ZeroMemory(&bmi, sizeof(bmi));
-		bmi.bmiHeader = bih;
-
-		dib.SaveBMP(dlg.GetPathName());
-
-		memDC.SelectObject(hOld);
-
-		/*
-		// metafile export
-		CClientDC	dc(this);
-		CMetaFileDC	metaDC;
-		CRect rect(0, 0,
-			GetEditor()->GetVirtualSize().cx,
-			GetEditor()->GetVirtualSize().cy);
-
-		// Himetric rect
-		CRect r(0, 0, 8 * 2540, 11 * 2540);
-
-		metaDC.Create(dlg.GetPathName());
-		
 		CDiagramEntityContainer* objs = GetEditor()->GetDiagramEntityContainer();
 
-		CSize docSize = objs->GetVirtualSize();
+		rend.SetEntityContainer(dynamic_cast<CProMoEntityContainer*>(objs));
 
-		metaDC.SetMapMode(MM_ANISOTROPIC);
-		metaDC.SetWindowOrg(0, 0);
-		metaDC.SetWindowExt(docSize);
+		rend.SetScreenResolution(m_screenResolutionX);
 
-		if (objs)
-		{
-			objs->UnselectAll();
-			int count = 0;
-			CDiagramEntity* obj;
-			while ((obj = objs->GetAt(count++))) {
-				obj->DrawObject(&metaDC, 1.0001);
-			}
-		}
+		rend.RenderSelectionAsRaster(dibD, 300);
+		rend.RenderCanvasAsRaster(dib, 300);
+		
+		//invoke renderer
 
-		HMETAFILE hmf = metaDC.Close();
-		DeleteMetaFile(hmf);
-		*/
+		dib.SaveBMP(dlg.GetPathName());
+		dibD.SaveBMP(dlg.GetPathName()+CString(".d.bmp"));
 
 		// Restore normal cursor
 		EndWaitCursor();
-	}
+	} 
+	*/
 }

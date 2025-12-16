@@ -62,6 +62,7 @@ CWinProMoDoc::CWinProMoDoc()
 
 	m_objs = NULL;
 	m_fact = NULL;
+	m_renderer = NULL;
 	m_pluginReference = NULL;
 
 	EnableAutomation();
@@ -72,6 +73,10 @@ CWinProMoDoc::CWinProMoDoc()
 CProMoEntityContainer* CWinProMoDoc::GetData()
 {
 	return m_objs;
+}
+
+CProMoRenderer* CWinProMoDoc::GetRenderer() {
+	return m_renderer;
 }
 
 void CWinProMoDoc::SetClipboardHandler(CProMoClipboardHandler* clip)
@@ -91,6 +96,19 @@ void CWinProMoDoc::CreateContainer()
 	}
 }
 
+void CWinProMoDoc::CreateRenderer()
+{
+	if (m_pluginReference) {
+		if (m_renderer) {
+			delete m_renderer;
+		}
+		m_renderer = m_pluginReference->pluginInterface->GetRenderer();
+		if (m_renderer) {
+			m_renderer->SetEntityContainer(GetData());
+		}
+	}
+}
+
 BOOL CWinProMoDoc::SelectPluginInterface(CString& docType)
 {
 	
@@ -103,6 +121,7 @@ BOOL CWinProMoDoc::SelectPluginInterface(CString& docType)
 				m_pluginReference = plug;
 				CreateControlFactory();
 				CreateContainer();
+				CreateRenderer();
 				return TRUE;
 			}
 		}
@@ -143,6 +162,8 @@ CWinProMoDoc::~CWinProMoDoc()
 		delete m_objs;
 	if (m_fact)
 		delete m_fact;
+	if (m_renderer)
+		delete m_renderer;
 	AfxOleUnlockApp();
 }
 

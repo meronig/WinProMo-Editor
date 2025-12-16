@@ -34,6 +34,7 @@ public:
 
 protected:
 	virtual BOOL GetPrinterDC(CDC& dc);
+	virtual void CopyImageToClipboard();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

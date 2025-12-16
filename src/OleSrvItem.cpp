@@ -97,8 +97,6 @@ BOOL CWinProMoOleSrvItem::OnGetExtent(DVASPECT dwDrawAspect, CSize& rSize)
 
 BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 {
-	// TODO: merge this code with diagram export
-
 	CWinProMoDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
@@ -110,74 +108,40 @@ BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 
 		CSize docSize = objs->GetVirtualSize();
 
-		pDC->SetMapMode(MM_ANISOTROPIC);
-		pDC->SetWindowOrg(0, 0);
-		pDC->SetWindowExt(docSize);
+		CProMoRenderer* renderer = pDoc->GetRenderer();
 
+		if (renderer) {
+			renderer->RenderCanvasAsMetafile(*pDC, 1.0);
+		}
+
+		// this should be an application-level registry setting
 		BOOL rasterize = FALSE;
 
-		if (rasterize) {
-			CDC memDC;
-			memDC.CreateCompatibleDC(NULL);
+		if (renderer) {
+			if (rasterize) {
+				CDC memDC;
+				memDC.CreateCompatibleDC(NULL);
 
-			const double RASTER_RES = memDC.GetDeviceCaps(LOGPIXELSX);
-			const double MAX_DIM = 6000.0;
+				renderer->RenderCanvasAsRaster(dib, memDC.GetDeviceCaps(LOGPIXELSX));
 
-			unsigned long scaling = RASTER_RES / memDC.GetDeviceCaps(LOGPIXELSX);
-			unsigned long hSize = docSize.cx;
-			unsigned long vSize = docSize.cy;
+				BITMAPINFOHEADER bih = *dib.GetBitmapInfoHeader();
+				BITMAPINFO bmi;
+				ZeroMemory(&bmi, sizeof(bmi));
+				bmi.bmiHeader = bih;
 
-			double maxScaleW = MAX_DIM / hSize;
-			double maxScaleH = MAX_DIM / vSize;
-			double maxScale = min(maxScaleW, maxScaleH);
+				StretchDIBits(
+					*pDC,
+					0, 0, docSize.cx, docSize.cy,
+					0, 0, dib.GetWidth(), dib.GetHeight(),
+					dib.GetBits(),
+					&bmi,
+					DIB_RGB_COLORS,
+					SRCCOPY
+				);
 
-			if (scaling > maxScale)
-				scaling = maxScale;
-
-			dib.Create(docSize.cx * scaling, docSize.cy * scaling, 24);
-
-			HBITMAP hOld = (HBITMAP)memDC.SelectObject(dib.GetBitmap());
-
-			memDC.FillSolidRect(0, 0, docSize.cx * scaling, docSize.cy * scaling, RGB(255, 255, 255));
-
-
-			if (objs)
-			{
-				objs->UnselectAll();
-				int count = 0;
-				CDiagramEntity* obj;
-				while ((obj = objs->GetAt(count++))) {
-					obj->DrawObject(&memDC, scaling);
-				}
 			}
-
-			BITMAPINFOHEADER bih = *dib.GetBitmapInfoHeader();
-			BITMAPINFO bmi;
-			ZeroMemory(&bmi, sizeof(bmi));
-			bmi.bmiHeader = bih;
-
-			StretchDIBits(
-				*pDC,
-				0, 0, docSize.cx, docSize.cy,
-				0, 0, dib.GetWidth(), dib.GetHeight(),
-				dib.GetBits(),
-				&bmi,
-				DIB_RGB_COLORS,
-				SRCCOPY
-			);
-
-			memDC.SelectObject(hOld);
-
-		}
-		else {
-			if (objs)
-			{
-				objs->UnselectAll();
-				int count = 0;
-				CDiagramEntity* obj;
-				while ((obj = objs->GetAt(count++))) {
-					obj->DrawObject(pDC, 1.0);
-				}
+			else {
+				renderer->RenderCanvasAsMetafile(*pDC, 1.0);
 			}
 		}
 

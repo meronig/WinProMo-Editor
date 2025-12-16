@@ -36,6 +36,7 @@ public:
 public:
 	
 	virtual CProMoEntityContainer* GetData();
+	virtual CProMoRenderer* GetRenderer();
 	virtual void SetClipboardHandler(CProMoClipboardHandler* clip);
 	
 	virtual BOOL SelectPluginInterface(CString& docType);
@@ -52,6 +53,7 @@ protected:
 
 	virtual void CreateControlFactory();
 	virtual void CreateContainer();
+	virtual void CreateRenderer();
 	virtual void SetPluginInterface(ExtensionDLL* inter);
 	virtual BOOL IsFileExisting(const CString& path);
 
@@ -85,6 +87,7 @@ protected:
 
 	CProMoEntityContainer* m_objs;
 	CProMoControlFactory* m_fact;
+	CProMoRenderer* m_renderer;
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
