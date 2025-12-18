@@ -34,6 +34,7 @@ CDynamicPropertyDlg::CDynamicPropertyDlg(CWnd* pParent)
     : CDiagramPropertyDlg(CDynamicPropertyDlg::IDD, pParent), m_nextCtrlID(1000) // Resource ID = 0, since we don’t use a template
 {
     m_visible = FALSE;
+	m_nextCtrlID = 1000;
 }
 
 CDynamicPropertyDlg::~CDynamicPropertyDlg()
@@ -71,7 +72,7 @@ void CDynamicPropertyDlg::SetProperties(CDiagramEntity* entity)
     }
 
     if (pModel) {
-        for (int i = 0; i < pModel->GetPropertiesCount(); ++i)
+        for (unsigned int i = 0; i < pModel->GetPropertiesCount(); ++i)
         {
             prop = pModel->GetProperty(i);
             if (prop) {

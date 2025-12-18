@@ -288,7 +288,7 @@ void CPropertyScrollView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScroll
         m_nScrollPos = min(maxScroll, m_nScrollPos + pageSize);
         break;
     case SB_THUMBTRACK:
-        m_nScrollPos = min(maxScroll, max(0, nPos));
+        m_nScrollPos = min(maxScroll, (int)max(0, nPos));
         break;
     default:
         return;
@@ -331,7 +331,7 @@ BOOL CPropertyScrollView::PreTranslateMessage(MSG* pMsg)
         BOOL bShift = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
         CWnd* pFocus = GetFocus();
         
-        const int count = m_Controls.GetSize();
+        const int count = (int)m_Controls.GetSize();
         if (count == 0)
             return FALSE;
 

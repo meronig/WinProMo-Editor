@@ -35,6 +35,8 @@ protected:
 private:
 	CListBox m_listBox;
 	CString m_selectedDocType;
+	CStringArray m_documentTypes;
+
 public:
 	virtual BOOL OnInitDialog();
 };

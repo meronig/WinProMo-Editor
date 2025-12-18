@@ -13,10 +13,16 @@
 #define IDR_WINPROTYPE_SRVR_IP          130
 #define IDR_WINPROTYPE_SRVR_EMB         131
 #define IDP_OLE_INIT_FAILED             134
+#define IDD_EXPORT                      140
 #define IDC_EDIT_WIDTH                  1010
 #define IDC_EDIT_HEIGHT                 1011
 #define IDC_LIST_ELEMENTS               2000
 #define IDC_LIST_DOCUMENT_TYPES         2001
+#define IDC_RADIO_CANVAS                2002
+#define IDC_RADIO_DIAGRAM               2003
+#define IDC_RADIO_SELECTION             2004
+#define IDC_STATIC_RES                  2005
+#define IDC_COMBO_RES                   2006
 #define ID_VIEW_PROPERTIES              32771
 #define ID_VIEW_ELEMENTLIST             32772
 #define ID_ARRANGE_SNAPTOGRID           32774
@@ -74,9 +80,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32851
-#define _APS_NEXT_CONTROL_VALUE         2002
+#define _APS_NEXT_CONTROL_VALUE         2007
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

@@ -50,7 +50,9 @@ void CSelectDocumentTypeDlg::OnBnClickedOk()
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_LIST_DOCUMENT_TYPES);
 	int sel = pListBox->GetCurSel();
 	if (sel != LB_ERR) {
-		pListBox->GetText(sel, m_selectedDocType);
+		if ((int)pListBox->GetItemData(sel) < (int)m_documentTypes.GetSize()) {
+			m_selectedDocType = m_documentTypes.GetAt(pListBox->GetItemData(sel));
+		}
 	}
 	CDialog::OnOK();
 }
@@ -66,7 +68,9 @@ BOOL CSelectDocumentTypeDlg::OnInitDialog()
 	for (i = 0; i < pApp->m_Extensions.GetSize(); i++) {
 		ExtensionDLL* plug = dynamic_cast<ExtensionDLL*>(pApp->m_Extensions.GetAt(i));
 		if (plug) {
-			pListBox->AddString(plug->docType);
+			int lbIdx = pListBox->AddString(plug->descr);
+			int dtIdx = (int)m_documentTypes.Add(plug->docType);
+			pListBox->SetItemData(lbIdx, dtIdx);
 		}
 	}
 

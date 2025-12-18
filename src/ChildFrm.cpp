@@ -195,7 +195,8 @@ void CChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 
 	}
 	else {
-		for (int i = m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
+		int i = 0;
+		for (i = (int)m_dynamicMenus.GetSize() - 1; i >= 0; i--) {
 			CMenu* menu = dynamic_cast<CMenu*>(m_dynamicMenus.GetAt(i));
 			if (menu->m_hMenu)
 				menu->DestroyMenu();

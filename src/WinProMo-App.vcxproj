@@ -204,6 +204,7 @@
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="DynamicElementListDlg.h" />
     <ClInclude Include="DynamicPropertyDlg.h" />
+    <ClInclude Include="ExportDlg.h" />
     <ClInclude Include="GridSizeDialog.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PropertyScrollFrame.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DynamicElementListDlg.cpp" />
     <ClCompile Include="DynamicPropertyDlg.cpp" />
+    <ClCompile Include="ExportDlg.cpp" />
     <ClCompile Include="GridSizeDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PropertyScrollFrame.cpp" />

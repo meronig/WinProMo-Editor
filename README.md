@@ -1,6 +1,6 @@
 # WinProMo-Editor
 
-WinProMo-Editor is a plugin-based visual editor that makes use of the WinProMo library.
+WinProMo-Editor is a plugin-based visual editor that makes use of the WinProMo library. WinProMo-Editor can act as an OLE server, and it allows to export diagrams as Windows Metafile or Windows Bitmap, both to file and to the clipboard.
 
 # Compiling
 
@@ -14,7 +14,7 @@ Before compiling this project, make sure that:
 
 * You already compiled the WinProMo library and, optionally, any other plugin module.
 
-To compile WinProMo-Editor, you will need Microsoft Visual C++, the Microsoft Foundation Classes library, and Microsoft Windows SDK. The freely available Community version of Visual Studio 2022 can satisfy these dependencies.
+To compile WinProMo-Editor, you will need Microsoft (R) Visual C++, the Microsoft Foundation Classes library, and Microsoft Windows SDK. The freely available Community version of Visual Studio can satisfy these dependencies.
 
 A Microsoft Visual C++ 2022 project file (WinProMo-App.vcxproj) is included in this repository. For older versions of Microsoft Visual C++, you will have to create your own project file. WinProMo-Editor can be compiled with Microsoft Visual C++ 4.0 onwards (really!). Depending on the version of Microsoft Visual C++ being used, the resulting DLL can run under Microsoft Windows 95/NT 3.51 up to Windows 11, on any supported target architecture. However, WinProMo-Editor has been extensively tested only under Microsoft Windows 10/11 x64.
 

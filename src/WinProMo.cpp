@@ -221,10 +221,12 @@ void CWinProMoApp::LoadExtensions() {
 					CString docType = pluginInterface->GetDocumentType();
 					CObArray* elements = pluginInterface->GetElements();
 					UINT docID = pluginInterface->GetDocumentID();
+					CString descr = pluginInterface->GetDocumentDescr();
 					ExtensionDLL* ext = new ExtensionDLL;
 					ext->hModule = hModule;
 					ext->docType = docType;
 					ext->docID = docID;
+					ext->descr = descr;
 					ext->elements = elements;
 					ext->pluginInterface = pluginInterface;
 					m_Extensions.Add(ext);
@@ -246,8 +248,8 @@ void CWinProMoApp::UnloadExtensions()
 {
 	// Clear the clipboard to avoid lingering objects
 	m_clip.ClearPaste();
-
-	for (int i = m_Extensions.GetSize() - 1; i >= 0; i--) {
+	int i = 0;
+	for (i = (int)m_Extensions.GetSize() - 1; i >= 0; i--) {
 		ExtensionDLL* ext = static_cast<ExtensionDLL*>(m_Extensions.GetAt(i));
 		if (ext) {
 			ext->pluginInterface->Destroy();

@@ -46,10 +46,6 @@ protected:
     UINT m_nextCtrlID;
     CPropertyScrollView m_ScrollView;  // the scroll container
 
-    
-    int m_nScrollPos;      // Current vertical scroll position
-    int m_nTotalHeight;    // Total height of all controls
-
     // Called when a control changes - updates property value and triggers redraw
     afx_msg void OnPropertyControlChanged(UINT ctrlID);
 

@@ -174,7 +174,7 @@ protected:
 
 protected:
 	// Private data
-	CWinProMoCmdHandler*	m_cmdHandler;
+	CProMoCmdHandler*	m_cmdHandler;
 	int				m_screenResolutionX;
 	int				m_screenResolutionY;
 	int				m_nHorzPages;

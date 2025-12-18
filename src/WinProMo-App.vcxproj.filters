@@ -60,6 +60,9 @@
     <ClInclude Include="SelectDocumentTypeDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExportDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinProMo.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectDocumentTypeDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

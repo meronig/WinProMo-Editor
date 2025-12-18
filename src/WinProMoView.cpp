@@ -16,6 +16,7 @@
 #include "WinProMo.h"
 #include "../../WinProMo/src/FileUtils/DibHelper.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoRenderer.h"
+#include "ExportDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -138,8 +139,8 @@ BEGIN_MESSAGE_MAP(CWinProMoView, CView)
 	ON_UPDATE_COMMAND_UI(ID_WIDTH_4PT, &CWinProMoView::OnUpdateWidth4pt)
 	ON_COMMAND_RANGE(1000, 10000, OnPluginCommand)
 	ON_UPDATE_COMMAND_UI_RANGE(1000, 10000, OnUpdatePluginCommand)
-		ON_COMMAND(ID_FILE_EXPORT, &CWinProMoView::OnFileExport)
-		END_MESSAGE_MAP()
+	ON_COMMAND(ID_FILE_EXPORT, &CWinProMoView::OnFileExport)
+	END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoView construction/destruction
@@ -1458,58 +1459,69 @@ void CWinProMoView::OnUpdatePluginCommand(CCmdUI* pCmdUI)
 
 void CWinProMoView::OnFileExport()
 {
-	
-	CFileDialog dlg(FALSE, _T("wmf"));
+	CString filter = _T("Windows Metafile (*.wmf)|*.wmf|"
+		"Windows Bitmap (*.bmp)|*.bmp|");
+	CFileDialog dlg(FALSE, _T("wmf"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
 	if (dlg.DoModal() == IDOK)
 	{
-		CProMoRenderer* rend = GetDocument()->GetRenderer();
-		CMetaFileDC	metaDC;
-		CMetaFileDC	metaDC2;
+		CExportDlg exportDlg;
+		CString ext = dlg.GetFileExt();
 
-		metaDC.Create(dlg.GetPathName());
-		metaDC2.Create(dlg.GetPathName()+CString(".d.wmf"));
-
-		CDiagramEntityContainer* objs = GetEditor()->GetDiagramEntityContainer();
-
-		rend->RenderSelectionAsMetafile(metaDC2, 1.0);
-		rend->RenderCanvasAsMetafile(metaDC, 1.0);
+		if (ext == CString(_T("wmf")))
+			exportDlg.SetExportMode(EXPORT_METAFILE);
+		else
+			exportDlg.SetExportMode(EXPORT_RASTER);
 		
-		HMETAFILE hmf = metaDC.Close();
-		DeleteMetaFile(hmf);
-		HMETAFILE hmf2 = metaDC2.Close();
-		DeleteMetaFile(hmf2);
-	}
-	
-	
-	/*
-	CFileDialog dlg(FALSE, _T("bmp"));
-	if (dlg.DoModal() == IDOK)
-	{
+		exportDlg.SetSelectionAvailable(GetEditor()->IsAnyObjectSelected());
+		if (exportDlg.DoModal() != IDOK)
+			return;
+
 		// Show hourglass cursor, as export may take several seconds
 		BeginWaitCursor();
-
-		CProMoRenderer rend;
-
-		// raster (bitmap) export
-		CDibHelper dib;
-		CDibHelper dibD;
-
-		CDiagramEntityContainer* objs = GetEditor()->GetDiagramEntityContainer();
-
-		rend.SetEntityContainer(dynamic_cast<CProMoEntityContainer*>(objs));
-
-		rend.SetScreenResolution(m_screenResolutionX);
-
-		rend.RenderSelectionAsRaster(dibD, 300);
-		rend.RenderCanvasAsRaster(dib, 300);
 		
-		//invoke renderer
-
-		dib.SaveBMP(dlg.GetPathName());
-		dibD.SaveBMP(dlg.GetPathName()+CString(".d.bmp"));
-
+		CProMoRenderer* rend = GetDocument()->GetRenderer();
+		
+		if (exportDlg.GetExportMode() == EXPORT_RASTER)
+		{
+			// raster (bitmap) export
+			CDibHelper dib;
+			switch (exportDlg.GetExportElement())
+			{
+				case EXPORT_SELECTION:
+					rend->RenderSelectionAsRaster(dib, exportDlg.GetResolution());
+					break;
+				case EXPORT_CANVAS:
+					rend->RenderCanvasAsRaster(dib, exportDlg.GetResolution());
+					break;
+				default:
+					rend->RenderDiagramAsRaster(dib, exportDlg.GetResolution());
+			}
+			dib.SaveBMP(dlg.GetPathName());
+			
+		}
+		else if (exportDlg.GetExportMode() == EXPORT_METAFILE)
+		{
+			// vector (metafile) export
+			CMetaFileDC	metaDC;
+			metaDC.Create(dlg.GetPathName());
+			switch (exportDlg.GetExportElement())
+			{
+			case EXPORT_SELECTION:
+				rend->RenderSelectionAsMetafile(metaDC, exportDlg.GetZoom());
+				break;
+			case EXPORT_CANVAS:
+				rend->RenderCanvasAsMetafile(metaDC, exportDlg.GetZoom());
+				break;
+			default:
+				rend->RenderDiagramAsMetafile(metaDC, exportDlg.GetZoom());
+			}
+			HMETAFILE hmf = metaDC.Close();
+			DeleteMetaFile(hmf);
+			
+		}
+		
 		// Restore normal cursor
 		EndWaitCursor();
-	} 
-	*/
+	}
+
 }

@@ -26,6 +26,7 @@ class ExtensionDLL : public CObject
 public:
 	HMODULE hModule;
 	CString docType;
+	CString descr;
 	UINT docID;
 	CObArray* elements;
 	CWinProMoPluginInterface* pluginInterface;
