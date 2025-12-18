@@ -638,18 +638,18 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 269, 114
+IDD_ABOUTBOX DIALOGEX 0, 0, 345, 106
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About WinProMo"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
-    LTEXT           "WinProMo Version 1.0",IDC_STATIC,41,7,119,8,SS_NOPREFIX
+    LTEXT           "WinProMo Version 2.0",IDC_STATIC,41,7,119,8,SS_NOPREFIX
     LTEXT           "Copyright © 2025 Technical University of Denmark",IDC_STATIC,41,25,185,11
-    DEFPUSHBUTTON   "OK",IDOK,230,7,32,14,WS_GROUP
-    LTEXT           "This computer program makes use of the CDiagramEditor public domain souce code by Johan Rosengren, Abstrakt Mekanik AB: http://www.abstraktmekanik.se/freebies.html",IDC_STATIC,41,58,182,32
+    DEFPUSHBUTTON   "OK",IDOK,306,7,32,14,WS_GROUP
+    LTEXT           "This computer program makes use of the CDiagramEditor public domain souce code by Johan Rosengren, Abstrakt Mekanik AB: http://www.abstraktmekanik.se/freebies.html http://www.codeproject.com/articles/CDiagramEditor-DIY-vector-and-dialog-editor",IDC_STATIC,41,58,297,41
     LTEXT           "Written by Giovanni Meroni, PhD (giom@dtu.dk)",IDC_STATIC,41,42,152,8
-    LTEXT           "Published under MIT license terms",IDC_STATIC,41,99,109,8
+    LTEXT           "Published under MIT license terms",IDC_STATIC,41,91,109,8
 END
 
 IDD_DIALOG_PROPERTY_DYNAMIC DIALOGEX 0, 0, 186, 94
@@ -729,8 +729,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 2,0,0,1
+ PRODUCTVERSION 2,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -745,13 +745,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "WINPROMO MFC Application"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "CompanyName", "Technical University of Denmark"
+            VALUE "FileDescription", "WinProMo MFC Application"
+            VALUE "FileVersion", "2.0.0.1"
             VALUE "InternalName", "WINPROMO"
-            VALUE "LegalCopyright", "Copyright © 1925"
+            VALUE "LegalCopyright", "Copyright © 2025 Technical University of Denmark"
             VALUE "OriginalFilename", "WINPROMO.EXE"
-            VALUE "ProductName", "WINPROMO Application"
-            VALUE "ProductVersion", "1, 0, 0, 1"
+            VALUE "ProductName", "WinProMo Application"
+            VALUE "ProductVersion", "2.0.0.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -772,10 +773,10 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 262
+        RIGHTMARGIN, 338
         VERTGUIDE, 41
         TOPMARGIN, 7
-        BOTTOMMARGIN, 107
+        BOTTOMMARGIN, 99
     END
 
     IDD_DIALOG_PROPERTY_DYNAMIC, DIALOG
