@@ -16,10 +16,12 @@
 #include "../../WinProMo/src/ProMoEditor/ProMoEntityContainer.h"
 #include "../../WinProMo/src/ProMoEditor/ProMoClipboardHandler.h"
 #include "WinProMo.h"
+#include "../../WinProMo/src/Automation/ProMoAppChildAuto.h"
+#include "../../WinProMo/src/Automation/ProMoAutomationHost.h"
 
 class CWinProMoOleSrvItem;
 
-class CWinProMoDoc : public COleServerDoc
+class CWinProMoDoc : public COleServerDoc, public IProMoAutomationHost
 {
 protected: // create from serialization only
 	CWinProMoDoc();
@@ -31,7 +33,7 @@ public:
 		{ return (CWinProMoOleSrvItem*)COleServerDoc::GetEmbeddedItem();}
 	
 	ExtensionDLL* m_pluginReference;
-
+	
 // Operations
 public:
 	
@@ -47,11 +49,12 @@ public:
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
+
 protected:
 	virtual COleServerItem* OnGetEmbeddedItem();
 	virtual BOOL SaveModified();
 
-	virtual void CreateControlFactory();
+	//virtual void CreateControlFactory();
 	virtual void CreateContainer();
 	virtual void CreateRenderer();
 	virtual void SetPluginInterface(ExtensionDLL* inter);
@@ -62,6 +65,10 @@ protected:
 // Implementation
 public:
 	virtual ~CWinProMoDoc();
+	
+	virtual CProMoAppChildAuto* GetAutomationObject();
+	virtual void ReleaseAutomationObject();
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -86,8 +93,10 @@ protected:
 	DECLARE_INTERFACE_MAP()
 
 	CProMoEntityContainer* m_objs;
-	CProMoControlFactory* m_fact;
 	CProMoRenderer* m_renderer;
+	CProMoAppChildAuto* m_autoObject;
+
+
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);

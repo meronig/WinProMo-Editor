@@ -13,6 +13,7 @@
 #include "WinProMo.h"
 #include "../../WinProMo/src/FileUtils/FileParser.h"
 #include "OleSrvItem.h"
+#include "Automation/ProMoDiagramAuto.h"
 #include <windows.h>
 
 #ifdef _DEBUG
@@ -61,9 +62,9 @@ CWinProMoDoc::CWinProMoDoc()
 	EnableCompoundFile();
 
 	m_objs = NULL;
-	m_fact = NULL;
 	m_renderer = NULL;
 	m_pluginReference = NULL;
+	m_autoObject = NULL;
 
 	EnableAutomation();
 
@@ -119,7 +120,6 @@ BOOL CWinProMoDoc::SelectPluginInterface(CString& docType)
 		if (plug) {
 			if (plug->docType == docType) {
 				m_pluginReference = plug;
-				CreateControlFactory();
 				CreateContainer();
 				CreateRenderer();
 				return TRUE;
@@ -146,25 +146,33 @@ BOOL CWinProMoDoc::IsFileExisting(const CString& path)
 		!(attr & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-void CWinProMoDoc::CreateControlFactory()
-{
-	if (m_pluginReference) {
-		if (m_fact) {
-			delete m_fact;
-		}
-		m_fact = m_pluginReference->pluginInterface->GetControlFactory();
-	}
-}
-
 CWinProMoDoc::~CWinProMoDoc()
 {
 	if (m_objs)
 		delete m_objs;
-	if (m_fact)
-		delete m_fact;
 	if (m_renderer)
 		delete m_renderer;
 	AfxOleUnlockApp();
+
+	ReleaseAutomationObject();
+}
+
+CProMoAppChildAuto* CWinProMoDoc::GetAutomationObject()
+{
+	if (!m_autoObject) {
+		m_autoObject = new CProMoDiagramAuto();
+		m_autoObject->Initialize(this);
+	}
+	return m_autoObject;
+}
+
+void CWinProMoDoc::ReleaseAutomationObject()
+{
+	if (m_autoObject) {
+		CProMoAppChildAuto* autoObject = m_autoObject;
+		m_autoObject = NULL;
+		autoObject->Detach();
+	}
 }
 
 BOOL CWinProMoDoc::OnNewDocument()
@@ -223,8 +231,8 @@ void CWinProMoDoc::Serialize(CArchive& ar)
 
 				SetClipboardHandler(&pApp->m_clip);
 
-				if (m_fact && m_objs) {
-					m_objs->Load(data, *m_fact);
+				if (m_objs) {
+					m_objs->Load(data);
 				}
 			}
 

@@ -411,7 +411,7 @@ void CWinProMoView::CreateCmdHandler()
 
 			SetPageSize();
 
-			GetEditor()->SetModified(TRUE);
+			GetEditor()->SetModified(FALSE);
 
 		}
 		else

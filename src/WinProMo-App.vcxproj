@@ -94,8 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,8 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,8 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,8 +175,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -207,6 +203,8 @@
     <ClInclude Include="ExportDlg.h" />
     <ClInclude Include="GridSizeDialog.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Automation\ProMoDiagramAuto.h" />
+    <ClInclude Include="Automation\ProMoDiagramsAuto.h" />
     <ClInclude Include="PropertyScrollFrame.h" />
     <ClInclude Include="PropertyScrollView.h" />
     <ClInclude Include="Resource.h" />
@@ -214,6 +212,7 @@
     <ClInclude Include="SelectDocumentTypeDlg.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="WinProMo.h" />
+    <ClInclude Include="Automation\ProMoAppAuto.h" />
     <ClInclude Include="WinProMoDoc.h" />
     <ClInclude Include="WinProMoView.h" />
   </ItemGroup>
@@ -225,12 +224,15 @@
     <ClCompile Include="ExportDlg.cpp" />
     <ClCompile Include="GridSizeDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Automation\ProMoDiagramAuto.cpp" />
+    <ClCompile Include="Automation\ProMoDiagramsAuto.cpp" />
     <ClCompile Include="PropertyScrollFrame.cpp" />
     <ClCompile Include="PropertyScrollView.cpp" />
     <ClCompile Include="OleSrvItem.cpp" />
     <ClCompile Include="SelectDocumentTypeDlg.cpp" />
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="WinProMo.cpp" />
+    <ClCompile Include="Automation\ProMoAppAuto.cpp" />
     <ClCompile Include="WinProMoDoc.cpp" />
     <ClCompile Include="WinProMoView.cpp" />
   </ItemGroup>

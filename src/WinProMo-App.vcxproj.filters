@@ -63,6 +63,15 @@
     <ClInclude Include="ExportDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Automation\ProMoAppAuto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Automation\ProMoDiagramAuto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Automation\ProMoDiagramsAuto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinProMo.cpp">
@@ -108,6 +117,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExportDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Automation\ProMoAppAuto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Automation\ProMoDiagramAuto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Automation\ProMoDiagramsAuto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
