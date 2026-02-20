@@ -5,7 +5,7 @@
 	Author :		Giovanni Meroni
 
    ========================================================================*/
-// SrvrItem.cpp : implementation of the COleTestSrvrItem class
+// SrvrItem.cpp : implementation of the CWinProMoOleSrvItem class
 //
 
 #include "stdafx.h"
@@ -22,8 +22,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+BEGIN_MESSAGE_MAP(CWinProMoOleSrvItem, COleServerItem)
+	//{{AFX_MSG_MAP(CWinProMoOleSrvItem)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
 /////////////////////////////////////////////////////////////////////////////
-// COleTestSrvrItem implementation
+// CWinProMoOleSrvItem implementation
 
 IMPLEMENT_DYNAMIC(CWinProMoOleSrvItem, COleServerItem)
 
@@ -41,7 +46,7 @@ CWinProMoOleSrvItem::~CWinProMoOleSrvItem()
 
 void CWinProMoOleSrvItem::Serialize(CArchive& ar)
 {
-	// COleTestSrvrItem::Serialize will be called by the framework if
+	// CWinProMoOleSrvItem::Serialize will be called by the framework if
 	//  the item is copied to the clipboard.  This can happen automatically
 	//  through the OLE callback OnGetClipboardData.  A good default for
 	//  the embedded item is simply to delegate to the document's Serialize
@@ -152,7 +157,7 @@ BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// COleTestSrvrItem diagnostics
+// CWinProMoOleSrvItem diagnostics
 
 #ifdef _DEBUG
 void CWinProMoOleSrvItem::AssertValid() const

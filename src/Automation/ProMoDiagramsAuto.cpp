@@ -117,6 +117,19 @@ CProMoDiagramAutoAbs* CProMoDiagramsAuto::OpenDiagram(const CString& fileName)
 	return GetDiagramAutoObject(pDoc);
 }
 
+void CProMoDiagramsAuto::GetOpenDiagrams(CStringArray& diagramList)
+{
+	CWinProMoApp* pApp = (CWinProMoApp*)AfxGetApp();
+	ASSERT(pApp);
+	ASSERT(pApp->m_docTemplate);
+	POSITION posDoc = pApp->m_docTemplate->GetFirstDocPosition();
+	while (posDoc)
+	{
+		CDocument* pDoc = pApp->m_docTemplate->GetNextDoc(posDoc);
+		diagramList.Add(pDoc->GetTitle());
+	}
+}
+
 
 BEGIN_MESSAGE_MAP(CProMoDiagramsAuto, CProMoDiagramsAutoAbs)
 	//{{AFX_MSG_MAP(CProMoDiagramsAuto)

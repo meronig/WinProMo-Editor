@@ -22,10 +22,12 @@ public:
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(COleTestSrvrItem)
-	public:
+	//{{AFX_VIRTUAL(CWinProMoOleSrvItem)
+public:
 	virtual BOOL OnDraw(CDC* pDC, CSize& rSize);
 	virtual BOOL OnGetExtent(DVASPECT dwDrawAspect, CSize& rSize);
+protected:
+	virtual void Serialize(CArchive& ar);   // overridden for document i/o
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -36,8 +38,15 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+
+	// Generated message map functions
 protected:
-	virtual void Serialize(CArchive& ar);   // overridden for document i/o
+	//{{AFX_MSG(CWinProMoOleSrvItem)
+		// NOTE - the ClassWizard will add and remove member functions here.
+		//    DO NOT EDIT what you see in these blocks of generated code !
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
 };
 
 /////////////////////////////////////////////////////////////////////////////

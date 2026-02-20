@@ -33,8 +33,8 @@ NULL=nul
 # Begin Project
 # PROP Target_Last_Scanned "WinProMo - Win32 Debug"
 CPP=cl.exe
-MTL=mktyplib.exe
 RSC=rc.exe
+MTL=mktyplib.exe
 
 !IF  "$(CFG)" == "WinProMo - Win32 Release"
 
@@ -966,21 +966,35 @@ DEP_CPP_PROMOD=\
 	"..\..\WinProMo\src\Automation\ProMoDiagramAutoAbs.h"\
 	"..\..\WinProMo\src\Automation\ProMoDiagramsAutoAbs.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramClipboardHandler.h"\
+	"..\..\WinProMo\src\DiagramEditor\DiagramEditor.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramEntity.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramEntityContainer.h"\
+	"..\..\WinProMo\src\DiagramEditor\DiagramLine.h"\
+	"..\..\WinProMo\src\DiagramEditor\DiagramMenu.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramPropertyDlg.h"\
+	"..\..\WinProMo\src\DiagramEditor\HitParams.h"\
+	"..\..\WinProMo\src\DiagramEditor\HitParamsRect.h"\
 	"..\..\WinProMo\src\DiagramEditor\Tokenizer.h"\
 	"..\..\WinProMo\src\DiagramEditor\UndoItem.h"\
+	"..\..\WinProMo\src\FileUtils\DibHelper.h"\
 	"..\..\WinProMo\src\FileUtils\VariantWrapper.h"\
 	"..\..\WinProMo\src\GeometryUtils\DoublePoint.h"\
 	"..\..\WinProMo\src\GeometryUtils\DoubleRect.h"\
+	"..\..\WinProMo\src\GeometryUtils\GeometryHelper.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoBlockModel.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoBlockView.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoClipboardHandler.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoCmdHandler.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoControlFactory.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoEdgeView.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoEditor.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoEntity.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoEntityContainer.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoLabel.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoModel.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoProperty.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoPropertyOwner.h"\
+	"..\..\WinProMo\src\ProMoEditor\ProMoRenderer.h"\
 	"..\..\WinProMo\src\ProMoEditor\ProMoView.h"\
 	"..\..\WinProMo\src\StdAfx.h"\
 	"..\..\WinProMo\src\WinProMoPluginInterface.h"\
@@ -1011,6 +1025,7 @@ DEP_CPP_PROMOA=\
 	"..\..\WinProMo\src\Automation\ProMoAppChildAuto.h"\
 	"..\..\WinProMo\src\Automation\ProMoAutomationHost.h"\
 	"..\..\WinProMo\src\Automation\ProMoDiagramAutoAbs.h"\
+	"..\..\WinProMo\src\Automation\ProMoDiagramsAutoAbs.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramClipboardHandler.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramEditor.h"\
 	"..\..\WinProMo\src\DiagramEditor\DiagramEntity.h"\
@@ -1052,8 +1067,6 @@ DEP_CPP_PROMOA=\
 	".\Automation\ProMoDiagramsAuto.h"\
 	
 NODEP_CPP_PROMOA=\
-	"..\WinProMo\src\Automation\ProMoAppAutoAbs.h"\
-	"..\WinProMo\src\Automation\ProMoDiagramsAutoAbs.h"\
 	".\Automation\stdafx.h"\
 	
 

@@ -37,9 +37,10 @@ CWinProMoDoc* CProMoDiagramAuto::GetDocument()
 	return pDoc;
 }
 
-CProMoEntityContainer* CProMoDiagramAuto::GetContainer() {
+CProMoEntityContainer* CProMoDiagramAuto::GetContainer() 
+{
 	ThrowIfDetached();
-
+	
 	if (GetDocument()) {
 		return GetDocument()->GetData();
 	}
@@ -83,9 +84,9 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProMoDiagramAuto, CProMoDiagramAutoAbs)
 	//{{AFX_DISPATCH_MAP(CProMoDiagramAuto)
-	DISP_FUNCTION(CProMoDiagramAutoAbs, "ClosePrintPreview", ClosePrintPreview, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramAutoAbs, "PrintPreview", PrintPreview, VT_EMPTY, VTS_NONE)
-	///}}AFX_DISPATCH_MAP
+	DISP_FUNCTION(CProMoDiagramAuto, "ClosePrintPreview", ClosePrintPreview, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION(CProMoDiagramAuto, "PrintPreview", PrintPreview, VT_EMPTY, VTS_NONE)
+	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()
 
 // Note: we add support for IID_IProMoDiagramAuto to support typesafe binding

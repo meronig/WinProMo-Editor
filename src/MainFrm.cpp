@@ -34,10 +34,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_MESSAGE(WM_SELECTION_CHANGED, &CMainFrame::OnSelectionChanged)
 	ON_COMMAND(ID_VIEW_PROPERTIES, &CMainFrame::OnViewProperties)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_PROPERTIES, &CMainFrame::OnUpdateViewProperties)
-	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_VIEW_ELEMENTLIST, &CMainFrame::OnViewElementlist)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ELEMENTLIST, &CMainFrame::OnUpdateViewElementlist)
 	ON_WM_CLOSE()
+	//}}AFX_MSG_MAP
+	
 END_MESSAGE_MAP()
 
 static UINT indicators[] =

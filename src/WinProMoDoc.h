@@ -26,7 +26,7 @@ class CWinProMoDoc : public COleServerDoc, public IProMoAutomationHost
 protected: // create from serialization only
 	CWinProMoDoc();
 	DECLARE_DYNCREATE(CWinProMoDoc)
-
+	
 // Attributes
 public:
 	CWinProMoOleSrvItem* GetEmbeddedItem()
@@ -42,25 +42,26 @@ public:
 	virtual void SetClipboardHandler(CProMoClipboardHandler* clip);
 	
 	virtual BOOL SelectPluginInterface(CString& docType);
-	
+
+protected:
+	virtual void CreateContainer();
+	virtual void CreateRenderer();
+	virtual void SetPluginInterface(ExtensionDLL* inter);
+	virtual BOOL IsFileExisting(const CString& path);
+
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWinProMoDoc)
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-
 protected:
 	virtual COleServerItem* OnGetEmbeddedItem();
 	virtual BOOL SaveModified();
-
-	//virtual void CreateControlFactory();
-	virtual void CreateContainer();
-	virtual void CreateRenderer();
-	virtual void SetPluginInterface(ExtensionDLL* inter);
-	virtual BOOL IsFileExisting(const CString& path);
-
 	//}}AFX_VIRTUAL
+
+
 
 // Implementation
 public:
@@ -85,7 +86,25 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	// Generated OLE dispatch map functions
-	//{{AFX_DISPATCH(COleTestDoc)
+	//{{AFX_DISPATCH(CWinProMoDoc)
+	afx_msg LPDISPATCH GetElements();
+	afx_msg void SetElements(LPDISPATCH newValue);
+	afx_msg long GetWidth();
+	afx_msg void SetWidth(long nNewValue);
+	afx_msg long GetHeight();
+	afx_msg void SetHeight(long nNewValue);
+	afx_msg LPDISPATCH GetLabels();
+	afx_msg void SetLabels(LPDISPATCH newValue);
+	afx_msg VARIANT GetCreatableElementTypes();
+	afx_msg void SetCreatableElementTypes(const VARIANT FAR& newValue);
+	afx_msg void SaveAs(const VARIANT FAR& fileName);
+	afx_msg void Activate();
+	afx_msg void Close(BOOL saveChanges);
+	afx_msg void Redo(short times);
+	afx_msg void Save(BOOL noPrompt);
+	afx_msg void Undo(BOOL times);
+	afx_msg BSTR Path();
+	afx_msg BSTR Type();
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_DISPATCH

@@ -46,6 +46,7 @@ protected:
 	virtual CProMoDiagramAutoAbs* GetDiagramAutoObject(const CString& name);
 	virtual CProMoDiagramAutoAbs* AddNewDiagram(const CString& type);
 	virtual CProMoDiagramAutoAbs* OpenDiagram(const CString& fileName);
+	virtual void GetOpenDiagrams(CStringArray& diagramList);
 
 
 	// Generated message map functions

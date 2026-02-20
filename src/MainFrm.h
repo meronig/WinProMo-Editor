@@ -58,17 +58,18 @@ protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnSelectionChanged(WPARAM wParam, LPARAM lParam);
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-	
-public:
 	afx_msg void OnViewProperties();
 	afx_msg void OnUpdateViewProperties(CCmdUI* pCmdUI);
 	afx_msg void OnViewElementlist();
 	afx_msg void OnUpdateViewElementlist(CCmdUI* pCmdUI);
 	afx_msg void OnClose();
+	// NOTE - the ClassWizard will add and remove member functions here.
+		//    DO NOT EDIT what you see in these blocks of generated code!
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+	
+public:
+	
 };
 
 /////////////////////////////////////////////////////////////////////////////

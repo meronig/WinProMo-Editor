@@ -48,6 +48,12 @@ CProMoDiagramsAutoAbs* CProMoAppAuto::CreateDiagramsAutoObject()
 	return new CProMoDiagramsAuto();
 }
 
+CProMoDiagramAutoAbs* CProMoAppAuto::GetActiveDiagram()
+{
+	// TODO: implement this method
+	return NULL;
+}
+
 CProMoAppAuto::~CProMoAppAuto()
 {
 

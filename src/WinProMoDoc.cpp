@@ -35,8 +35,21 @@ BEGIN_MESSAGE_MAP(CWinProMoDoc, COleServerDoc)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CWinProMoDoc, COleServerDoc)
-	//{{AFX_DISPATCH_MAP(COleTestDoc)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
+	//{{AFX_DISPATCH_MAP(CWinProMoDoc)
+	DISP_PROPERTY_EX(CWinProMoDoc, "Elements", GetElements, SetElements, VT_DISPATCH)
+	DISP_PROPERTY_EX(CWinProMoDoc, "Width", GetWidth, SetWidth, VT_I4)
+	DISP_PROPERTY_EX(CWinProMoDoc, "Height", GetHeight, SetHeight, VT_I4)
+	DISP_PROPERTY_EX(CWinProMoDoc, "Labels", GetLabels, SetLabels, VT_DISPATCH)
+	DISP_PROPERTY_EX(CWinProMoDoc, "CreatableElementTypes", GetCreatableElementTypes, SetCreatableElementTypes, VT_VARIANT)
+	DISP_FUNCTION(CWinProMoDoc, "SaveAs", SaveAs, VT_EMPTY, VTS_VARIANT)
+	DISP_FUNCTION(CWinProMoDoc, "Activate", Activate, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION(CWinProMoDoc, "Close", Close, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CWinProMoDoc, "Redo", Redo, VT_EMPTY, VTS_I2)
+	DISP_FUNCTION(CWinProMoDoc, "Save", Save, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CWinProMoDoc, "Undo", Undo, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CWinProMoDoc, "Path", Path, VT_BSTR, VTS_NONE)
+	DISP_FUNCTION(CWinProMoDoc, "Type", Type, VT_BSTR, VTS_NONE)
+	// NOTE - the ClassWizard will add and remove mapping macros here.
 		//      DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()
@@ -66,7 +79,8 @@ CWinProMoDoc::CWinProMoDoc()
 	m_pluginReference = NULL;
 	m_autoObject = NULL;
 
-	EnableAutomation();
+	//Automation for embedded objects is disabled until support for in-place activation is introduced.
+	//EnableAutomation();
 
 	AfxOleLockApp();
 }
@@ -311,3 +325,175 @@ BOOL CWinProMoDoc::OnSaveDocument(LPCTSTR lpszPathName)
 	SetModifiedFlag(FALSE);
 	return TRUE;
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// CWinProMoDoc message handlers
+
+void CWinProMoDoc::Activate()
+{
+	// TODO: Add your dispatch handler code here
+
+}
+
+void CWinProMoDoc::Redo(short times)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->Redo(times);
+	}
+}
+
+void CWinProMoDoc::Undo(BOOL times)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->Undo(times);
+	}
+}
+
+BSTR CWinProMoDoc::Path()
+{
+	CString strResult;
+	
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		return autoObject->Path();
+	}
+
+	return strResult.AllocSysString();
+}
+
+BSTR CWinProMoDoc::Type()
+{
+	CString strResult;
+	
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		return autoObject->Type();
+	}
+
+	return strResult.AllocSysString();
+}
+
+LPDISPATCH CWinProMoDoc::GetElements()
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->GetElements();
+	}
+
+	return NULL;
+}
+
+void CWinProMoDoc::SetElements(LPDISPATCH newValue)
+{
+	SetNotSupported();
+}
+
+long CWinProMoDoc::GetWidth()
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		return autoObject->GetWidth();
+	}
+
+	return 0;
+}
+
+void CWinProMoDoc::SetWidth(long nNewValue)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->SetWidth(nNewValue);
+	}
+}
+
+long CWinProMoDoc::GetHeight()
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		return autoObject->GetHeight();
+	}
+
+	return 0;
+}
+
+void CWinProMoDoc::SetHeight(long nNewValue)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->SetHeight(nNewValue);
+	}
+}
+
+void CWinProMoDoc::Save(BOOL noPrompt)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->Save(noPrompt);
+	}
+}
+
+void CWinProMoDoc::SaveAs(const VARIANT FAR& fileName)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->SaveAs(fileName);
+	}
+}
+
+void CWinProMoDoc::Close(BOOL saveChanges)
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	
+	POSITION pos = GetFirstViewPosition();
+	if (!pos)
+		return;
+
+	CView* pView = GetNextView(pos);
+	if (!pView)
+		return;
+
+	CFrameWnd* pFrame = pView->GetParentFrame();
+	if (!pFrame)
+		return;
+
+	pFrame->PostMessage(WM_CLOSE);
+}
+
+LPDISPATCH CWinProMoDoc::GetLabels()
+{
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		autoObject->GetLabels();
+	}
+
+	return NULL;
+}
+
+void CWinProMoDoc::SetLabels(LPDISPATCH newValue)
+{
+	SetNotSupported();
+
+}
+
+VARIANT CWinProMoDoc::GetCreatableElementTypes()
+{
+	VARIANT vaResult;
+	VariantInit(&vaResult);
+
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
+	if (autoObject) {
+		return autoObject->GetCreatableElementTypes();
+	}
+
+	return vaResult;
+}
+
+void CWinProMoDoc::SetCreatableElementTypes(const VARIANT FAR& newValue)
+{
+	SetNotSupported();
+
+}
+
+
