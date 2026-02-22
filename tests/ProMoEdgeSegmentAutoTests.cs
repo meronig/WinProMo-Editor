@@ -13,11 +13,11 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Segment_Geometry()
         {
-            Assert.AreEqual(211, segmentX1.Left);
-            Assert.AreEqual(163, segmentX1.Top);
-            Assert.AreEqual(210, segmentX1.Right);
-            Assert.AreEqual(275, segmentX1.Bottom);
-            Assert.AreEqual(-1, segmentX1.Width);
+            Assert.AreEqual(211, segmentX1.StartX);
+            Assert.AreEqual(163, segmentX1.StartY);
+            Assert.AreEqual(210, segmentX1.EndX);
+            Assert.AreEqual(275, segmentX1.EndY);
+            Assert.AreEqual(1, segmentX1.Width);
             Assert.AreEqual(112, segmentX1.Height);
         }
 

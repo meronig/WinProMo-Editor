@@ -25,10 +25,10 @@ namespace WinProMo_App.Tests
             Assert.IsNotNull(segments, "Segments collection is null");
             dynamic segment = segments[0];
             Assert.IsNotNull(segment, "Segment at position 0 is null");
-            Assert.AreEqual(211, segment.Left);
+            Assert.AreEqual(211, segment.StartX);
             segment = segments[1];
             Assert.IsNotNull(segment, "Segment at position 1 is null");
-            Assert.AreEqual(210, segment.Left);
+            Assert.AreEqual(210, segment.StartX);
 
         }
     }
