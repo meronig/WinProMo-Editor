@@ -68,10 +68,10 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProMoAppAuto, CProMoAppAutoAbs)
 	//{{AFX_DISPATCH_MAP(CProMoAppAuto)
-	//DISP_PROPERTY_EX(CProMoAppAuto, "Diagrams", GetDiagrams, SetDiagrams, VT_DISPATCH)
-	//DISP_FUNCTION(CProMoAppAuto, "GetCreatableDiagramTypes", GetCreatableDiagramTypes, VT_EMPTY, VTS_PVARIANT)
-	//DISP_FUNCTION(CProMoAppAuto, "ActiveDocument", ActiveDiagram, VT_DISPATCH, VTS_NONE)
-	//DISP_FUNCTION(CProMoAppAuto, "Quit", Quit, VT_EMPTY, VTS_BOOL)
+	DISP_PROPERTY_EX(CProMoAppAuto, "Diagrams", GetDiagrams, SetDiagrams, VT_DISPATCH)
+	DISP_PROPERTY_EX(CProMoAppAuto, "CreatableDiagramTypes", GetCreatableDiagramTypes, SetCreatableDiagramTypes, VT_VARIANT)
+	DISP_FUNCTION(CProMoAppAuto, "ActiveDocument", ActiveDiagram, VT_DISPATCH, VTS_NONE)
+	DISP_FUNCTION(CProMoAppAuto, "Quit", Quit, VT_EMPTY, VTS_BOOL)
 	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()
 
@@ -79,16 +79,16 @@ END_DISPATCH_MAP()
 //  from VBA.  This IID must match the GUID that is attached to the 
 //  dispinterface in the .ODL file.
 
-// {358D499B-FD35-11F0-9740-000C2976A615}
+// {358D4990-FD35-11F0-9740-000C2976A615}
 static const IID IID_IWinProMoAuto =
-{ 0x358d499b, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+{ 0x358d4990, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
 
 BEGIN_INTERFACE_MAP(CProMoAppAuto, CProMoAppAutoAbs)
 	INTERFACE_PART(CProMoAppAuto, IID_IWinProMoAuto, Dispatch)
 END_INTERFACE_MAP()
 
-// {358D499C-FD35-11F0-9740-000C2976A615}
-IMPLEMENT_OLECREATE(CProMoAppAuto, "WINPROMO.WINPROMOAPP", 0x358d499c, 0xfd35, 0x11f0, 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15)
+// {458D4990-FD35-11F0-9740-000C2976A615}
+IMPLEMENT_OLECREATE(CProMoAppAuto, "WinProMo.Application", 0x458d4990, 0xfd35, 0x11f0, 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15)
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoAuto message handlers

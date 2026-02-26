@@ -117,19 +117,39 @@ BOOL CWinProMoApp::InitInstance()
 
 	AddDocTemplate(m_docTemplate);
 
-	// Register file extension
-	HKEY hKey;
-	CString key = _T(".wpd");
-	LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
-		REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
-	if (lRes == ERROR_SUCCESS)
-	{
-		RegSetValueEx(hKey, NULL, 0, REG_SZ,
-			(BYTE*)_T("WinProMo.Document"),
-			(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
-		RegCloseKey(hKey);
-	}
+	LPCTSTR lpCmdLine = m_lpCmdLine;
 
+	if (lpCmdLine != NULL && *lpCmdLine != 0)
+	{
+		if (_tcsicmp(lpCmdLine, _T("/RegServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-RegServer")) == 0)
+		{
+			RegisterTypeLibrary(FALSE);
+			
+			// Register file extension
+			HKEY hKey;
+			CString key = _T(".wpd");
+			LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
+				REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
+			if (lRes == ERROR_SUCCESS)
+			{
+				RegSetValueEx(hKey, NULL, 0, REG_SZ,
+					(BYTE*)_T("WinProMo.Document"),
+					(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
+				RegCloseKey(hKey);
+			}
+
+			return FALSE;   // do not start UI
+		}
+
+		if (_tcsicmp(lpCmdLine, _T("/UnregServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-UnregServer")) == 0)
+		{
+			RegisterTypeLibrary(TRUE);
+			return FALSE;
+		}
+	}
+	
 	// Connect the COleTemplateServer to the document template.
 	//  The COleTemplateServer creates new documents on behalf
 	//  of requesting OLE containers by using information
@@ -176,28 +196,59 @@ BOOL CWinProMoApp::InitInstance()
 	return TRUE;
 }
 
+void CWinProMoApp::RegisterTypeLibrary(BOOL deregister)
+{
+	TCHAR tlbPath[MAX_PATH];
+	// TODO: generate TLB file from exe name without extension
+	CreatePath(_T("WinProMo.tlb"), tlbPath);
+
+	USES_CONVERSION;  // required for T2OLE
+	LPOLESTR lpszOlePath = T2OLE(tlbPath);
+
+	ITypeLib* pTypeLib = NULL;
+
+	if (deregister) {
+		//UnRegisterTypeLib(LIBID_WinProMoApp, 1, 0, LOCALE_USER_DEFAULT, SYS_WIN32);
+	}
+	else {
+		if (SUCCEEDED(LoadTypeLib(lpszOlePath, &pTypeLib)))
+		{
+			RegisterTypeLib(pTypeLib, lpszOlePath, NULL);
+			pTypeLib->Release();
+		}
+	}
+
+	//test
+
+	CreatePath(_T("WinProMo-App.tlb"), tlbPath);
+
+	//USES_CONVERSION;  // required for T2OLE
+	lpszOlePath = T2OLE(tlbPath);
+
+	pTypeLib = NULL;
+
+	if (deregister) {
+		//UnRegisterTypeLib(LIBID_WinProMoApp, 1, 0, LOCALE_USER_DEFAULT, SYS_WIN32);
+	}
+	else {
+		if (SUCCEEDED(LoadTypeLib(lpszOlePath, &pTypeLib)))
+		{
+			RegisterTypeLib(pTypeLib, lpszOlePath, NULL);
+			pTypeLib->Release();
+		}
+	}
+
+}
+
 //Custom, clean up once everything works
 void CWinProMoApp::LoadExtensions() {
-	TCHAR exePath[MAX_PATH];
-	GetModuleFileName(NULL, exePath, MAX_PATH);
 
-	// Remove the executable name to get the directory path
-	TCHAR* lastSlash = _tcsrchr(exePath, _T('\\'));
-	if (lastSlash) *(lastSlash + 1) = _T('\0');
-
-	// Append "*.dll" to search in that directory
 	TCHAR searchPath[MAX_PATH];
-#if _MSC_VER < 1200
-	_stprintf(searchPath, _T("%s*.dll"), exePath);
-#else
-	_stprintf_s(searchPath, _T("%s*.dll"), exePath);
-#endif
-
-	//std::wcout << L"Searching for DLLs in: " << searchPath << std::endl;
+	CreatePath(_T("*.dll"), searchPath);
 
 	WIN32_FIND_DATA findFileData;
 	HANDLE hFind = FindFirstFile(searchPath, &findFileData);
-
+	
 	if (hFind == INVALID_HANDLE_VALUE) {
 		DWORD err = GetLastError();
 		return;
@@ -206,11 +257,8 @@ void CWinProMoApp::LoadExtensions() {
 	do {
 		//create full path
 		TCHAR fullFilePath[MAX_PATH];
-#if _MSC_VER < 1200
-		_stprintf(fullFilePath, _T("%s%s"), exePath, findFileData.cFileName);
-#else
-		_stprintf_s(fullFilePath, _T("%s%s"), exePath, findFileData.cFileName);
-#endif
+
+		CreatePath(findFileData.cFileName, fullFilePath);
 		HMODULE hModule = LoadLibrary(fullFilePath);
 		if (hModule) {
 			CreatePluginInstanceFunc createPluginInterface = (CreatePluginInstanceFunc)GetProcAddress(hModule, "CreatePluginInstance");
@@ -273,6 +321,24 @@ void CWinProMoApp::DeleteCommands(CObArray* commands)
 		}
 		delete commands;
 	}
+}
+
+void CWinProMoApp::CreatePath(const TCHAR* fileName, TCHAR* fullPath)
+{
+	TCHAR exePath[MAX_PATH];
+	GetModuleFileName(NULL, exePath, MAX_PATH);
+
+	// Remove the executable name to get the directory path
+	TCHAR* lastSlash = _tcsrchr(exePath, _T('\\'));
+	if (lastSlash) *(lastSlash + 1) = _T('\0');
+
+	// Append "*.dll" to search in that directory
+#if _MSC_VER < 1200
+	_stprintf(fullPath, fileName, exePath);
+#else
+	_stprintf_s(fullPath, MAX_PATH, _T("%s%s"), exePath, fileName);
+#endif
+
 }
 
 /////////////////////////////////////////////////////////////////////////////

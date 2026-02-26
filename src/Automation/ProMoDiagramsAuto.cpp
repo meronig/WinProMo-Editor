@@ -139,6 +139,18 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProMoDiagramsAuto, CProMoDiagramsAutoAbs)
 	//{{AFX_DISPATCH_MAP(CProMoDiagramsAuto)
+	DISP_PROPERTY_EX(CProMoDiagramsAuto, "IDs", GetIDs, SetIDs, VT_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Count", Count, VT_I2, VTS_NONE)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Add", Add, VT_DISPATCH, VTS_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Open", Open, VT_DISPATCH, VTS_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Save", Save, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Close", Close, VT_EMPTY, VTS_BOOL)
+	// Common to CProMoAppChild
+	DISP_FUNCTION(CProMoDiagramAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
+	DISP_FUNCTION(CProMoDiagramsAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
+	DISP_PROPERTY_PARAM_ID(CProMoDiagramsAuto, "Item", 0, GetItem, SetItem, VT_DISPATCH, VTS_VARIANT)
+	DISP_DEFVALUE(CProMoDiagramsAuto, "Item")
+
 	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()
 
@@ -146,9 +158,9 @@ END_DISPATCH_MAP()
 //  from VBA.  This IID must match the GUID that is attached to the 
 //  dispinterface in the .ODL file.
 
-// {358D49A0-FD35-11F0-9740-000C2976A615}
+// {358D4992-FD35-11F0-9740-000C2976A615}
 static const IID IID_IProMoDiagramsAuto =
-{ 0x358d49a0, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+{ 0x358d4992, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
 
 BEGIN_INTERFACE_MAP(CProMoDiagramsAuto, CProMoDiagramsAutoAbs)
 	INTERFACE_PART(CProMoDiagramsAuto, IID_IProMoDiagramsAuto, Dispatch)

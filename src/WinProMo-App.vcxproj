@@ -105,6 +105,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>$(OutDir)$(ProjectName).tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -130,6 +131,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>$(OutDir)$(ProjectName).tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -159,6 +161,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>$(OutDir)$(ProjectName).tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -188,6 +191,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>$(OutDir)$(ProjectName).tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -253,6 +257,9 @@
     <Image Include="res\WinProMo-AppDoc.ico" />
     <Image Include="res\WinProMo.ico" />
     <Image Include="res\WinProMoDoc.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="WinProMo.odl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

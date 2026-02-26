@@ -1,0 +1,130 @@
+[
+	uuid(C0161100-08C3-11F1-9744-000C2976A615),
+	version(1.0),
+	helpstring("WinProMo Application")
+]
+library WinProMo
+{
+
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	
+	//importlib("WinProMo.tlb");
+	// TODO: make it a relative path
+	importlib("C:\Users\giom\source\repos\WinProMo\x64\Debug\WinProMo.tlb");
+	
+	// Primary dispatch interface for CProMoAppAuto
+	[uuid(358D4990-FD35-11F0-9740-000C2976A615)]
+		dispinterface IApplication
+	{
+
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CProMoAppAuto)
+			[id(1)] IDispatch* Diagrams;
+			[id(2)] VARIANT CreatableDiagramTypes;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CProMoAppAuto)
+			[id(3)] IDispatch* ActiveDocument();
+			[id(4)] boolean Quit(boolean saveChanges);
+			//}}AFX_ODL_METHOD
+			
+	};
+
+	//  Class information for CProMoAppAuto
+	[uuid(458D4990-FD35-11F0-9740-000C2976A615)]
+		coclass Application
+	{
+		[default] dispinterface IApplication;
+	};
+
+	//  Primary dispatch interface for CProMoDiagramAuto
+	[uuid(358D4991-FD35-11F0-9740-000C2976A615)]
+		dispinterface IDiagram
+	{
+
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CProMoDiagramAuto)
+			[id(1)] IDispatch* Elements;
+			[id(2)] long Width;
+			[id(3)] long Height;
+			[id(4)] IDispatch* Labels;
+			[id(5)] VARIANT CreatableElementTypes;
+			//}}AFX_ODL_PROP
+			// from IProMoDiagramAutoAbs
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CProMoDiagramAuto)
+			[id(6)] void SaveAs(VARIANT fileName);
+			[id(7)] void Activate();
+			[id(8)] void Close(boolean saveChanges);
+			[id(9)] void Undo(short times);
+			[id(10)] void Redo(short times);
+			[id(11)] void Save(boolean noPrompt);
+			[id(12)] BSTR Path();
+			[id(13)] BSTR Type();
+			[id(14)] void ClosePrintPreview();
+			[id(15)] void PrintPreview();
+			// from IProMoAppChildAuto
+			[id(16)] IDispatch* Application();
+			//}}AFX_ODL_METHOD
+			
+	};
+
+	//  Class information for CProMoAppAuto
+	[uuid(458D4991-FD35-11F0-9740-000C2976A615)]
+		coclass Diagram
+	{
+		[default] dispinterface IDiagram;
+	};
+
+	//  Primary dispatch interface for CProMoDiagramsAuto
+
+	[uuid(358D4992-FD35-11F0-9740-000C2976A615)]
+		dispinterface IDiagrams
+	{
+
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CProMoDiagramsAuto)
+			[id(1)] VARIANT IDs;
+			//}}AFX_ODL_PROP
+			// from IProMoDiagramsAutoAbs
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CProMoDiagramsAuto)
+			[id(2)] short Count();
+			[id(3)] IDispatch* Add(VARIANT documentType);
+			[id(4)] IDispatch* Open(VARIANT fileName);
+			[id(5)] void Save(boolean noPrompt);
+			[id(6)] void Close(boolean saveChanges);
+			// from IProMoAppChildAuto
+			[id(7)] IDispatch* Application(); 
+			[id(8), propget] IDispatch* Item(VARIANT item);
+			[id(8), propputref] void Item(VARIANT item, IDispatch* newValue);
+			[id(0), propget] IDispatch* _Item(VARIANT item);
+			[id(0), propputref] void _Item(VARIANT item, IDispatch* newValue);
+			//}}AFX_ODL_METHOD
+			
+	};
+
+	//  Class information for CProMoDiagramsAuto
+	[uuid(458D4992-FD35-11F0-9740-000C2976A615)]
+		coclass Diagrams
+	{
+		[default] dispinterface IDiagrams;
+
+	};
+}

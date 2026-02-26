@@ -59,9 +59,12 @@ public:
 	//}}AFX_VIRTUAL
 
 protected:
+	void RegisterTypeLibrary(BOOL deregister);
 	void LoadExtensions();
 	void UnloadExtensions();
 	void DeleteCommands(CObArray* commands);
+
+	void CreatePath(const TCHAR* fileName, TCHAR* fullPath);
 
 // Implementation
 
