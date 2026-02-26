@@ -117,39 +117,6 @@ BOOL CWinProMoApp::InitInstance()
 
 	AddDocTemplate(m_docTemplate);
 
-	LPCTSTR lpCmdLine = m_lpCmdLine;
-
-	if (lpCmdLine != NULL && *lpCmdLine != 0)
-	{
-		if (_tcsicmp(lpCmdLine, _T("/RegServer")) == 0 ||
-			_tcsicmp(lpCmdLine, _T("-RegServer")) == 0)
-		{
-			RegisterTypeLibrary(FALSE);
-			
-			// Register file extension
-			HKEY hKey;
-			CString key = _T(".wpd");
-			LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
-				REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
-			if (lRes == ERROR_SUCCESS)
-			{
-				RegSetValueEx(hKey, NULL, 0, REG_SZ,
-					(BYTE*)_T("WinProMo.Document"),
-					(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
-				RegCloseKey(hKey);
-			}
-
-			return FALSE;   // do not start UI
-		}
-
-		if (_tcsicmp(lpCmdLine, _T("/UnregServer")) == 0 ||
-			_tcsicmp(lpCmdLine, _T("-UnregServer")) == 0)
-		{
-			RegisterTypeLibrary(TRUE);
-			return FALSE;
-		}
-	}
-	
 	// Connect the COleTemplateServer to the document template.
 	//  The COleTemplateServer creates new documents on behalf
 	//  of requesting OLE containers by using information
@@ -189,6 +156,39 @@ BOOL CWinProMoApp::InitInstance()
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 	
+	LPCTSTR lpCmdLine = m_lpCmdLine;
+
+	if (lpCmdLine != NULL && *lpCmdLine != 0)
+	{
+		if (_tcsicmp(lpCmdLine, _T("/RegServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-RegServer")) == 0)
+		{
+			RegisterTypeLibrary(FALSE);
+
+			// Register file extension
+			HKEY hKey;
+			CString key = _T(".wpd");
+			LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
+				REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
+			if (lRes == ERROR_SUCCESS)
+			{
+				RegSetValueEx(hKey, NULL, 0, REG_SZ,
+					(BYTE*)_T("WinProMo.Document"),
+					(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
+				RegCloseKey(hKey);
+			}
+
+			return FALSE;   // do not start UI
+		}
+
+		if (_tcsicmp(lpCmdLine, _T("/UnregServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-UnregServer")) == 0)
+		{
+			RegisterTypeLibrary(TRUE);
+			return FALSE;
+		}
+	}
+
 	// The main window has been initialized, so show and update it.
 	m_pMainFrame->ShowWindow(m_nCmdShow);
 	m_pMainFrame->UpdateWindow();

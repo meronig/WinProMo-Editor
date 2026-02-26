@@ -3,15 +3,13 @@
 	version(1.0),
 	helpstring("WinProMo Application")
 ]
-library WinProMo
+library WinProMo_App
 {
 
 	importlib("stdole32.tlb");
 	importlib("stdole2.tlb");
 	
-	//importlib("WinProMo.tlb");
-	// TODO: make it a relative path
-	importlib("C:\Users\giom\source\repos\WinProMo\x64\Debug\WinProMo.tlb");
+	importlib("WinProMo.tlb");
 	
 	// Primary dispatch interface for CProMoAppAuto
 	[uuid(358D4990-FD35-11F0-9740-000C2976A615)]
@@ -128,3 +126,44 @@ library WinProMo
 
 	};
 }
+
+
+//  Primary dispatch interface for CWinProMoDoc (for embedding)
+[uuid(E107DFA0-FD35-11F0-9740-000C2976A615)]
+dispinterface IDocument
+{
+
+	properties:
+		// NOTE - ClassWizard will maintain property information here.
+		//    Use extreme caution when editing this section.
+		//{{AFX_ODL_PROP(CProMoDiagramAuto)
+		[id(1)] IDispatch * Elements;
+		[id(2)] long Width;
+		[id(3)] long Height;
+		[id(4)] IDispatch* Labels;
+		[id(5)] VARIANT CreatableElementTypes;
+		//}}AFX_ODL_PROP
+		// from IProMoDiagramAutoAbs
+
+	methods:
+		// NOTE - ClassWizard will maintain method information here.
+		//    Use extreme caution when editing this section.
+		//{{AFX_ODL_METHOD(CProMoDiagramAuto)
+		[id(6)] void SaveAs(VARIANT fileName);
+		[id(7)] void Activate();
+		[id(8)] void Close(boolean saveChanges);
+		[id(9)] void Undo(short times);
+		[id(10)] void Redo(short times);
+		[id(11)] void Save(boolean noPrompt);
+		[id(12)] BSTR Path();
+		[id(13)] BSTR Type();
+		//}}AFX_ODL_METHOD
+
+};
+
+//  Class information for CProMoAppAuto
+[uuid(E107DF9E-FD35-11F0-9740-000C2976A615)]
+coclass Document
+{
+	[default] dispinterface IDocument;
+};

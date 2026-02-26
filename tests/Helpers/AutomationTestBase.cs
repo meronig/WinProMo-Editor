@@ -10,7 +10,7 @@ namespace WinProMo_App.Tests.Helpers
     {
         protected dynamic CreateApplication()
         {
-            Type t = Type.GetTypeFromProgID("WINPROMO.WINPROMOAPP");
+            Type t = Type.GetTypeFromProgID("WinProMo.Application");
             Assert.IsNotNull(t, "ProgID not registered.");
 
             return Activator.CreateInstance(t);

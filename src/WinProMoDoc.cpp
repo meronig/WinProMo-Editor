@@ -44,9 +44,9 @@ BEGIN_DISPATCH_MAP(CWinProMoDoc, COleServerDoc)
 	DISP_FUNCTION(CWinProMoDoc, "SaveAs", SaveAs, VT_EMPTY, VTS_VARIANT)
 	DISP_FUNCTION(CWinProMoDoc, "Activate", Activate, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION(CWinProMoDoc, "Close", Close, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CWinProMoDoc, "Undo", Undo, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CWinProMoDoc, "Redo", Redo, VT_EMPTY, VTS_I2)
 	DISP_FUNCTION(CWinProMoDoc, "Save", Save, VT_EMPTY, VTS_BOOL)
-	DISP_FUNCTION(CWinProMoDoc, "Undo", Undo, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CWinProMoDoc, "Path", Path, VT_BSTR, VTS_NONE)
 	DISP_FUNCTION(CWinProMoDoc, "Type", Type, VT_BSTR, VTS_NONE)
 	// NOTE - the ClassWizard will add and remove mapping macros here.
@@ -79,8 +79,7 @@ CWinProMoDoc::CWinProMoDoc()
 	m_pluginReference = NULL;
 	m_autoObject = NULL;
 
-	//Automation for embedded objects is disabled until support for in-place activation is introduced.
-	//EnableAutomation();
+	EnableAutomation();
 
 	AfxOleLockApp();
 }
@@ -379,9 +378,8 @@ LPDISPATCH CWinProMoDoc::GetElements()
 {
 	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
 	if (autoObject) {
-		autoObject->GetElements();
+		return autoObject->GetElements();
 	}
-
 	return NULL;
 }
 
@@ -465,7 +463,7 @@ LPDISPATCH CWinProMoDoc::GetLabels()
 {
 	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
 	if (autoObject) {
-		autoObject->GetLabels();
+		return autoObject->GetLabels();
 	}
 
 	return NULL;
