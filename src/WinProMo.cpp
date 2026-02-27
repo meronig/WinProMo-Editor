@@ -68,9 +68,19 @@ CWinProMoApp theApp;
 // This identifier was generated to be statistically unique for your app.
 // You may change it if you prefer to choose a specific identifier.
 
-// {E107DF9E-CD1A-11F0-9739-000C2976A615}
+// {558D4991-FD35-11F0-9740-000C2976A615}
 static const CLSID clsid =
-{ 0xe107df9e, 0xcd1a, 0x11f0, { 0x97, 0x39, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+{ 0x558d4991, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+
+// ID for type libraries
+// {C0161100-FD35-11F0-9740-000C2976A615}
+static const IID appID =
+{ 0xC0161100, 0xfd35, 0x11f0, { 0x97, 0x40, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+
+// {07738135-08C3-11F1-9744-000C2976A615}
+static const IID libID =
+{ 0x07738135, 0x8c3, 0x11f1, { 0x97, 0x44, 0x0, 0xc, 0x29, 0x76, 0xa6, 0x15 } };
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoApp initialization
@@ -152,43 +162,12 @@ BOOL CWinProMoApp::InitInstance()
 	m_server.UpdateRegistry(OAT_INPLACE_SERVER);
 	COleObjectFactory::UpdateRegistryAll();
 
+	RegisterTypeLibraries();
+
 	// Dispatch commands specified on the command line
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 	
-	LPCTSTR lpCmdLine = m_lpCmdLine;
-
-	if (lpCmdLine != NULL && *lpCmdLine != 0)
-	{
-		if (_tcsicmp(lpCmdLine, _T("/RegServer")) == 0 ||
-			_tcsicmp(lpCmdLine, _T("-RegServer")) == 0)
-		{
-			RegisterTypeLibrary(FALSE);
-
-			// Register file extension
-			HKEY hKey;
-			CString key = _T(".wpd");
-			LONG lRes = RegCreateKeyEx(HKEY_CLASSES_ROOT, key, 0, NULL,
-				REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
-			if (lRes == ERROR_SUCCESS)
-			{
-				RegSetValueEx(hKey, NULL, 0, REG_SZ,
-					(BYTE*)_T("WinProMo.Document"),
-					(_tcslen(_T("WinProMo.Document")) + 1) * sizeof(TCHAR));
-				RegCloseKey(hKey);
-			}
-
-			return FALSE;   // do not start UI
-		}
-
-		if (_tcsicmp(lpCmdLine, _T("/UnregServer")) == 0 ||
-			_tcsicmp(lpCmdLine, _T("-UnregServer")) == 0)
-		{
-			RegisterTypeLibrary(TRUE);
-			return FALSE;
-		}
-	}
-
 	// The main window has been initialized, so show and update it.
 	m_pMainFrame->ShowWindow(m_nCmdShow);
 	m_pMainFrame->UpdateWindow();
@@ -196,48 +175,53 @@ BOOL CWinProMoApp::InitInstance()
 	return TRUE;
 }
 
-void CWinProMoApp::RegisterTypeLibrary(BOOL deregister)
+void CWinProMoApp::RegisterTypeLibraries()
+{
+
+	LPCTSTR lpCmdLine = m_lpCmdLine;
+
+	if (lpCmdLine != NULL && *lpCmdLine != 0)
+	{
+		if (_tcsicmp(lpCmdLine, _T("/RegServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-RegServer")) == 0)
+		{
+			RegisterTypeLibrary(CString("WinProMo.tlb"));
+			RegisterTypeLibrary(CString("WinProMo-App.tlb"));
+
+		}
+
+		if (_tcsicmp(lpCmdLine, _T("/UnregServer")) == 0 ||
+			_tcsicmp(lpCmdLine, _T("-UnregServer")) == 0)
+		{
+#if (_MSC_VER >= 1100) 
+			UnRegisterTypeLib(appID, 1, 0, 0, SYS_WIN32);
+			UnRegisterTypeLib(appID, 1, 0, 0, SYS_WIN64);
+			UnRegisterTypeLib(libID, 1, 0, 0, SYS_WIN32);
+			UnRegisterTypeLib(libID, 1, 0, 0, SYS_WIN64);
+#endif
+		}
+	}
+
+}
+
+void CWinProMoApp::RegisterTypeLibrary(const CString& fileName)
 {
 	TCHAR tlbPath[MAX_PATH];
-	// TODO: generate TLB file from exe name without extension
-	CreatePath(_T("WinProMo.tlb"), tlbPath);
 
-	USES_CONVERSION;  // required for T2OLE
-	LPOLESTR lpszOlePath = T2OLE(tlbPath);
+	CreatePath(fileName, tlbPath);
 
 	ITypeLib* pTypeLib = NULL;
 
-	if (deregister) {
-		//UnRegisterTypeLib(LIBID_WinProMoApp, 1, 0, LOCALE_USER_DEFAULT, SYS_WIN32);
+	CString tlbPathStr(tlbPath);
+	BSTR bstrOle = tlbPathStr.AllocSysString();
+
+	if (SUCCEEDED(LoadTypeLib(bstrOle, &pTypeLib)))
+	{
+		RegisterTypeLib(pTypeLib, bstrOle, NULL);
+		pTypeLib->Release();
 	}
-	else {
-		if (SUCCEEDED(LoadTypeLib(lpszOlePath, &pTypeLib)))
-		{
-			RegisterTypeLib(pTypeLib, lpszOlePath, NULL);
-			pTypeLib->Release();
-		}
-	}
-
-	//test
-
-	CreatePath(_T("WinProMo-App.tlb"), tlbPath);
-
-	//USES_CONVERSION;  // required for T2OLE
-	lpszOlePath = T2OLE(tlbPath);
-
-	pTypeLib = NULL;
-
-	if (deregister) {
-		//UnRegisterTypeLib(LIBID_WinProMoApp, 1, 0, LOCALE_USER_DEFAULT, SYS_WIN32);
-	}
-	else {
-		if (SUCCEEDED(LoadTypeLib(lpszOlePath, &pTypeLib)))
-		{
-			RegisterTypeLib(pTypeLib, lpszOlePath, NULL);
-			pTypeLib->Release();
-		}
-	}
-
+	SysFreeString(bstrOle);
+	
 }
 
 //Custom, clean up once everything works

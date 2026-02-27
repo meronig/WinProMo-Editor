@@ -115,10 +115,6 @@ BOOL CWinProMoOleSrvItem::OnDraw(CDC* pDC, CSize& rSize)
 
 		CProMoRenderer* renderer = pDoc->GetRenderer();
 
-		if (renderer) {
-			renderer->RenderCanvasAsMetafile(*pDC, 1.0);
-		}
-
 		// this should be an application-level registry setting
 		BOOL rasterize = FALSE;
 
@@ -172,3 +168,4 @@ void CWinProMoOleSrvItem::Dump(CDumpContext& dc) const
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
+

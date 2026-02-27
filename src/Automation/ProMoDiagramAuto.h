@@ -54,6 +54,7 @@ protected:
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
+public:
 	// Generated OLE dispatch map functions
 	//{{AFX_DISPATCH(CProMoDiagramAuto)
 	afx_msg void ClosePrintPreview();

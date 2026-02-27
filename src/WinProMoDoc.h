@@ -105,7 +105,10 @@ protected:
 	afx_msg void Undo(BOOL times);
 	afx_msg BSTR Path();
 	afx_msg BSTR Type();
-		// NOTE - the ClassWizard will add and remove member functions here.
+	afx_msg void ClosePrintPreview();
+	afx_msg void PrintPreview();
+	afx_msg LPDISPATCH Application();
+	// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_DISPATCH
 	DECLARE_DISPATCH_MAP()

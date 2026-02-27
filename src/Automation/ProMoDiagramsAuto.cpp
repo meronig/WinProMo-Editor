@@ -139,17 +139,16 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProMoDiagramsAuto, CProMoDiagramsAutoAbs)
 	//{{AFX_DISPATCH_MAP(CProMoDiagramsAuto)
-	DISP_PROPERTY_EX(CProMoDiagramsAuto, "IDs", GetIDs, SetIDs, VT_VARIANT)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Count", Count, VT_I2, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Add", Add, VT_DISPATCH, VTS_VARIANT)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Open", Open, VT_DISPATCH, VTS_VARIANT)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Save", Save, VT_EMPTY, VTS_BOOL)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Close", Close, VT_EMPTY, VTS_BOOL)
-	// Common to CProMoAppChild
-	DISP_FUNCTION(CProMoDiagramAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramsAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
-	DISP_PROPERTY_PARAM_ID(CProMoDiagramsAuto, "Item", 0, GetItem, SetItem, VT_DISPATCH, VTS_VARIANT)
-	DISP_DEFVALUE(CProMoDiagramsAuto, "Item")
+	DISP_PROPERTY_EX(CProMoDiagramsAutoAbs, "IDs", GetIDs, SetIDs, VT_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Count", Count, VT_I2, VTS_NONE)
+	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Add", Add, VT_DISPATCH, VTS_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Open", Open, VT_DISPATCH, VTS_VARIANT)
+	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Save", Save, VT_EMPTY, VTS_BOOL)
+	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Close", Close, VT_EMPTY, VTS_BOOL)
+	// Common to CProMoAppChildAuto
+	DISP_FUNCTION(CProMoAppChildAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
+	DISP_PROPERTY_PARAM_ID(CProMoDiagramsAutoAbs, "Item", 0, GetItem, SetItem, VT_DISPATCH, VTS_VARIANT)
+	DISP_DEFVALUE(CProMoDiagramsAutoAbs, "Item")
 
 	//}}AFX_DISPATCH_MAP
 END_DISPATCH_MAP()

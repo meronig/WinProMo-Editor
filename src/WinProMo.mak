@@ -51,7 +51,8 @@ MTL=mktyplib.exe
 OUTDIR=.\Release
 INTDIR=.\Release
 
-ALL : "..\..\Release\WinProMo.exe" "$(OUTDIR)\WPMApp.tlb"
+ALL : "..\..\Release\WinProMo-App.exe" "..\..\Release\WinProMo-App.tlb"\
+ ".\WinProMo.tlb"
 
 CLEAN : 
 	-@erase "$(INTDIR)\CanvasSizeDialog.obj"
@@ -74,8 +75,9 @@ CLEAN :
 	-@erase "$(INTDIR)\WinProMo.res"
 	-@erase "$(INTDIR)\WinProMoDoc.obj"
 	-@erase "$(INTDIR)\WinProMoView.obj"
-	-@erase "$(INTDIR)\WPMApp.tlb"
-	-@erase "..\..\Release\WinProMo.exe"
+	-@erase "..\..\Release\WinProMo-App.exe"
+	-@erase "..\..\Release\WinProMo-App.tlb"
+	-@erase ".\WinProMo.tlb"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -101,10 +103,10 @@ BSC32_SBRS= \
 	
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 ../../WinPromo/src/Release/WinProMo.lib /nologo /subsystem:windows /machine:I386 /out:"../../Release/WinProMo.exe"
+# ADD LINK32 ../../WinPromo/src/Release/WinProMo.lib /nologo /subsystem:windows /machine:I386 /out:"../../Release/WinProMo-App.exe"
 LINK32_FLAGS=../../WinPromo/src/Release/WinProMo.lib /nologo /subsystem:windows\
- /incremental:no /pdb:"$(OUTDIR)/WinProMo.pdb" /machine:I386\
- /out:"../../Release/WinProMo.exe" 
+ /incremental:no /pdb:"$(OUTDIR)/WinProMo-App.pdb" /machine:I386\
+ /out:"../../Release/WinProMo-App.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\CanvasSizeDialog.obj" \
 	"$(INTDIR)\ChildFrm.obj" \
@@ -126,10 +128,19 @@ LINK32_OBJS= \
 	"$(INTDIR)\WinProMoDoc.obj" \
 	"$(INTDIR)\WinProMoView.obj"
 
-"..\..\Release\WinProMo.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+"..\..\Release\WinProMo-App.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
+
+# Begin Custom Build
+InputPath=\source\repos\WinProMo\Release\WinProMo-App.exe
+SOURCE=$(InputPath)
+
+".\WinProMo.tlb" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   copy ..\..\Release\WinProMo.tlb .\WinProMo.tlb
+
+# End Custom Build
 
 !ELSEIF  "$(CFG)" == "WinProMo - Win32 Debug"
 
@@ -146,7 +157,8 @@ LINK32_OBJS= \
 OUTDIR=.\Debug
 INTDIR=.\Debug
 
-ALL : "..\..\Debug\WinProMo.exe" "$(OUTDIR)\WPMApp.tlb"
+ALL : "..\..\Debug\WinProMo-App.exe" "..\..\Debug\WinProMo-App.tlb"\
+ ".\WinProMo.tlb"
 
 CLEAN : 
 	-@erase "$(INTDIR)\CanvasSizeDialog.obj"
@@ -171,10 +183,11 @@ CLEAN :
 	-@erase "$(INTDIR)\WinProMo.res"
 	-@erase "$(INTDIR)\WinProMoDoc.obj"
 	-@erase "$(INTDIR)\WinProMoView.obj"
-	-@erase "$(INTDIR)\WPMApp.tlb"
-	-@erase "$(OUTDIR)\WinProMo.pdb"
-	-@erase "..\..\Debug\WinProMo.exe"
-	-@erase "..\..\Debug\WinProMo.ilk"
+	-@erase "$(OUTDIR)\WinProMo-App.pdb"
+	-@erase "..\..\Debug\WinProMo-App.exe"
+	-@erase "..\..\Debug\WinProMo-App.ilk"
+	-@erase "..\..\Debug\WinProMo-App.tlb"
+	-@erase ".\WinProMo.tlb"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -200,10 +213,10 @@ BSC32_SBRS= \
 	
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386
-# ADD LINK32 ../../WinPromo/src/Debug/WinProMo.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../Debug/WinProMo.exe"
+# ADD LINK32 ../../WinPromo/src/Debug/WinProMo.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../Debug/WinProMo-App.exe"
 LINK32_FLAGS=../../WinPromo/src/Debug/WinProMo.lib /nologo /subsystem:windows\
- /incremental:yes /pdb:"$(OUTDIR)/WinProMo.pdb" /debug /machine:I386\
- /out:"../../Debug/WinProMo.exe" 
+ /incremental:yes /pdb:"$(OUTDIR)/WinProMo-App.pdb" /debug /machine:I386\
+ /out:"../../Debug/WinProMo-App.exe" 
 LINK32_OBJS= \
 	"$(INTDIR)\CanvasSizeDialog.obj" \
 	"$(INTDIR)\ChildFrm.obj" \
@@ -225,10 +238,19 @@ LINK32_OBJS= \
 	"$(INTDIR)\WinProMoDoc.obj" \
 	"$(INTDIR)\WinProMoView.obj"
 
-"..\..\Debug\WinProMo.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+"..\..\Debug\WinProMo-App.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
+
+# Begin Custom Build
+InputPath=\source\repos\WinProMo\Debug\WinProMo-App.exe
+SOURCE=$(InputPath)
+
+".\WinProMo.tlb" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+   copy ..\..\Debug\WinProMo.tlb .\WinProMo.tlb
+
+# End Custom Build
 
 !ENDIF 
 
@@ -916,63 +938,6 @@ NODEP_CPP_PROMO=\
 # Begin Source File
 
 SOURCE=.\Automation\ProMoDiagramsAuto.cpp
-
-!IF  "$(CFG)" == "WinProMo - Win32 Release"
-
-DEP_CPP_PROMOD=\
-	"..\..\WinProMo\src\Automation\ProMoAppAutoAbs.h"\
-	"..\..\WinProMo\src\Automation\ProMoAppChildAuto.h"\
-	"..\..\WinProMo\src\Automation\ProMoAutomationHost.h"\
-	"..\..\WinProMo\src\Automation\ProMoDiagramAutoAbs.h"\
-	"..\..\WinProMo\src\Automation\ProMoDiagramsAutoAbs.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramClipboardHandler.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEditor.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEntity.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEntityContainer.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramLine.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramMenu.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramPropertyDlg.h"\
-	"..\..\WinProMo\src\DiagramEditor\HitParams.h"\
-	"..\..\WinProMo\src\DiagramEditor\HitParamsRect.h"\
-	"..\..\WinProMo\src\DiagramEditor\Tokenizer.h"\
-	"..\..\WinProMo\src\DiagramEditor\UndoItem.h"\
-	"..\..\WinProMo\src\FileUtils\DibHelper.h"\
-	"..\..\WinProMo\src\FileUtils\VariantWrapper.h"\
-	"..\..\WinProMo\src\GeometryUtils\DoublePoint.h"\
-	"..\..\WinProMo\src\GeometryUtils\DoubleRect.h"\
-	"..\..\WinProMo\src\GeometryUtils\GeometryHelper.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoBlockModel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoBlockView.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoClipboardHandler.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoCmdHandler.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoControlFactory.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEdgeView.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEditor.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEntity.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEntityContainer.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoLabel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoModel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoProperty.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoPropertyOwner.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoRenderer.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoView.h"\
-	"..\..\WinProMo\src\StdAfx.h"\
-	"..\..\WinProMo\src\WinProMoPluginInterface.h"\
-	".\Automation\..\WinProMo.h"\
-	".\Automation\ProMoDiagramAuto.h"\
-	".\Automation\ProMoDiagramsAuto.h"\
-	
-NODEP_CPP_PROMOD=\
-	".\Automation\stdafx.h"\
-	
-
-"$(INTDIR)\ProMoDiagramsAuto.obj" : $(SOURCE) $(DEP_CPP_PROMOD) "$(INTDIR)"\
- "$(INTDIR)\WinProMo.pch"
-   $(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-!ELSEIF  "$(CFG)" == "WinProMo - Win32 Debug"
-
 DEP_CPP_PROMOD=\
 	"..\..\WinProMo\src\Automation\ProMoAppAutoAbs.h"\
 	"..\..\WinProMo\src\Automation\ProMoAppChildAuto.h"\
@@ -1026,72 +991,12 @@ NODEP_CPP_PROMOD=\
  "$(INTDIR)\WinProMo.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
-
-!ENDIF 
 
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=.\Automation\ProMoAppAuto.cpp
-
-!IF  "$(CFG)" == "WinProMo - Win32 Release"
-
-DEP_CPP_PROMOA=\
-	"..\..\WinProMo\src\Automation\ProMoAppAutoAbs.h"\
-	"..\..\WinProMo\src\Automation\ProMoAppChildAuto.h"\
-	"..\..\WinProMo\src\Automation\ProMoAutomationHost.h"\
-	"..\..\WinProMo\src\Automation\ProMoDiagramAutoAbs.h"\
-	"..\..\WinProMo\src\Automation\ProMoDiagramsAutoAbs.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramClipboardHandler.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEditor.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEntity.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramEntityContainer.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramLine.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramMenu.h"\
-	"..\..\WinProMo\src\DiagramEditor\DiagramPropertyDlg.h"\
-	"..\..\WinProMo\src\DiagramEditor\HitParams.h"\
-	"..\..\WinProMo\src\DiagramEditor\HitParamsRect.h"\
-	"..\..\WinProMo\src\DiagramEditor\Tokenizer.h"\
-	"..\..\WinProMo\src\DiagramEditor\UndoItem.h"\
-	"..\..\WinProMo\src\FileUtils\DibHelper.h"\
-	"..\..\WinProMo\src\FileUtils\VariantWrapper.h"\
-	"..\..\WinProMo\src\GeometryUtils\DoublePoint.h"\
-	"..\..\WinProMo\src\GeometryUtils\DoubleRect.h"\
-	"..\..\WinProMo\src\GeometryUtils\GeometryHelper.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoBlockModel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoBlockView.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoClipboardHandler.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoCmdHandler.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoControlFactory.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEdgeView.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEditor.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEntity.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoEntityContainer.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoLabel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoModel.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoProperty.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoPropertyOwner.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoRenderer.h"\
-	"..\..\WinProMo\src\ProMoEditor\ProMoView.h"\
-	"..\..\WinProMo\src\StdAfx.h"\
-	"..\..\WinProMo\src\WinProMoPluginInterface.h"\
-	".\Automation\..\WinProMo.h"\
-	".\Automation\ProMoAppAuto.h"\
-	".\Automation\ProMoDiagramAuto.h"\
-	".\Automation\ProMoDiagramsAuto.h"\
-	
-NODEP_CPP_PROMOA=\
-	".\Automation\stdafx.h"\
-	
-
-"$(INTDIR)\ProMoAppAuto.obj" : $(SOURCE) $(DEP_CPP_PROMOA) "$(INTDIR)"\
- "$(INTDIR)\WinProMo.pch"
-   $(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-!ELSEIF  "$(CFG)" == "WinProMo - Win32 Debug"
-
 DEP_CPP_PROMOA=\
 	"..\..\WinProMo\src\Automation\ProMoAppAutoAbs.h"\
 	"..\..\WinProMo\src\Automation\ProMoAppChildAuto.h"\
@@ -1147,26 +1052,28 @@ NODEP_CPP_PROMOA=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-!ENDIF 
-
 # End Source File
 ################################################################################
 # Begin Source File
 
-SOURCE=.\WPMApp.odl
+SOURCE=.\WinProMo.odl
 
 !IF  "$(CFG)" == "WinProMo - Win32 Release"
 
+# ADD MTL /tlb "../../Release/WinProMo-App.tlb"
 
-"$(OUTDIR)\WPMApp.tlb" : $(SOURCE) "$(OUTDIR)"
-   $(MTL) /nologo /D "NDEBUG" /tlb "$(OUTDIR)/WPMApp.tlb" /win32 $(SOURCE)
+"..\..\Release\WinProMo-App.tlb" : $(SOURCE) "$(OUTDIR)"
+   $(MTL) /nologo /D "NDEBUG" /tlb "../../Release/WinProMo-App.tlb" /win32\
+ $(SOURCE)
 
 
 !ELSEIF  "$(CFG)" == "WinProMo - Win32 Debug"
 
+# ADD MTL /tlb "../../Debug/WinProMo-App.tlb"
 
-"$(OUTDIR)\WPMApp.tlb" : $(SOURCE) "$(OUTDIR)"
-   $(MTL) /nologo /D "_DEBUG" /tlb "$(OUTDIR)/WPMApp.tlb" /win32 $(SOURCE)
+"..\..\Debug\WinProMo-App.tlb" : $(SOURCE) "$(OUTDIR)"
+   $(MTL) /nologo /D "_DEBUG" /tlb "../../Debug/WinProMo-App.tlb" /win32\
+ $(SOURCE)
 
 
 !ENDIF 

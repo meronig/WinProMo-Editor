@@ -59,7 +59,8 @@ public:
 	//}}AFX_VIRTUAL
 
 protected:
-	void RegisterTypeLibrary(BOOL deregister);
+	void RegisterTypeLibraries();
+	void RegisterTypeLibrary(const CString& fileName);
 	void LoadExtensions();
 	void UnloadExtensions();
 	void DeleteCommands(CObArray* commands);
