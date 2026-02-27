@@ -61,7 +61,7 @@ public:
 protected:
 	void RegisterTypeLibraries();
 	void RegisterTypeLibrary(const CString& fileName);
-	void LoadExtensions();
+	BOOL LoadExtensions();
 	void UnloadExtensions();
 	void DeleteCommands(CObArray* commands);
 

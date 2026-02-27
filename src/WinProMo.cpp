@@ -111,7 +111,10 @@ BOOL CWinProMoApp::InitInstance()
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
 	// Load and register available documents from plug-in libraries
-	LoadExtensions();
+	if (!LoadExtensions()) {
+		AfxMessageBox(CString("No diagram editor plug-ins found. Exiting"));
+		return FALSE;
+	}
 
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
@@ -225,7 +228,7 @@ void CWinProMoApp::RegisterTypeLibrary(const CString& fileName)
 }
 
 //Custom, clean up once everything works
-void CWinProMoApp::LoadExtensions() {
+BOOL CWinProMoApp::LoadExtensions() {
 
 	TCHAR searchPath[MAX_PATH];
 	CreatePath(_T("*.dll"), searchPath);
@@ -235,7 +238,7 @@ void CWinProMoApp::LoadExtensions() {
 	
 	if (hFind == INVALID_HANDLE_VALUE) {
 		DWORD err = GetLastError();
-		return;
+		return FALSE;
 	}
 
 	do {
@@ -274,6 +277,12 @@ void CWinProMoApp::LoadExtensions() {
 	} while (FindNextFile(hFind, &findFileData));
 
 	FindClose(hFind);
+
+	if (m_Extensions.GetSize() > 0) {
+		return TRUE;
+	}
+	
+	return FALSE;
 }
 
 void CWinProMoApp::UnloadExtensions()
@@ -318,7 +327,7 @@ void CWinProMoApp::CreatePath(const TCHAR* fileName, TCHAR* fullPath)
 
 	// Append "*.dll" to search in that directory
 #if _MSC_VER < 1200
-	_stprintf(fullPath, fileName, exePath);
+	_stprintf(fullPath, _T("%s%s"), exePath, fileName);
 #else
 	_stprintf_s(fullPath, MAX_PATH, _T("%s%s"), exePath, fileName);
 #endif
