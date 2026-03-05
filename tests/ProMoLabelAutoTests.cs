@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Testing.Platform.Extensions.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -20,20 +22,20 @@ namespace WinProMo_App.Tests
             Assert.IsFalse(blockA.FontItalic);
             Assert.IsFalse(blockA.FontUnderline);
             Assert.IsFalse(blockA.FontStrikeOut);
-            Assert.AreEqual(0, blockA.TextColor);
+            Assert.AreEqual((uint)0, blockA.TextColor);
         }
 
         [STATestMethod]
         public void Can_Get_Label_Background_Style()
         {
-            Assert.AreEqual(16777215, blockA.BkColor);
+            Assert.AreEqual((uint)16777215, blockA.BkColor);
             Assert.AreEqual(1, blockA.BkMode);
         }
 
         [STATestMethod]
         public void Can_Get_Label_Text_Position()
         {
-            Assert.AreEqual(2085, blockA.TextAlignment);
+            Assert.IsFalse(blockA.TextMultiLine);
             Assert.AreEqual(1, blockA.TextHorizontalAlignment);
             Assert.AreEqual(4, blockA.TextVerticalAlignment);
         }
@@ -52,7 +54,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Label_Property()
         {
-            dynamic property = blockATitle.Property;
+            WinProMo.IProperty property = blockATitle.Property;
             Assert.IsNotNull(property, "Property is null");
         }
     }

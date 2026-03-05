@@ -11,13 +11,13 @@ namespace WinProMo_App.Tests
     public class ProMoDiagramsAutoTests: AutomationTestBase
     {
 
-        protected dynamic diagrams;
-        protected dynamic diagram1;
+        protected IDiagrams diagrams;
+        protected IDiagram diagram1;
 
         [TestInitialize]
         public void Setup()
         {
-            dynamic app = CreateApplication();
+            IApplication app = CreateApplication();
             diagrams = app.Diagrams;
             Assert.IsNotNull(diagrams);
         }
@@ -57,7 +57,7 @@ namespace WinProMo_App.Tests
         public void Can_Open_Diagram()
         {
             OpenDiagram();
-            Assert.IsTrue(diagrams.Count > 0, "Expected at least one diagram to be open.");
+            Assert.IsTrue(diagrams.Count() > 0, "Expected at least one diagram to be open.");
         }
 
         [STATestMethod]
@@ -76,7 +76,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Diagram_Names()
         {
-            dynamic ids = diagrams.IDs;
+            string[] ids = diagrams.IDs;
             Assert.IsNotNull(ids, "Diagrams collection is null");
             Assert.AreEqual(0, ids.Length, "Expected 0 diagrams");
             OpenDiagram();
@@ -89,7 +89,7 @@ namespace WinProMo_App.Tests
         public void Can_Get_Diagram_Objects_By_Position()
         {
             OpenDiagram();
-            dynamic diagram0 = diagrams[0];
+            IDiagram diagram0 = diagrams[0];
             Assert.IsNotNull(diagram0, "First diagram is null");
             Assert.AreEqual(diagram1, diagram0, "First diagram is not the one created");
         }

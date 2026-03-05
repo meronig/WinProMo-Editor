@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -13,7 +14,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Edge_Source()
         {
-            dynamic source = edgeX.Source;
+            IBlock source = edgeX.Source;
             Assert.IsNotNull(source, "Edge source is null");
             Assert.AreEqual(blockA, source, "Edge source does not match expected block");
         }
@@ -21,7 +22,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Edge_Destination()
         {
-            dynamic dest = edgeX.Destination;
+            IBlock dest = edgeX.Destination;
             Assert.IsNotNull(dest, "Edge destination is null");
             Assert.AreEqual(blockB1, dest, "Edge destination does not match expected block");
         }

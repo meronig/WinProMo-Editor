@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -13,17 +14,17 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Segments_Count()
         {
-            dynamic segments = edgeX.Segments;
+            IEdgeSegments segments = edgeX.Segments;
             Assert.IsNotNull(segments, "Segments collection is null");
-            Assert.AreEqual(2, segments.Count, "Expected 2 segments for edge X");
+            Assert.AreEqual(2, segments.Count(), "Expected 2 segments for edge X");
         }
 
         [STATestMethod]
         public void Can_Get_Segment_Objects_By_Position()
         {
-            dynamic segments = edgeX.Segments;
+            IEdgeSegments segments = edgeX.Segments;
             Assert.IsNotNull(segments, "Segments collection is null");
-            dynamic segment = segments[0];
+            IEdgeSegment segment = segments[0];
             Assert.IsNotNull(segment, "Segment at position 0 is null");
             Assert.AreEqual(211, segment.StartX);
             segment = segments[1];

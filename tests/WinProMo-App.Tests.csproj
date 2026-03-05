@@ -14,6 +14,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="WinProMo_App">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>c0161100-fd35-11f0-9740-000c2976a615</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="WinProMo">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>07738135-08c3-11f1-9744-000c2976a615</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Models\DemoPlugin.wpd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

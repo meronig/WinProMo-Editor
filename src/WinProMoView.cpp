@@ -958,11 +958,17 @@ void CWinProMoView::OnAlignmentMiddle()
 void CWinProMoView::OnAlignmentMultiline()
 {
 	if (GetEditor()) {
-		if (GetEditor()->HasTextAlignmentFlag(DT_WORDBREAK)) {
+		/*if (GetEditor()->HasTextAlignmentFlag(DT_WORDBREAK)) {
 			GetEditor()->SetTextAlignmentFlag(DT_SINGLELINE, TRUE);
 		}
 		else {
 			GetEditor()->SetTextAlignmentFlag(DT_WORDBREAK, TRUE);
+		}*/
+		if (GetEditor()->IsTextMultiline()) {
+			GetEditor()->SetTextMultiline(FALSE);
+		}
+		else {
+			GetEditor()->SetTextMultiline(TRUE);
 		}
 	}
 }
@@ -1017,7 +1023,8 @@ void CWinProMoView::OnUpdateAlignmentMultiline(CCmdUI* pCmdUI)
 {
 	if (GetEditor()) {
 		pCmdUI->Enable(GetEditor()->IsAnyObjectSelected() && !GetEditor()->IsLocked(LOCK_ALIGNMENT));
-		pCmdUI->SetCheck(GetEditor()->HasTextAlignmentFlag(DT_WORDBREAK));
+		//pCmdUI->SetCheck(GetEditor()->HasTextAlignmentFlag(DT_WORDBREAK));
+		pCmdUI->SetCheck(GetEditor()->IsTextMultiline());
 	}
 }
 

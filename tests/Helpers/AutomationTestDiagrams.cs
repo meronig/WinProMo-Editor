@@ -9,7 +9,7 @@ namespace WinProMo_App.Tests.Helpers
     public abstract class AutomationTestDiagrams : AutomationTestBase
     {
 
-        protected dynamic diagram1;
+        protected IDiagram diagram1;
 
         [TestInitialize]
         public void Setup()
@@ -37,10 +37,10 @@ namespace WinProMo_App.Tests.Helpers
             }
         }
 
-        protected dynamic OpenTestDiagram1()
+        protected IDiagram OpenTestDiagram1()
         {
-            dynamic app = CreateApplication();
-            var diagrams = app.Diagrams;
+            IApplication app = CreateApplication();
+            IDiagrams diagrams = app.Diagrams;
             Assert.IsNotNull(diagrams);
             // Attempt to open the first diagram
             string path = Path.Combine(

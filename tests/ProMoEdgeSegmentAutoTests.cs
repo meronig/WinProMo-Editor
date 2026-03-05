@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -24,11 +25,11 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Next_Segment()
         {
-            dynamic next = segmentX1.Next;
+            IEdgeSegment next = segmentX1.Next();
             Assert.IsNotNull(next);
             Assert.AreEqual(segmentX2, next);
 
-            next = segmentX2.Next;
+            next = segmentX2.Next();
             Assert.IsNull(next);
 
         }
@@ -36,11 +37,11 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Prev_Segment()
         {
-            dynamic prev = segmentX2.Prev;
+            IEdgeSegment prev = segmentX2.Prev();
             Assert.IsNotNull(prev);
             Assert.AreEqual(segmentX1, prev);
 
-            prev = segmentX1.Prev;
+            prev = segmentX1.Prev();
             Assert.IsNull(prev);
 
         }

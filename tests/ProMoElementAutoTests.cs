@@ -20,7 +20,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Element_Line_Style()
         {
-            Assert.AreEqual(0, blockA.LineColor);
+            Assert.AreEqual((uint)0, blockA.LineColor);
             Assert.AreEqual(1, blockA.LineWidth);
             Assert.AreEqual(1, blockA.LineStyle);
         }
@@ -34,20 +34,20 @@ namespace WinProMo_App.Tests
             Assert.IsFalse(blockA.FontItalic);
             Assert.IsFalse(blockA.FontUnderline);
             Assert.IsFalse(blockA.FontStrikeOut);
-            Assert.AreEqual(0, blockA.TextColor);
+            Assert.AreEqual((uint)0, blockA.TextColor);
         }
 
         [STATestMethod]
         public void Can_Get_Element_Background_Style()
         {
-            Assert.AreEqual(16777215, blockA.BkColor);
+            Assert.AreEqual((uint)16777215, blockA.BkColor);
             Assert.AreEqual(1, blockA.BkMode);
         }
 
         [STATestMethod]
         public void Can_Get_Element_Text_Position()
         {
-            Assert.AreEqual(2085, blockA.TextAlignment);
+            Assert.IsFalse(blockA.TextMultiLine);
             Assert.AreEqual(1, blockA.TextHorizontalAlignment);
             Assert.AreEqual(4, blockA.TextVerticalAlignment);
         }

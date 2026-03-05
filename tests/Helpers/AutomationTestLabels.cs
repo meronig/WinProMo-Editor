@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 
 namespace WinProMo_App.Tests.Helpers
 {
     public abstract class AutomationTestLabels : AutomationTestElements
     {
 
-        protected dynamic blockATitle;
-        protected dynamic blockA1Title;
-        protected dynamic blockA2Title;
-        protected dynamic blockBTitle;
-        protected dynamic blockB1Title;
-        protected dynamic blockB2Title;
-        protected dynamic edgeXTitle;
-        protected dynamic edgeZTitle;
+        protected ILabel blockATitle;
+        protected ILabel blockA1Title;
+        protected ILabel blockA2Title;
+        protected ILabel blockBTitle;
+        protected ILabel blockB1Title;
+        protected ILabel blockB2Title;
+        protected ILabel edgeXTitle;
+        protected ILabel edgeZTitle;
 
         [TestInitialize]
         public void Setup()

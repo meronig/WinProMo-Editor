@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -15,9 +16,9 @@ namespace WinProMo_App.Tests
         {
             Assert.AreEqual("Title", blockATitle.Name, "property name does not correspond");
             Assert.AreEqual(3, blockATitle.Type, "property type does not correspond");
-            Assert.IsFalse(blockATitle.IsReadOnly, "property is read-only");
-            Assert.IsFalse(blockATitle.IsMultivalue, "property is multivalue");
-            Assert.IsFalse(blockATitle.IsComposite, "property is composite");
+            Assert.IsFalse(blockATitle.IsReadOnly(), "property is read-only");
+            Assert.IsFalse(blockATitle.IsMultivalue(), "property is multivalue");
+            Assert.IsFalse(blockATitle.IsComposite(), "property is composite");
         }
 
         [STATestMethod]
@@ -29,13 +30,13 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Property_Children_Count()
         {
-            Assert.AreEqual(0, blockATitle.Count, "Expected 0 child properties");
+            Assert.AreEqual(0, blockATitle.Count(), "Expected 0 child properties");
         }
 
         [STATestMethod]
         public void Can_Get_Property_Child_Names()
         {
-            var names = blockATitle.ChildNames;
+            string[] names = blockATitle.ChildNames;
             Assert.IsNotNull(names, "Names collection is null");
             Assert.AreEqual(0, names.Length, "Expected 0 child properties");
         }
@@ -43,7 +44,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Property_Label()
         {
-            dynamic label = blockATitle.Label;
+            ILabel label = blockATitle.Label();
             Assert.IsNotNull(label, "Names collection is null");
         }
     }

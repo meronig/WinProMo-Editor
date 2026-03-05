@@ -13,15 +13,15 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Create_Application_Object()
         {
-            dynamic app = CreateApplication();
+            IApplication app = CreateApplication();
             Assert.IsNotNull(app);
         }
         
         [STATestMethod]
         public void Can_Get_Creatable_Diagrams()
         {
-            dynamic app = CreateApplication();
-            var diagrams = app.CreatableDiagramTypes;
+            IApplication app = CreateApplication();
+            string[] diagrams = app.CreatableDiagramTypes;
             Assert.IsNotNull(diagrams);
             Assert.IsTrue(diagrams.Length > 0, "Expected at least one creatable diagram.");
         }

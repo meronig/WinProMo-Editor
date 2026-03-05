@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 
 namespace WinProMo_App.Tests.Helpers
 {
     public abstract class AutomationTestElements : AutomationTestDiagrams
     {
 
-        protected dynamic blockA;
-        protected dynamic blockA1;
-        protected dynamic blockA2;
+        protected IBlock blockA;
+        protected IBlock blockA1;
+        protected IBlock blockA2;
         
-        protected dynamic blockB;
-        protected dynamic blockB1;
-        protected dynamic blockB2;
+        protected IBlock blockB;
+        protected IBlock blockB1;
+        protected IBlock blockB2;
 
-        protected dynamic edgeX;
-        protected dynamic edgeZ;
+        protected IEdge edgeX;
+        protected IEdge edgeZ;
 
         [TestInitialize]
         public void Setup()
