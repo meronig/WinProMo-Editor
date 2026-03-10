@@ -18,6 +18,7 @@
 #include "resource.h"       // main symbols
 #include "../../WinProMo/src/ProMoEditor/ProMoClipboardHandler.h"
 #include "../../WinProMo/src/WinProMoPluginInterface.h"
+#include "WinProMoDocTemplate.h"
 
 typedef CWinProMoPluginInterface* (*CreatePluginInstanceFunc)();
 
@@ -49,7 +50,7 @@ public:
 	CProMoClipboardHandler	m_clip;
 	HACCEL g_hCurrentAccel;
 	COleTemplateServer m_server;
-	CMultiDocTemplate* m_docTemplate;
+	CWinProMoDocTemplate* m_docTemplate;
 	UINT m_init;
 // Overrides
 	// ClassWizard generated virtual function overrides

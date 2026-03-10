@@ -64,13 +64,10 @@ namespace WinProMo_App.Tests
         public void Can_Create_Diagram()
         {
             //Commented out as the Add method requires interaction with the UI to select a diagram type, which is not possible in an automated test environment.
-            //dynamic app = CreateApplication();
-            //var diagrams = app.Diagrams;
-            //Assert.IsNotNull(diagrams);
-            //dynamic diagram = diagrams.Add("demoPlugin");
-            //Assert.IsNotNull(diagram, "Failed to create diagram.");
-            //Assert.IsTrue(diagrams.Count > 0, "Expected at least one diagram to be open.");
-            //diagram.Close(false);
+            IDiagram diagram = diagrams.Add("demoPlugin");
+            Assert.IsNotNull(diagram, "Failed to create diagram.");
+            Assert.IsTrue(diagrams.Count() > 0, "Expected at least one diagram to be open.");
+            diagram.Close(false);
         }
 
         [STATestMethod]

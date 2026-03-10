@@ -222,6 +222,7 @@
     <ClInclude Include="WinProMo.h" />
     <ClInclude Include="Automation\ProMoAppAuto.h" />
     <ClInclude Include="WinProMoDoc.h" />
+    <ClInclude Include="WinProMoDocTemplate.h" />
     <ClInclude Include="WinProMoView.h" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +243,7 @@
     <ClCompile Include="WinProMo.cpp" />
     <ClCompile Include="Automation\ProMoAppAuto.cpp" />
     <ClCompile Include="WinProMoDoc.cpp" />
+    <ClCompile Include="WinProMoDocTemplate.cpp" />
     <ClCompile Include="WinProMoView.cpp" />
   </ItemGroup>
   <ItemGroup>

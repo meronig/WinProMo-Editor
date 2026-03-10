@@ -72,6 +72,9 @@
     <ClInclude Include="Automation\ProMoDiagramsAuto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WinProMoDocTemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinProMo.cpp">
@@ -126,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Automation\ProMoDiagramsAuto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinProMoDocTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

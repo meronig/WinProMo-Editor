@@ -44,8 +44,8 @@ protected:
 
 	virtual CWinProMoDoc* GetDocument();
 
-	virtual void SaveDiagramAs(CString fileName);
-	virtual void SaveDiagram();
+	virtual void SaveDiagramAs(const CString& fileName);
+	virtual void SaveDiagram(BOOL noPrompt);
 	virtual void CloseDiagram();
 
 	// Generated message map functions

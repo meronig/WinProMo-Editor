@@ -54,10 +54,11 @@ void CProMoDiagramAuto::RefreshWindow()
 	}	
 }
 
-void CProMoDiagramAuto::SaveDiagramAs(CString fileName)
+void CProMoDiagramAuto::SaveDiagramAs(const CString& fileName)
 {
 	if (GetDocument()) {
 		GetDocument()->OnSaveDocument(fileName);
+		GetDocument()->SetPathName(fileName);
 	}
 }
 
@@ -69,10 +70,16 @@ void CProMoDiagramAuto::CloseDiagram()
 
 }
 
-void CProMoDiagramAuto::SaveDiagram()
+void CProMoDiagramAuto::SaveDiagram(BOOL noPrompt)
 {
 	if (GetDocument()) {
-		GetDocument()->OnSaveDocument(GetDocument()->GetPathName());
+		if (noPrompt) {
+			GetDocument()->OnSaveDocument(GetDocument()->GetPathName());
+			GetDocument()->SetPathName(GetDocument()->GetPathName());
+		}
+		else {
+			GetDocument()->DoFileSave();
+		}
 	}
 }
 

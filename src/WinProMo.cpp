@@ -119,7 +119,7 @@ BOOL CWinProMoApp::InitInstance()
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
 
-	m_docTemplate = new CMultiDocTemplate(
+	m_docTemplate = new CWinProMoDocTemplate(
 		IDR_WINPROTYPE,
 		RUNTIME_CLASS(CWinProMoDoc),
 		RUNTIME_CLASS(CChildFrame),

@@ -107,7 +107,7 @@ CProMoDiagramAutoAbs* CProMoDiagramsAuto::GetDiagramAutoObject(const CString& na
 
 CProMoDiagramAutoAbs* CProMoDiagramsAuto::AddNewDiagram(const CString& type)
 {
-	CDocument* pDoc = ((CWinProMoApp*)AfxGetApp())->m_docTemplate->OpenDocumentFile(NULL);
+	CDocument* pDoc = ((CWinProMoApp*)AfxGetApp())->m_docTemplate->OpenDocumentFile(NULL, TRUE, type);
 	return GetDiagramAutoObject(pDoc);
 }
 
