@@ -26,18 +26,18 @@ namespace WinProMo_App.Tests
         public void Can_Get_Block_Fill_Style()
         {
             Assert.AreEqual((uint)16777215, blockA.FillColor);
-            Assert.IsFalse(blockA.FillPattern);
+            Assert.IsFalse(ToBool(blockA.FillPattern));
             Assert.AreEqual(4, blockA.FillStyle);
         }
 
         [STATestMethod]
         public void Can_Get_Block_Parent()
         {
-            Assert.IsFalse(blockA.IsSubBlock(), "Block A is unexpectedly a sub-block");
+            Assert.IsFalse(ToBool(blockA.IsSubBlock()), "Block A is unexpectedly a sub-block");
             IBlock parent = blockA.Parent;
             Assert.IsNull(parent, "Block parent is not null");
 
-            Assert.IsTrue(blockA1.IsSubBlock(), "Block A1 is unexpectedly not a sub-block");
+            Assert.IsTrue(ToBool(blockA1.IsSubBlock()), "Block A1 is unexpectedly not a sub-block");
             parent = blockA1.Parent;
             Assert.IsNotNull(parent, "Block parent is null");   
             Assert.AreEqual(blockA, parent, "Block parent does not match expected block");

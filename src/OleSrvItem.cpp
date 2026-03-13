@@ -169,3 +169,14 @@ void CWinProMoOleSrvItem::Dump(CDumpContext& dc) const
 
 /////////////////////////////////////////////////////////////////////////////
 
+
+void CWinProMoOleSrvItem::OnDoVerb(LONG iVerb)
+{
+	// Overridden to force the OLE server to fully open, so to avoid stale metafile
+	// Remove if in-place activation is implemented
+	if (iVerb == OLEIVERB_PRIMARY || iVerb == OLEIVERB_SHOW) {
+		iVerb = OLEIVERB_OPEN;
+	}
+
+	COleServerItem::OnDoVerb(iVerb);
+}

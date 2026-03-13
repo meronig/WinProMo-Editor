@@ -448,7 +448,11 @@ void CWinProMoDoc::SaveAs(const VARIANT FAR& fileName)
 void CWinProMoDoc::Close(BOOL saveChanges)
 {
 	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
-	
+
+	if (saveChanges) {
+		autoObject->Save(FALSE);
+	}
+
 	POSITION pos = GetFirstViewPosition();
 	if (!pos)
 		return;

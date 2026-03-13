@@ -24,5 +24,15 @@ namespace WinProMo_App.Tests.Helpers
             if (obj != null)
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
         }
+
+        public static bool ToBool(sbyte value)
+        {
+            return value != 0;
+        }
+
+        public static sbyte FromBool(bool value)
+        {
+            return value ? (sbyte)1 : (sbyte)0;
+        }
     }
 }

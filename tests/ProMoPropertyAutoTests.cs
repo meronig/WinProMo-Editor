@@ -16,9 +16,9 @@ namespace WinProMo_App.Tests
         {
             Assert.AreEqual("Title", blockATitle.Name, "property name does not correspond");
             Assert.AreEqual(3, blockATitle.Type, "property type does not correspond");
-            Assert.IsFalse(blockATitle.IsReadOnly(), "property is read-only");
-            Assert.IsFalse(blockATitle.IsMultivalue(), "property is multivalue");
-            Assert.IsFalse(blockATitle.IsComposite(), "property is composite");
+            Assert.IsFalse(ToBool(blockATitle.IsReadOnly()), "property is read-only");
+            Assert.IsFalse(ToBool(blockATitle.IsMultivalue()), "property is multivalue");
+            Assert.IsFalse(ToBool(blockATitle.IsComposite()), "property is composite");
         }
 
         [STATestMethod]

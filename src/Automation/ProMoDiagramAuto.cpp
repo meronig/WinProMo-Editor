@@ -75,7 +75,9 @@ void CProMoDiagramAuto::SaveDiagram(BOOL noPrompt)
 	if (GetDocument()) {
 		if (noPrompt) {
 			GetDocument()->OnSaveDocument(GetDocument()->GetPathName());
-			GetDocument()->SetPathName(GetDocument()->GetPathName());
+			if (GetDocument()->GetPathName() && !GetDocument()->GetPathName().IsEmpty()) {
+				GetDocument()->SetPathName(GetDocument()->GetPathName());
+			}
 		}
 		else {
 			GetDocument()->DoFileSave();

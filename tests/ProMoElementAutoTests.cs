@@ -31,9 +31,9 @@ namespace WinProMo_App.Tests
             Assert.AreEqual("Courier New", blockA.FontName);
             Assert.AreEqual(12, blockA.FontSize);
             Assert.AreEqual(400, blockA.FontWeight);
-            Assert.IsFalse(blockA.FontItalic);
-            Assert.IsFalse(blockA.FontUnderline);
-            Assert.IsFalse(blockA.FontStrikeOut);
+            Assert.IsFalse(ToBool(blockA.FontItalic));
+            Assert.IsFalse(ToBool(blockA.FontUnderline));
+            Assert.IsFalse(ToBool(blockA.FontStrikeOut));
             Assert.AreEqual((uint)0, blockA.TextColor);
         }
 
@@ -47,7 +47,7 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Get_Element_Text_Position()
         {
-            Assert.IsFalse(blockA.TextMultiLine);
+            Assert.IsFalse(ToBool(blockA.TextMultiLine));
             Assert.AreEqual(1, blockA.TextHorizontalAlignment);
             Assert.AreEqual(4, blockA.TextVerticalAlignment);
         }

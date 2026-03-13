@@ -25,7 +25,7 @@ namespace WinProMo_App.Tests.Helpers
             {
                 if (diagram1 != null)
                 {
-                    diagram1.Close(false);
+                    diagram1.Close(FromBool(false));
                 }
             }
             catch

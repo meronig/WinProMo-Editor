@@ -29,7 +29,7 @@ library WinProMo_App
 			//    Use extreme caution when editing this section.
 			//{{AFX_ODL_METHOD(CProMoAppAuto)
 			[id(3)] IDispatch* ActiveDocument();
-			[id(4)] VARIANT_BOOL Quit(VARIANT_BOOL saveChanges);
+			[id(4)] boolean Quit(boolean saveChanges);
 			//}}AFX_ODL_METHOD
 
 	};
@@ -64,10 +64,10 @@ library WinProMo_App
 			//{{AFX_ODL_METHOD(CProMoDiagramAuto)
 			[id(6)] void SaveAs(VARIANT fileName);
 			[id(7)] void Activate();
-			[id(8)] void Close(VARIANT_BOOL saveChanges);
+			[id(8)] void Close(boolean saveChanges);
 			[id(9)] void Undo(short times);
 			[id(10)] void Redo(short times);
-			[id(11)] void Save(VARIANT_BOOL noPrompt);
+			[id(11)] void Save(boolean noPrompt);
 			[id(12)] BSTR Path();
 			[id(13)] BSTR Type();
 			[id(15)] void PrintPreview();
@@ -113,8 +113,8 @@ library WinProMo_App
 			[id(2)] short Count();
 			[id(3)] IDispatch* Add(VARIANT documentType);
 			[id(4)] IDispatch* Open(VARIANT fileName);
-			[id(5)] void Save(VARIANT_BOOL noPrompt);
-			[id(6)] void Close(VARIANT_BOOL saveChanges);
+			[id(5)] void Save(boolean noPrompt);
+			[id(6)] void Close(boolean saveChanges);
 			// from IProMoAppChildAuto
 			[id(7)] IDispatch* Application();
 			[id(8), propget] IDispatch* Item(VARIANT item);

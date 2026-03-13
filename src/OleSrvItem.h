@@ -47,6 +47,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+public:
+	virtual void OnDoVerb(LONG iVerb);
 };
 
 /////////////////////////////////////////////////////////////////////////////
