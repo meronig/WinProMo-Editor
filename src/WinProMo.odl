@@ -63,17 +63,15 @@ library WinProMo_App
 			//    Use extreme caution when editing this section.
 			//{{AFX_ODL_METHOD(CProMoDiagramAuto)
 			[id(6)] void SaveAs(VARIANT fileName);
-			[id(7)] void Activate();
-			[id(8)] void Close(boolean saveChanges);
-			[id(9)] void Undo(short times);
-			[id(10)] void Redo(short times);
-			[id(11)] void Save(boolean noPrompt);
-			[id(12)] BSTR Path();
-			[id(13)] BSTR Type();
-			[id(15)] void PrintPreview();
-			[id(14)] void ClosePrintPreview();
+			[id(7)] void Close(boolean saveChanges);
+			[id(8)] void Undo(short times);
+			[id(9)] void Redo(short times);
+			[id(10)] void Save(boolean noPrompt);
+			[id(11)] BSTR Path();
+			[id(12)] BSTR Type();
+			[id(13)] void Export(VARIANT fileName, short format, short scope, double zoom, short resolution);
 			// from IProMoAppChildAuto
-			[id(16)] IDispatch* Application();
+			[id(14)] IDispatch* Application();
 			//}}AFX_ODL_METHOD
 
 	};

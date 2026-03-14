@@ -63,11 +63,11 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Create_Diagram()
         {
-            //Commented out as the application is kept running
-            //diagram1 = diagrams.Add("demoPlugin");
-            //Assert.IsNotNull(diagram1, "Failed to create diagram.");
-            //Assert.IsTrue(diagrams.Count() > 0, "Expected at least one diagram to be open.");
-            //diagram1.Close(false);
+            IDiagram diagram1 = diagrams.Add("demoPlugin");
+            Assert.IsNotNull(diagram1, "Failed to create diagram.");
+            Assert.IsTrue(diagrams.Count() > 0, "Expected at least one diagram to be open.");
+            diagram1.Close(FromBool(false));
+            diagram1.Application().Quit(FromBool(false));
         }
 
         [STATestMethod]

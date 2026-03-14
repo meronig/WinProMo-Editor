@@ -44,15 +44,13 @@ BEGIN_DISPATCH_MAP(CWinProMoDoc, COleServerDoc)
 	DISP_PROPERTY_EX(CWinProMoDoc, "Labels", GetLabels, SetLabels, VT_DISPATCH)
 	DISP_PROPERTY_EX(CWinProMoDoc, "CreatableElementTypes", GetCreatableElementTypes, SetCreatableElementTypes, VT_VARIANT)
 	DISP_FUNCTION(CWinProMoDoc, "SaveAs", SaveAs, VT_EMPTY, VTS_VARIANT)
-	DISP_FUNCTION(CWinProMoDoc, "Activate", Activate, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION(CWinProMoDoc, "Close", Close, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CWinProMoDoc, "Undo", Undo, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CWinProMoDoc, "Redo", Redo, VT_EMPTY, VTS_I2)
 	DISP_FUNCTION(CWinProMoDoc, "Save", Save, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CWinProMoDoc, "Path", Path, VT_BSTR, VTS_NONE)
 	DISP_FUNCTION(CWinProMoDoc, "Type", Type, VT_BSTR, VTS_NONE)
-	DISP_FUNCTION(CWinProMoDoc, "PrintPreview", PrintPreview, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION(CWinProMoDoc, "ClosePrintPreview", ClosePrintPreview, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION(CWinProMoDoc, "Export", Export, VT_EMPTY, VTS_VARIANT VTS_I2 VTS_I2 VTS_R8 VTS_I2)
 	// Common to CProMoAppChild
 	DISP_FUNCTION(CWinProMoDoc, "Application", Application, VT_DISPATCH, VTS_NONE)
 	//}}AFX_DISPATCH_MAP
@@ -147,6 +145,52 @@ BOOL CWinProMoDoc::SelectPluginInterface(CString& docType)
 	str.Format(_T("Cannot find a compatible plugin for " + docType + ". %i plugins were found."), i);
 	AfxMessageBox(str);
 	return FALSE;
+}
+
+void CWinProMoDoc::ExportDiagram(const CString& path, ExportFormat format, ExportElement scope, double zoom = 1.0, unsigned int resolution = 300)
+{
+	if (!m_renderer) {
+		return;
+	}
+
+	if (format == EXPORT_RASTER)
+	{
+		// raster (bitmap) export
+		CDibHelper dib;
+		switch (scope)
+		{
+		case EXPORT_SELECTION:
+			m_renderer->RenderSelectionAsRaster(dib, resolution);
+			break;
+		case EXPORT_CANVAS:
+			m_renderer->RenderCanvasAsRaster(dib, resolution);
+			break;
+		default:
+			m_renderer->RenderDiagramAsRaster(dib, resolution);
+		}
+		dib.SaveBMP(path);
+
+	}
+	else if (format == EXPORT_METAFILE)
+	{
+		// vector (metafile) export
+		CMetaFileDC	metaDC;
+		metaDC.Create(path);
+		switch (scope)
+		{
+		case EXPORT_SELECTION:
+			m_renderer->RenderSelectionAsMetafile(metaDC, zoom);
+			break;
+		case EXPORT_CANVAS:
+			m_renderer->RenderCanvasAsMetafile(metaDC, zoom);
+			break;
+		default:
+			m_renderer->RenderDiagramAsMetafile(metaDC, zoom);
+		}
+		HMETAFILE hmf = metaDC.Close();
+		DeleteMetaFile(hmf);
+
+	}
 }
 
 void CWinProMoDoc::SetPluginInterface(ExtensionDLL* inter)
@@ -332,12 +376,6 @@ BOOL CWinProMoDoc::OnSaveDocument(LPCTSTR lpszPathName)
 /////////////////////////////////////////////////////////////////////////////
 // CWinProMoDoc message handlers
 
-void CWinProMoDoc::Activate()
-{
-	// TODO: Add your dispatch handler code here
-
-}
-
 void CWinProMoDoc::Redo(short times)
 {
 	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
@@ -503,21 +541,12 @@ void CWinProMoDoc::SetCreatableElementTypes(const VARIANT FAR& newValue)
 
 }
 
-void CWinProMoDoc::ClosePrintPreview()
+void CWinProMoDoc::Export(const VARIANT FAR& fileName, ExportFormat format, ExportElement scope, double zoom, short resolution)
 {
-	CProMoDiagramAuto* autoObject = dynamic_cast<CProMoDiagramAuto*>(GetAutomationObject());
+	CProMoDiagramAutoAbs* autoObject = dynamic_cast<CProMoDiagramAutoAbs*>(GetAutomationObject());
 	if (autoObject) {
-		autoObject->ClosePrintPreview();
+		autoObject->Export(fileName, format, scope, zoom, resolution);
 	}
-}
-
-void CWinProMoDoc::PrintPreview()
-{
-	CProMoDiagramAuto* autoObject = dynamic_cast<CProMoDiagramAuto*>(GetAutomationObject());
-	if (autoObject) {
-		autoObject->PrintPreview();
-	}
-
 }
 
 LPDISPATCH CWinProMoDoc::Application()

@@ -50,8 +50,52 @@ CProMoDiagramsAutoAbs* CProMoAppAuto::CreateDiagramsAutoObject()
 
 CProMoDiagramAutoAbs* CProMoAppAuto::GetActiveDiagram()
 {
-	// TODO: implement this method
+	CWnd* pMainWnd = AfxGetMainWnd();
+	if (!pMainWnd)
+		return NULL;
+
+	CMDIFrameWnd* pFrame = DYNAMIC_DOWNCAST(CMDIFrameWnd, pMainWnd);
+	if (!pFrame)
+		return NULL;
+
+	CMDIChildWnd* pChild = pFrame->MDIGetActive();
+	if (!pChild)
+		return NULL;
+
+	CView* pView = pChild->GetActiveView();
+	if (!pView)
+		return NULL;
+
+	IProMoAutomationHost* pHost = dynamic_cast<IProMoAutomationHost*>(pView->GetDocument());
+	if (pHost) {
+		return dynamic_cast<CProMoDiagramAutoAbs*>(pHost->GetAutomationObject());
+	}
+
 	return NULL;
+}
+
+void CProMoAppAuto::ForceQuit()
+{
+	CWinApp* pApp = AfxGetApp();
+	POSITION pos = pApp->GetFirstDocTemplatePosition();
+
+	while (pos != NULL)
+	{
+		CDocTemplate* pTemplate = pApp->GetNextDocTemplate(pos);
+		POSITION posDoc = pTemplate->GetFirstDocPosition();
+
+		while (posDoc != NULL)
+		{
+			CWinProMoDoc* pDoc = dynamic_cast<CWinProMoDoc*>(pTemplate->GetNextDoc(posDoc));
+			if (pDoc) {
+				if (pDoc->GetData()) {
+					pDoc->GetData()->SetModified(FALSE);
+				}
+			}
+
+		}
+	}
+	pApp->CloseAllDocuments(FALSE);
 }
 
 CProMoAppAuto::~CProMoAppAuto()

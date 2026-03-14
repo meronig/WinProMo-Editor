@@ -54,7 +54,7 @@ protected:
 	virtual void GetRegisteredDiagrams(CStringArray& diagramTypes);
 	virtual CProMoDiagramsAutoAbs* CreateDiagramsAutoObject();
 	virtual CProMoDiagramAutoAbs* GetActiveDiagram();
-
+	virtual void ForceQuit();
 };
 
 #endif //_PROMOAPPAUTO_H_

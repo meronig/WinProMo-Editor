@@ -1468,16 +1468,16 @@ void CWinProMoView::OnFileExport()
 {
 	CString filter = _T("Windows Metafile (*.wmf)|*.wmf|"
 		"Windows Bitmap (*.bmp)|*.bmp|");
-	CFileDialog dlg(FALSE, _T("wmf"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
-	if (dlg.DoModal() == IDOK)
+	CFileDialog fileDlg(FALSE, _T("wmf"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
+	if (fileDlg.DoModal() == IDOK)
 	{
 		CExportDlg exportDlg;
-		CString ext = dlg.GetFileExt();
+		CString ext = fileDlg.GetFileExt();
 
 		if (ext == CString(_T("wmf")))
-			exportDlg.SetExportMode(EXPORT_METAFILE);
+			exportDlg.SetExportFormat(EXPORT_METAFILE);
 		else
-			exportDlg.SetExportMode(EXPORT_RASTER);
+			exportDlg.SetExportFormat(EXPORT_RASTER);
 		
 		exportDlg.SetSelectionAvailable(GetEditor()->IsAnyObjectSelected());
 		if (exportDlg.DoModal() != IDOK)
@@ -1485,47 +1485,8 @@ void CWinProMoView::OnFileExport()
 
 		// Show hourglass cursor, as export may take several seconds
 		BeginWaitCursor();
-		
-		CProMoRenderer* rend = GetDocument()->GetRenderer();
-		
-		if (exportDlg.GetExportMode() == EXPORT_RASTER)
-		{
-			// raster (bitmap) export
-			CDibHelper dib;
-			switch (exportDlg.GetExportElement())
-			{
-				case EXPORT_SELECTION:
-					rend->RenderSelectionAsRaster(dib, exportDlg.GetResolution());
-					break;
-				case EXPORT_CANVAS:
-					rend->RenderCanvasAsRaster(dib, exportDlg.GetResolution());
-					break;
-				default:
-					rend->RenderDiagramAsRaster(dib, exportDlg.GetResolution());
-			}
-			dib.SaveBMP(dlg.GetPathName());
-			
-		}
-		else if (exportDlg.GetExportMode() == EXPORT_METAFILE)
-		{
-			// vector (metafile) export
-			CMetaFileDC	metaDC;
-			metaDC.Create(dlg.GetPathName());
-			switch (exportDlg.GetExportElement())
-			{
-			case EXPORT_SELECTION:
-				rend->RenderSelectionAsMetafile(metaDC, exportDlg.GetZoom());
-				break;
-			case EXPORT_CANVAS:
-				rend->RenderCanvasAsMetafile(metaDC, exportDlg.GetZoom());
-				break;
-			default:
-				rend->RenderDiagramAsMetafile(metaDC, exportDlg.GetZoom());
-			}
-			HMETAFILE hmf = metaDC.Close();
-			DeleteMetaFile(hmf);
-			
-		}
+
+		GetDocument()->ExportDiagram(fileDlg.GetPathName(), exportDlg.GetExportFormat(), exportDlg.GetExportElement(), exportDlg.GetZoom(), exportDlg.GetResolution());
 		
 		// Restore normal cursor
 		EndWaitCursor();

@@ -47,6 +47,8 @@ protected:
 	virtual void SaveDiagramAs(const CString& fileName);
 	virtual void SaveDiagram(BOOL noPrompt);
 	virtual void CloseDiagram();
+	virtual CString GetFilePath();
+	virtual void ExportDiagram(const CString& fileName, ExportFormat format, ExportElement scope, double zoom, short resolution);
 
 	// Generated message map functions
 	//{{AFX_MSG(CProMoDiagramAuto)
@@ -57,8 +59,6 @@ protected:
 public:
 	// Generated OLE dispatch map functions
 	//{{AFX_DISPATCH(CProMoDiagramAuto)
-	afx_msg void ClosePrintPreview();
-	afx_msg void PrintPreview();
 	//}}AFX_DISPATCH
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()

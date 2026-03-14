@@ -42,6 +42,7 @@ public:
 	virtual void SetClipboardHandler(CProMoClipboardHandler* clip);
 	
 	virtual BOOL SelectPluginInterface(CString& docType);
+	virtual void ExportDiagram(const CString& path, ExportFormat format, ExportElement scope, double zoom, unsigned int resolution);
 
 protected:
 	virtual void CreateContainer();
@@ -98,15 +99,13 @@ protected:
 	afx_msg VARIANT GetCreatableElementTypes();
 	afx_msg void SetCreatableElementTypes(const VARIANT FAR& newValue);
 	afx_msg void SaveAs(const VARIANT FAR& fileName);
-	afx_msg void Activate();
 	afx_msg void Close(BOOL saveChanges);
 	afx_msg void Redo(short times);
 	afx_msg void Save(BOOL noPrompt);
 	afx_msg void Undo(BOOL times);
 	afx_msg BSTR Path();
 	afx_msg BSTR Type();
-	afx_msg void ClosePrintPreview();
-	afx_msg void PrintPreview();
+	afx_msg void Export(const VARIANT FAR& fileName, ExportFormat format, ExportElement scope, double zoom, short resolution);
 	afx_msg LPDISPATCH Application();
 	// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !

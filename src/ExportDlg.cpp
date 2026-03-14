@@ -30,7 +30,7 @@ CExportDlg::~CExportDlg()
 {
 }
 
-void CExportDlg::SetExportMode(ExportMode mode)
+void CExportDlg::SetExportFormat(ExportFormat mode)
 {
 	m_Mode = mode;
 	
@@ -51,7 +51,7 @@ double CExportDlg::GetZoom()
 	return m_Scale / 100.0;
 }
 
-ExportMode CExportDlg::GetExportMode()
+ExportFormat CExportDlg::GetExportFormat()
 {
 	return m_Mode;
 }

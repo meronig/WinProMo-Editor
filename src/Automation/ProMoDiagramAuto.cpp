@@ -70,6 +70,22 @@ void CProMoDiagramAuto::CloseDiagram()
 
 }
 
+CString CProMoDiagramAuto::GetFilePath()
+{
+	if (GetDocument()) {
+		return GetDocument()->GetPathName();
+	}
+
+	return CString();
+}
+
+void CProMoDiagramAuto::ExportDiagram(const CString& fileName, ExportFormat format, ExportElement scope, double zoom, short resolution)
+{
+	if (GetDocument()) {
+		GetDocument()->ExportDiagram(fileName, format, scope, zoom, resolution);
+	}
+}
+
 void CProMoDiagramAuto::SaveDiagram(BOOL noPrompt)
 {
 	if (GetDocument()) {
@@ -99,15 +115,13 @@ BEGIN_DISPATCH_MAP(CProMoDiagramAuto, CProMoDiagramAutoAbs)
 	DISP_PROPERTY_EX(CProMoDiagramAutoAbs, "Labels", GetLabels, SetLabels, VT_DISPATCH)
 	DISP_PROPERTY_EX(CProMoDiagramAutoAbs, "CreatableElementTypes", GetCreatableElementTypes, SetCreatableElementTypes, VT_VARIANT)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "SaveAs", SaveAs, VT_EMPTY, VTS_VARIANT)
-	DISP_FUNCTION(CProMoDiagramAutoAbs, "Activate", Activate, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Close", Close, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Undo", Undo, VT_EMPTY, VTS_I2)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Redo", Redo, VT_EMPTY, VTS_I2)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Save", Save, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Path", Path, VT_BSTR, VTS_NONE)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Type", Type, VT_BSTR, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramAuto, "PrintPreview", PrintPreview, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramAuto, "ClosePrintPreview", ClosePrintPreview, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION(CProMoDiagramAutoAbs, "Export", Export, VT_EMPTY, VTS_VARIANT VTS_I2 VTS_I2 VTS_R8 VTS_I2)
 	// Common to CProMoAppChildAuto
 	DISP_FUNCTION(CProMoAppChildAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
 	//}}AFX_DISPATCH_MAP
@@ -128,15 +142,4 @@ END_INTERFACE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CProMoDiagramAuto message handlers
 
-void CProMoDiagramAuto::ClosePrintPreview() 
-{
-	// TODO: Add your dispatch handler code here
-
-}
-
-void CProMoDiagramAuto::PrintPreview() 
-{
-	// TODO: Add your dispatch handler code here
-
-}
 
