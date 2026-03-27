@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using WinProMo;
@@ -63,6 +64,41 @@ namespace WinProMo_App.Tests
             block = elements["30"];
             Assert.IsNotNull(block, "Element A1 is null");
             Assert.AreEqual("30", block.ID, "Expected element A1 does not match");
+        }
+
+        [STATestMethod]
+        public void Can_Add_Element()
+        {
+            IElements elements = diagram1.Elements;
+            Assert.IsNotNull(elements, "Elements collection is null");
+            IBlock block = elements.Add("promo_block_view");
+            Assert.IsNotNull(block, "Element is null");
+            IBlock block2 = elements[block.ID];
+            Assert.AreEqual(block,block2);
+        }
+
+        [STATestMethod]
+        public void Can_Remove_Element()
+        {
+            IElements elements = diagram1.Elements;
+            Assert.IsNotNull(elements, "Elements collection is null");
+            IBlock block = elements["4"];
+            Assert.IsNotNull(block, "Element A is null");
+            bool result = ToBool(elements.Remove("4"));
+            Assert.IsTrue(result);
+            block = elements["2975"];
+            Assert.IsNull(block, "Block is not null");
+        }
+        
+        [STATestMethod]
+        public void Can_Get_Label_Element()
+        {
+            IElements elements = diagram1.Elements;
+            Assert.IsNotNull(elements, "Elements collection is null");
+            IBlock block = elements["4"];
+            Assert.IsNotNull(block, "Element A is null");
+            IDiagram diagram = block.Diagram();
+            Assert.AreEqual(diagram1, diagram);
         }
     }
 }

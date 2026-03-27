@@ -47,5 +47,38 @@ namespace WinProMo_App.Tests
             ILabel label = labels["2975"];
             Assert.IsNotNull(label, "Label is null");
         }
+
+        [STATestMethod]
+        public void Can_Add_Label()
+        {
+            ILabels labels = diagram1.Labels;
+            Assert.IsNotNull(labels, "Labels collection is null");
+            ILabel label = labels.Add();
+            Assert.IsNotNull(label, "Label is null");
+        }
+
+        [STATestMethod]
+        public void Can_Remove_Label()
+        {
+            ILabels labels = blockB1.Labels;
+            Assert.IsNotNull(labels, "Labels collection is null");
+            ILabel label = labels["2975"];
+            Assert.IsNotNull(label, "Label is null");
+            bool result = ToBool(labels.Remove("2975"));
+            Assert.IsTrue(result);
+            label = labels["2975"];
+            Assert.IsNull(label, "Label is not null");
+        }
+
+        [STATestMethod]
+        public void Can_Get_Label_Element()
+        {
+            ILabels labels = blockB1.Labels;
+            Assert.IsNotNull(labels, "Labels collection is null");
+            ILabel label = labels["2975"];
+            Assert.IsNotNull(label, "Label is null");
+            IBlock block = label.Element();
+            Assert.AreEqual(blockB1, block);
+        }
     }
 }

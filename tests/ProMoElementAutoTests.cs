@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinProMo;
 using WinProMo_App.Tests.Helpers;
 
 namespace WinProMo_App.Tests
@@ -11,45 +12,124 @@ namespace WinProMo_App.Tests
     public class ProMoElementAutoTests : AutomationTestElements
     {
         [STATestMethod]
-        public void Can_Get_Element_ID_Type()
+        public void Can_Get_Element_ID_Type_LockFlags()
         {
             Assert.AreEqual("promo_block_view", blockA.Type, "Block type does not match");
             Assert.AreEqual("4", blockA.ID);
+            Assert.AreEqual(0, blockA.LockFlags);
         }
 
         [STATestMethod]
-        public void Can_Get_Element_Line_Style()
+        public void Can_Set_Element_Line_Style()
         {
-            Assert.AreEqual((uint)0, blockA.LineColor);
-            Assert.AreEqual(1, blockA.LineWidth);
-            Assert.AreEqual(1, blockA.LineStyle);
+            uint lineColor = 1000;
+            short lineWidth = 2;
+            short lineStyle = 5;
+
+            blockA.LineColor = lineColor;
+            blockA.LineWidth = lineWidth;
+            blockA.LineStyle = lineStyle;
+
+            Assert.AreEqual(lineColor, blockA.LineColor);
+            Assert.AreEqual(lineWidth, blockA.LineWidth);
+            Assert.AreEqual(lineStyle, blockA.LineStyle);
         }
 
         [STATestMethod]
-        public void Can_Get_Element_Text_Style()
+        public void Can_Set_Element_Text_Style()
         {
-            Assert.AreEqual("Courier New", blockA.FontName);
-            Assert.AreEqual(12, blockA.FontSize);
-            Assert.AreEqual(400, blockA.FontWeight);
-            Assert.IsFalse(ToBool(blockA.FontItalic));
-            Assert.IsFalse(ToBool(blockA.FontUnderline));
-            Assert.IsFalse(ToBool(blockA.FontStrikeOut));
-            Assert.AreEqual((uint)0, blockA.TextColor);
+            string fontName = "Arial";
+            short fontSize = 24;
+            short fontWeight = 800;
+            bool fontItalic = true;
+            bool fontUnderline = true;
+            bool fontStrikeout = true;
+            uint textColor = 1000;
+
+            blockA.FontName = fontName;
+            blockA.FontSize = fontSize;
+            blockA.FontWeight = fontWeight;
+            blockA.FontItalic = FromBool(fontItalic);
+            blockA.FontUnderline = FromBool(fontUnderline);
+            blockA.FontStrikeOut = FromBool(fontStrikeout);
+            blockA.TextColor = textColor;
+
+            Assert.AreEqual(fontName, blockA.FontName);
+            Assert.AreEqual(fontSize, blockA.FontSize);
+            Assert.AreEqual(fontWeight, blockA.FontWeight);
+            Assert.AreEqual(fontItalic, ToBool(blockA.FontItalic));
+            Assert.AreEqual(fontUnderline, ToBool(blockA.FontUnderline));
+            Assert.AreEqual(fontStrikeout, ToBool(blockA.FontStrikeOut));
+            Assert.AreEqual(textColor, blockA.TextColor);
         }
 
         [STATestMethod]
-        public void Can_Get_Element_Background_Style()
+        public void Can_Set_Element_Background_Style()
         {
-            Assert.AreEqual((uint)16777215, blockA.BkColor);
-            Assert.AreEqual(1, blockA.BkMode);
+            uint bkColor = 1000;
+            short bkMode = 0;
+
+            blockA.BkColor = bkColor;
+            blockA.BkMode = bkMode;
+
+            Assert.AreEqual(bkColor, blockA.BkColor);
+            Assert.AreEqual(bkMode, blockA.BkMode);
         }
 
         [STATestMethod]
-        public void Can_Get_Element_Text_Position()
+        public void Can_Set_Element_Text_Position()
         {
-            Assert.IsFalse(ToBool(blockA.TextMultiLine));
-            Assert.AreEqual(1, blockA.TextHorizontalAlignment);
-            Assert.AreEqual(4, blockA.TextVerticalAlignment);
+            short vAlign = 0;
+            short hAlign = 0;
+            bool multiline = true;
+
+            blockA.TextMultiLine = FromBool(multiline);
+            blockA.TextHorizontalAlignment = hAlign;
+            blockA.TextVerticalAlignment = vAlign;
+
+            Assert.AreEqual(multiline, ToBool(blockA.TextMultiLine));
+            Assert.AreEqual(hAlign, blockA.TextHorizontalAlignment);
+            Assert.AreEqual(vAlign, blockA.TextVerticalAlignment);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Labels_Object()
+        {
+            ILabels elements = blockA.Labels;
+            Assert.IsNotNull(elements);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Properties_Object()
+        {
+            IProperties properties = blockA.Properties;
+            Assert.IsNotNull(properties);
+        }
+
+        [STATestMethod]
+        public void Can_Duplicate_Element()
+        {
+            IBlock block = blockA.Duplicate();
+            Assert.IsNotNull(block);
+            IBlock block2 = diagram1.Elements[block.ID];
+            Assert.AreEqual(block, block2);
+        }
+
+        [STATestMethod]
+        public void Can_Delete_Element()
+        {
+            string id = blockA.ID;
+            blockA.Delete();
+            IBlock block = diagram1.Elements[id];
+            Assert.IsNull(block, "Block is not null");
+        }
+
+        [STATestMethod]
+        public void Can_Get_Element_Diagram()
+        {
+            IDiagram diagram = blockA.Diagram();
+            Assert.IsNotNull(diagram, "Diagram is null");
+            Assert.AreEqual(diagram1, diagram);
         }
     }
 }

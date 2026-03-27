@@ -29,7 +29,7 @@ library WinProMo_App
 			//    Use extreme caution when editing this section.
 			//{{AFX_ODL_METHOD(CProMoAppAuto)
 			[id(3)] IDispatch* ActiveDocument();
-			[id(4)] boolean Quit(boolean saveChanges);
+			[id(4)] void Quit(boolean saveChanges);
 			//}}AFX_ODL_METHOD
 
 	};
