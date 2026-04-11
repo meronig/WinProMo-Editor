@@ -17,7 +17,7 @@ namespace WinProMo_App.Tests
         {
             IElements elements = diagram1.Elements;
             Assert.IsNotNull(elements, "Elements collection is null");
-            Assert.AreEqual(8, elements.Count(), "Expected 8 elements in the diagram");
+            Assert.AreEqual(9, elements.Count(), "Expected 9 elements in the diagram");
         }
 
         [STATestMethod]
@@ -27,7 +27,7 @@ namespace WinProMo_App.Tests
             Assert.IsNotNull(elements, "Elements collection is null");
             string[] ids = elements.IDs;
             Assert.IsNotNull(ids, "IDs collection is null");
-            Assert.AreEqual(8, ids.Length, "Expected 8 elements in the diagram");
+            Assert.AreEqual(9, ids.Length, "Expected 9 elements in the diagram");
             Assert.IsTrue(ids.Contains("4"), "Expected element 4 not found");
             Assert.IsTrue(ids.Contains("30"), "Expected element 30 not found");
             Assert.IsTrue(ids.Contains("72"), "Expected element 72 not found");
@@ -36,6 +36,7 @@ namespace WinProMo_App.Tests
             Assert.IsTrue(ids.Contains("49"), "Expected element 49 not found");
             Assert.IsTrue(ids.Contains("391"), "Expected element 391 not found");
             Assert.IsTrue(ids.Contains("119"), "Expected element 119 not found");
+            Assert.IsTrue(ids.Contains("461"), "Expected element 461 not found");
 
         }
 
@@ -91,13 +92,11 @@ namespace WinProMo_App.Tests
         }
         
         [STATestMethod]
-        public void Can_Get_Label_Element()
+        public void Can_Get_Elements_Diagram()
         {
             IElements elements = diagram1.Elements;
             Assert.IsNotNull(elements, "Elements collection is null");
-            IBlock block = elements["4"];
-            Assert.IsNotNull(block, "Element A is null");
-            IDiagram diagram = block.Diagram();
+            IDiagram diagram = elements.Diagram();
             Assert.AreEqual(diagram1, diagram);
         }
     }

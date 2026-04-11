@@ -53,5 +53,49 @@ namespace WinProMo_App.Tests
             block = subBlocks["72"];
             Assert.AreEqual(blockA2, block, "Expected sub-block A2 does not match");
         }
+
+        [STATestMethod]
+        public void Can_Add_SubBlock()
+        {
+            IBlock parent = blockA1.Parent;
+            Assert.AreEqual(blockA, parent, "Block A1 parent does not match block A");
+            ISubBlocks subBlocks = blockB.SubBlocks;
+            Assert.IsNotNull(subBlocks, "SubBlocks collection is null");
+            bool result = ToBool(subBlocks.Add(blockA1));
+            Assert.IsTrue(result, "Failed to set block B as the parent of block A1");
+            parent = blockA1.Parent;
+            Assert.AreEqual(blockB, parent, "Block A1 parent was not updated to block B");
+        }
+
+        [STATestMethod]
+        public void Can_Remove_SubBlock()
+        {
+            IBlock parent = blockA1.Parent;
+            Assert.AreEqual(blockA, parent, "Block A1 parent does not match block A");
+            ISubBlocks subBlocks = blockA.SubBlocks;
+            Assert.IsNotNull(subBlocks, "SubBlocks collection is null");
+            bool result = ToBool(subBlocks.Remove(blockA1.ID));
+            Assert.IsTrue(result, "Failed to remove block A1 from the children of block A");
+            parent = blockA1.Parent;
+            Assert.IsNull(parent, "Block A1 parent was not set to null after removal");
+        }
+
+        [STATestMethod]
+        public void Can_Get_SubBlocks_Diagram()
+        {
+            ISubBlocks subBlocks = blockA.SubBlocks;
+            Assert.IsNotNull(subBlocks, "SubBlocks collection is null");
+            IDiagram diagram = subBlocks.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_OutgoingEdges_Element()
+        {
+            ISubBlocks subBlocks = blockA.SubBlocks;
+            Assert.IsNotNull(subBlocks, "SubBlocks collection is null");
+            IBlock block = subBlocks.Element();
+            Assert.AreEqual(blockA, block);
+        }
     }
 }

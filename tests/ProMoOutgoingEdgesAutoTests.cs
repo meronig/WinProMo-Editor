@@ -47,5 +47,49 @@ namespace WinProMo_App.Tests
             IEdge edge = outgoingEdges["391"];
             Assert.AreEqual(edgeX, edge, "Expected edge x does not match");
         }
+
+        [STATestMethod]
+        public void Can_Add_OutgoingEdge()
+        {
+            IBlock src = edgeX.Source;
+            Assert.AreEqual(blockA, src, "Edge x source does not match block A");
+            IOutgoingEdges outgoingEdges = blockA1.OutgoingEdges;
+            Assert.IsNotNull(outgoingEdges, "OutgoingEdges collection is null");
+            bool result = ToBool(outgoingEdges.Add(edgeX));
+            Assert.IsTrue(result, "Failed to add edge x to block A1's outgoing edges");
+            src = edgeX.Source;
+            Assert.AreEqual(blockA1, src, "Edge x destination was not updated to block A1");
+        }
+
+        [STATestMethod]
+        public void Can_Remove_OutgoingEdge()
+        {
+            IBlock src = edgeX.Source;
+            Assert.AreEqual(blockA, src, "Edge x source does not match block A");
+            IOutgoingEdges outgoingEdges = blockA.OutgoingEdges;
+            Assert.IsNotNull(outgoingEdges, "OutgoingEdges collection is null");
+            bool result = ToBool(outgoingEdges.Remove(edgeX.ID));
+            Assert.IsTrue(result, "Failed to remove edge x from block A's incoming edges");
+            src = edgeX.Source;
+            Assert.IsNull(src, "Edge x source was not set to null after removal");
+        }
+
+        [STATestMethod]
+        public void Can_Get_OutgoingEdges_Diagram()
+        {
+            IOutgoingEdges outgoingEdges = blockA.OutgoingEdges;
+            Assert.IsNotNull(outgoingEdges, "OutgoingEdges collection is null");
+            IDiagram diagram = outgoingEdges.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_OutgoingEdges_Element()
+        {
+            IOutgoingEdges outgoingEdges = blockA.OutgoingEdges;
+            Assert.IsNotNull(outgoingEdges, "OutgoingEdges collection is null");
+            IBlock block = outgoingEdges.Element();
+            Assert.AreEqual(blockA, block);
+        }
     }
 }

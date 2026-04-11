@@ -16,8 +16,10 @@ namespace WinProMo_App.Tests.Helpers
         protected ILabel blockBTitle;
         protected ILabel blockB1Title;
         protected ILabel blockB2Title;
+        protected ILabel blockCTitle;
         protected ILabel edgeXTitle;
         protected ILabel edgeZTitle;
+        protected ILabel diagramLabel;
 
         [TestInitialize]
         public void Setup()
@@ -29,8 +31,10 @@ namespace WinProMo_App.Tests.Helpers
             blockBTitle = blockB.Labels[0];
             blockB1Title = blockB1.Labels[0];
             blockB2Title = blockB2.Labels[0];
+            blockCTitle = blockC.Labels[0];
             edgeXTitle = edgeX.Labels[0];
             edgeZTitle = edgeZ.Labels[0];
+            diagramLabel = diagram1.Labels[0];
 
             Assert.IsNotNull(blockATitle);
             Assert.IsNotNull(blockA1Title);
@@ -38,9 +42,10 @@ namespace WinProMo_App.Tests.Helpers
             Assert.IsNotNull(blockBTitle);
             Assert.IsNotNull(blockB1Title);
             Assert.IsNotNull(blockB2Title);
+            Assert.IsNotNull(blockCTitle);
             Assert.IsNotNull(edgeXTitle);
             Assert.IsNotNull(edgeZTitle);
-
+            Assert.IsNotNull(diagramLabel);
         }
 
     }

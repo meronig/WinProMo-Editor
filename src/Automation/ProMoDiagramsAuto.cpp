@@ -147,6 +147,7 @@ BEGIN_DISPATCH_MAP(CProMoDiagramsAuto, CProMoDiagramsAutoAbs)
 	DISP_FUNCTION(CProMoDiagramsAutoAbs, "Close", Close, VT_EMPTY, VTS_BOOL)
 	// Common to CProMoAppChildAuto
 	DISP_FUNCTION(CProMoAppChildAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
+	// Default property
 	DISP_PROPERTY_PARAM_ID(CProMoDiagramsAutoAbs, "Item", 0, GetItem, SetItem, VT_DISPATCH, VTS_VARIANT)
 	DISP_DEFVALUE(CProMoDiagramsAutoAbs, "Item")
 

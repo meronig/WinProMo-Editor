@@ -30,7 +30,24 @@ namespace WinProMo_App.Tests
             segment = segments[1];
             Assert.IsNotNull(segment, "Segment at position 1 is null");
             Assert.AreEqual(210, segment.StartX);
+        }
 
+        [STATestMethod]
+        public void Can_Get_Segments_Diagram()
+        {
+            IEdgeSegments segments = edgeX.Segments;
+            Assert.IsNotNull(segments, "Segments collection is null");
+            IDiagram diagram = segments.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Segments_Element()
+        {
+            IEdgeSegments segments = edgeX.Segments;
+            Assert.IsNotNull(segments, "Segments collection is null");
+            IEdge edge = segments.Element();
+            Assert.AreEqual(edgeX, edge);
         }
     }
 }

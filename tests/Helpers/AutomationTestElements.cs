@@ -18,6 +18,8 @@ namespace WinProMo_App.Tests.Helpers
         protected IBlock blockB1;
         protected IBlock blockB2;
 
+        protected IBlock blockC;
+
         protected IEdge edgeX;
         protected IEdge edgeZ;
 
@@ -33,6 +35,8 @@ namespace WinProMo_App.Tests.Helpers
             blockB1 = diagram1.Elements["49"];
             blockB2 = diagram1.Elements["119"];
 
+            blockC = diagram1.Elements["461"];
+
             edgeX = diagram1.Elements["391"];
             edgeZ = diagram1.Elements["522"];
 
@@ -42,6 +46,7 @@ namespace WinProMo_App.Tests.Helpers
             Assert.IsNotNull(blockB);
             Assert.IsNotNull(blockB1);
             Assert.IsNotNull(blockB2);
+            Assert.IsNotNull(blockC);
             Assert.IsNotNull(edgeX);
             Assert.IsNotNull(edgeZ);
         }

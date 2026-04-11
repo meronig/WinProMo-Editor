@@ -47,5 +47,49 @@ namespace WinProMo_App.Tests
             IEdge edge = incomingEdges["391"];
             Assert.AreEqual(edgeX, edge, "Expected edge x does not match");
         }
+
+        [STATestMethod]
+        public void Can_Add_IncomingEdge()
+        {
+            IBlock dest = edgeX.Destination;
+            Assert.AreEqual(blockB1, dest, "Edge x destination does not match block B1");
+            IIncomingEdges incomingEdges = blockB.IncomingEdges;
+            Assert.IsNotNull(incomingEdges, "IncomingEdges collection is null");
+            bool result = ToBool(incomingEdges.Add(edgeX));
+            Assert.IsTrue(result, "Failed to add edge x to block B's incoming edges");
+            dest = edgeX.Destination;
+            Assert.AreEqual(blockB, dest, "Edge x destination was not updated to block B");
+        }
+
+        [STATestMethod]
+        public void Can_Remove_IncomingEdge()
+        {
+            IBlock dest = edgeX.Destination;
+            Assert.AreEqual(blockB1, dest, "Edge x destination does not match block B1");
+            IIncomingEdges incomingEdges = blockB1.IncomingEdges;
+            Assert.IsNotNull(incomingEdges, "IncomingEdges collection is null");
+            bool result = ToBool(incomingEdges.Remove(edgeX.ID));
+            Assert.IsTrue(result, "Failed to remove edge x from block B1's incoming edges");
+            dest = edgeX.Destination;
+            Assert.IsNull(dest, "Edge x destination was not set to null after removal");
+        }
+
+        [STATestMethod]
+        public void Can_Get_IncomingEdges_Diagram()
+        {
+            IIncomingEdges incomingEdges = blockB1.IncomingEdges;
+            Assert.IsNotNull(incomingEdges, "IncomingEdges collection is null");
+            IDiagram diagram = incomingEdges.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_IncomingEdges_Element()
+        {
+            IIncomingEdges incomingEdges = blockB1.IncomingEdges;
+            Assert.IsNotNull(incomingEdges, "IncomingEdges collection is null");
+            IBlock block = incomingEdges.Element();
+            Assert.AreEqual(blockB1, block);
+        }
     }
 }

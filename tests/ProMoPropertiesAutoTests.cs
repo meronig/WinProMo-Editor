@@ -47,5 +47,23 @@ namespace WinProMo_App.Tests
             IProperty property = properties["Title"];
             Assert.IsNotNull(property, "property Title is null");
         }
+
+        [STATestMethod]
+        public void Can_Get_Properties_Diagram()
+        {
+            IProperties properties = blockA.Properties;
+            Assert.IsNotNull(properties, "properties collection is null");
+            IDiagram diagram = properties.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Properties_Element()
+        {
+            IProperties properties = blockA.Properties;
+            Assert.IsNotNull(properties, "properties collection is null");
+            IBlock block = properties.Element();
+            Assert.AreEqual(blockA, block);
+        }
     }
 }

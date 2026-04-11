@@ -22,9 +22,11 @@ namespace WinProMo_App.Tests
         }
 
         [STATestMethod]
-        public void Can_Get_Property_Value()
+        public void Can_Set_Property_Value()
         {
             Assert.AreEqual("A", blockATitle.Value, "property value does not correspond");
+            blockATitle.Value = "Block A";
+            Assert.AreEqual("Block A", blockATitle.Value, "property value was not set correctly");
         }
 
         [STATestMethod]
@@ -45,7 +47,21 @@ namespace WinProMo_App.Tests
         public void Can_Get_Property_Label()
         {
             ILabel label = blockATitle.Label();
-            Assert.IsNotNull(label, "Names collection is null");
+            Assert.IsNotNull(label, "Label is null");
+        }
+
+        [STATestMethod]
+        public void Can_Get_Property_Diagram()
+        {
+            IDiagram diagram = blockATitle.Diagram();
+            Assert.AreEqual(diagram1, diagram);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Property_Element()
+        {
+            IBlock block = blockATitle.Element();
+            Assert.AreEqual(blockA, block);
         }
     }
 }

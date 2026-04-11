@@ -71,14 +71,21 @@ namespace WinProMo_App.Tests
         }
 
         [STATestMethod]
-        public void Can_Get_Label_Element()
+        public void Can_Get_Labels_Element()
         {
             ILabels labels = blockB1.Labels;
             Assert.IsNotNull(labels, "Labels collection is null");
-            ILabel label = labels["2975"];
-            Assert.IsNotNull(label, "Label is null");
-            IBlock block = label.Element();
+            IBlock block = labels.Element();
             Assert.AreEqual(blockB1, block);
+        }
+
+        [STATestMethod]
+        public void Can_Get_Labels_Diagram()
+        {
+            ILabels labels = blockB1.Labels;
+            Assert.IsNotNull(labels, "Labels collection is null");
+            IDiagram diagram = labels.Diagram();
+            Assert.AreEqual(diagram1, diagram);
         }
     }
 }
