@@ -18,9 +18,9 @@ namespace WinProMo_App.Tests.Helpers
         public void Setup()
         {
             base.Setup();
-            segmentX1 = edgeX.Segments[0];
-            segmentX2 = edgeX.Segments[1];
-            segmentZ = edgeZ.Segments[0];
+            segmentX1 = edgeX.Segments[1];
+            segmentX2 = edgeX.Segments[2];
+            segmentZ = edgeZ.Segments[1];
 
             Assert.IsNotNull(segmentX1);
             Assert.IsNotNull(segmentX2);

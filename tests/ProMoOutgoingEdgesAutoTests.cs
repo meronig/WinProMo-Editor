@@ -35,7 +35,7 @@ namespace WinProMo_App.Tests
         {
             IOutgoingEdges outgoingEdges = blockA.OutgoingEdges;
             Assert.IsNotNull(outgoingEdges, "OutgoingEdges collection is null");
-            IEdge edge = outgoingEdges[0];
+            IEdge edge = outgoingEdges[1];
             Assert.AreEqual(edgeX, edge, "Expected edge x does not match");
         }
 

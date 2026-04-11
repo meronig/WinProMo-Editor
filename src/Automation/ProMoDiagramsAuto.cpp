@@ -65,7 +65,7 @@ CProMoDiagramAutoAbs* CProMoDiagramsAuto::GetDiagramAutoObject(int index)
 	ASSERT(pApp);
 	ASSERT(pApp->m_docTemplate);
 	POSITION posDoc = pApp->m_docTemplate->GetFirstDocPosition();
-	short nCount = 0;
+	short nCount = 1;
 	CProMoAppChildAuto* pDiagramAuto = NULL;
 	while (posDoc)
 	{

@@ -36,9 +36,9 @@ namespace WinProMo_App.Tests
         {
             ISubBlocks subBlocks = blockA.SubBlocks;
             Assert.IsNotNull(subBlocks, "SubBlocks collection is null");
-            IBlock block = subBlocks[0];
+            IBlock block = subBlocks[1];
             Assert.AreEqual(blockA1, block, "Expected sub-block A1 does not match");
-            block = subBlocks[1];
+            block = subBlocks[2];
             Assert.AreEqual(blockA2, block, "Expected sub-block A2 does not match");
 
         }

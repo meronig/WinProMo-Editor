@@ -104,7 +104,7 @@ namespace WinProMo_App.Tests
         public void Can_Get_Diagram_Objects_By_Position()
         {
             OpenDiagram();
-            IDiagram diagram0 = diagrams[0];
+            IDiagram diagram0 = diagrams[1];
             Assert.IsNotNull(diagram0, "First diagram is null");
             Assert.AreEqual(diagram1, diagram0, "First diagram is not the one created");
         }

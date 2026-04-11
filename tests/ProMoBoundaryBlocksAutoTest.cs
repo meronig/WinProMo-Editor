@@ -35,7 +35,7 @@ namespace WinProMo_App.Tests
         {
             IBoundaryBlocks boundaryBlocks = blockB.BoundaryBlocks;
             Assert.IsNotNull(boundaryBlocks, "Boundary blocks collection is null");
-            IBlock block = boundaryBlocks[0];
+            IBlock block = boundaryBlocks[1];
             Assert.AreEqual(blockC, block, "Expected boundary block C does not match");
             
         }

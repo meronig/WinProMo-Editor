@@ -35,7 +35,7 @@ namespace WinProMo_App.Tests
         {
             ILabels labels = blockB1.Labels;
             Assert.IsNotNull(labels, "Labels collection is null");
-            ILabel label = labels[0];
+            ILabel label = labels[1];
             Assert.IsNotNull(label, "Label is null");
         }
 

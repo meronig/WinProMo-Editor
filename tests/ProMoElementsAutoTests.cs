@@ -45,11 +45,11 @@ namespace WinProMo_App.Tests
         {
             IElements elements = diagram1.Elements;
             Assert.IsNotNull(elements, "Elements collection is null");
-            IBlock block = elements[0];
-            Assert.IsNotNull(block, "Element at position 0 is null");
+            IBlock block = elements[1];
+            Assert.IsNotNull(block, "Element at position 1 is null");
             Assert.AreEqual("4", block.ID, "Expected element A does not match");
-            block = elements[1];
-            Assert.IsNotNull(block, "Element at position 0 is null");
+            block = elements[2];
+            Assert.IsNotNull(block, "Element at position 2 is null");
             Assert.AreEqual("30", block.ID, "Expected element A does not match");
 
         }

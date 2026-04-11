@@ -25,16 +25,16 @@ namespace WinProMo_App.Tests.Helpers
         public void Setup()
         {
             base.Setup();
-            blockATitle = blockA.Labels[0];
-            blockA1Title = blockA1.Labels[0];
-            blockA2Title = blockA2.Labels[0];
-            blockBTitle = blockB.Labels[0];
-            blockB1Title = blockB1.Labels[0];
-            blockB2Title = blockB2.Labels[0];
-            blockCTitle = blockC.Labels[0];
-            edgeXTitle = edgeX.Labels[0];
-            edgeZTitle = edgeZ.Labels[0];
-            diagramLabel = diagram1.Labels[0];
+            blockATitle = blockA.Labels[1];
+            blockA1Title = blockA1.Labels[1];
+            blockA2Title = blockA2.Labels[1];
+            blockBTitle = blockB.Labels[1];
+            blockB1Title = blockB1.Labels[1];
+            blockB2Title = blockB2.Labels[1];
+            blockCTitle = blockC.Labels[1];
+            edgeXTitle = edgeX.Labels[1];
+            edgeZTitle = edgeZ.Labels[1];
+            diagramLabel = diagram1.Labels[1];
 
             Assert.IsNotNull(blockATitle);
             Assert.IsNotNull(blockA1Title);

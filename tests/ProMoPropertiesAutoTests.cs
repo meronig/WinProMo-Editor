@@ -35,7 +35,7 @@ namespace WinProMo_App.Tests
         {
             IProperties properties = blockA.Properties;
             Assert.IsNotNull(properties, "properties collection is null");
-            IProperty property = properties[0];
+            IProperty property = properties[1];
             Assert.IsNotNull(property, "first property is null");
         }
 

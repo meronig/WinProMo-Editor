@@ -24,11 +24,11 @@ namespace WinProMo_App.Tests
         {
             IEdgeSegments segments = edgeX.Segments;
             Assert.IsNotNull(segments, "Segments collection is null");
-            IEdgeSegment segment = segments[0];
-            Assert.IsNotNull(segment, "Segment at position 0 is null");
-            Assert.AreEqual(211, segment.StartX);
-            segment = segments[1];
+            IEdgeSegment segment = segments[1];
             Assert.IsNotNull(segment, "Segment at position 1 is null");
+            Assert.AreEqual(211, segment.StartX);
+            segment = segments[2];
+            Assert.IsNotNull(segment, "Segment at position 2 is null");
             Assert.AreEqual(210, segment.StartX);
         }
 

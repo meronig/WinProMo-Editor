@@ -23,14 +23,14 @@ namespace WinProMo_App.Tests.Helpers
         public void Setup()
         {
             base.Setup();
-            blockATitle = blockA.Properties[0];
-            blockA1Title = blockA1.Properties[0];
-            blockA2Title = blockA2.Properties[0];
-            blockBTitle = blockB.Properties[0];
-            blockB1Title = blockB1.Properties[0];
-            blockB2Title = blockB2.Properties[0];
-            edgeXTitle = edgeX.Properties[0];
-            edgeZTitle = edgeZ.Properties[0];
+            blockATitle = blockA.Properties[1];
+            blockA1Title = blockA1.Properties[1];
+            blockA2Title = blockA2.Properties[1];
+            blockBTitle = blockB.Properties[1];
+            blockB1Title = blockB1.Properties[1];
+            blockB2Title = blockB2.Properties[1];
+            edgeXTitle = edgeX.Properties[1];
+            edgeZTitle = edgeZ.Properties[1];
             
             Assert.IsNotNull(blockATitle);
             Assert.IsNotNull(blockA1Title);

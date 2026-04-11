@@ -35,7 +35,7 @@ namespace WinProMo_App.Tests
         {
             IIncomingEdges incomingEdges = blockB1.IncomingEdges;
             Assert.IsNotNull(incomingEdges, "IncomingEdges collection is null");
-            IEdge edge = incomingEdges[0];
+            IEdge edge = incomingEdges[1];
             Assert.AreEqual(edgeX, edge, "Expected edge x does not match");
         }
 
