@@ -60,7 +60,7 @@ namespace WinProMo_App.Tests
         public void Can_Set_Label_Background_Style()
         {
             uint bkColor = 1000;
-            short bkMode = 0;
+            tagBkMode bkMode = tagBkMode.bkOpaque;
 
             diagramLabel.BkColor = bkColor;
             diagramLabel.BkMode = bkMode;
@@ -72,8 +72,8 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Set_Label_Text_Position()
         {
-            short vAlign = 0;
-            short hAlign = 0;
+            tagVerticalAlignment vAlign = tagVerticalAlignment.vaTop;
+            tagHorizontalAlignment hAlign = tagHorizontalAlignment.haLeft;
             bool multiline = true;
 
             diagramLabel.TextMultiLine = FromBool(multiline);

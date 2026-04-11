@@ -158,6 +158,8 @@ protected:
 	afx_msg void OnUpdateStyleDotdashdotted(CCmdUI* pCmdUI);
 	afx_msg void OnStyleDashdotted();
 	afx_msg void OnUpdateStyleDashdotted(CCmdUI* pCmdUI);
+	afx_msg void OnStyleTransparent();
+	afx_msg void OnUpdateStyleTransparent(CCmdUI* pCmdUI);
 	afx_msg void OnWidth1pt();
 	afx_msg void OnUpdateWidth1pt(CCmdUI* pCmdUI);
 	afx_msg void OnWidth2pt();

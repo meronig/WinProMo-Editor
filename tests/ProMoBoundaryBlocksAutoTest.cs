@@ -56,11 +56,11 @@ namespace WinProMo_App.Tests
             Assert.AreEqual(blockB, parent, "Block C parent does not match block B");
             IBoundaryBlocks boundaryBlocks = blockB1.BoundaryBlocks;
             Assert.IsNotNull(boundaryBlocks, "Boundary blocks collection is null");
-            bool result = ToBool(boundaryBlocks.Add(blockC, 11));
+            bool result = ToBool(boundaryBlocks.Add(blockC, tagBoundaryAttachment.baBottom));
             Assert.IsTrue(result, "Failed to set block C as the parent of block B1");
             parent = blockC.Parent;
             Assert.AreEqual(blockB1, parent, "Block C parent was not updated to block B1");
-            Assert.AreEqual(11, blockC.BoundaryAttachment, "Block C boundary attachment was not set to 11");
+            Assert.AreEqual(tagBoundaryAttachment.baBottom, blockC.BoundaryAttachment, "Block C boundary attachment was not set to 11");
         }
 
         [STATestMethod]

@@ -222,6 +222,7 @@ BEGIN
                 MENUITEM "Dotted",                      ID_STYLE_DOTTED
                 MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
                 MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+                MENUITEM "Transparent",                 ID_STYLE_TRANSPARENT
             END
         END
         POPUP "&Fill"
@@ -356,6 +357,7 @@ BEGIN
                 MENUITEM "Dotted",                      ID_STYLE_DOTTED
                 MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
                 MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+                MENUITEM "Transparent",                 ID_STYLE_TRANSPARENT
             END
         END
         POPUP "&Fill"
@@ -497,6 +499,7 @@ BEGIN
                 MENUITEM "Dotted",                      ID_STYLE_DOTTED
                 MENUITEM "Dash-dotted",                 ID_STYLE_DASHDOTTED
                 MENUITEM "Dot-dash-dotted",             ID_STYLE_DOTDASHDOTTED
+                MENUITEM "Transparent",                 ID_STYLE_TRANSPARENT
             END
         END
         POPUP "&Fill"

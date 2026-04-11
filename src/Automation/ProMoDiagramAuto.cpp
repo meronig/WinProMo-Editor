@@ -121,7 +121,7 @@ BEGIN_DISPATCH_MAP(CProMoDiagramAuto, CProMoDiagramAutoAbs)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Save", Save, VT_EMPTY, VTS_BOOL)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Path", Path, VT_BSTR, VTS_NONE)
 	DISP_FUNCTION(CProMoDiagramAutoAbs, "Type", Type, VT_BSTR, VTS_NONE)
-	DISP_FUNCTION(CProMoDiagramAutoAbs, "Export", Export, VT_EMPTY, VTS_VARIANT VTS_I2 VTS_I2 VTS_R8 VTS_I2)
+	DISP_FUNCTION(CProMoDiagramAutoAbs, "Export", Export, VT_EMPTY, VTS_VARIANT VTS_I4 VTS_I4 VTS_R8 VTS_I2)
 	// Common to CProMoAppChildAuto
 	DISP_FUNCTION(CProMoAppChildAuto, "Application", Application, VT_DISPATCH, VTS_NONE)
 	//}}AFX_DISPATCH_MAP

@@ -247,6 +247,9 @@
     <ClCompile Include="WinProMoView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DemoScripts\automation.js" />
+    <None Include="DemoScripts\automation.ps1" />
+    <None Include="DemoScripts\automation.xlsm" />
     <None Include="res\WinProMoApp.rc2" />
     <None Include="WinProMo.mak" />
   </ItemGroup>

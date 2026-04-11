@@ -82,6 +82,8 @@ function Main()
     WScript.Echo("Demo diagram created.");
 
     diagram.Close(true);
+	
+	app.Quit(false);
 
     // JScript does not require explicit ReleaseComObject
     // Just drop references:

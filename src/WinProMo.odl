@@ -41,6 +41,21 @@ library WinProMo_App
 		[default] dispinterface IApplication;
 	};
 
+	// Enum for export format in the Export method of IDiagram
+	typedef enum tagExportFormat
+	{
+		efBitmap = 0,
+		efMetafile = 1
+	} ExportFormat;
+
+	typedef enum tagExportElement
+	{
+		eeSelection = 0,
+		eeDiagram = 1,
+		eeCanvas = 2
+	} ExportElement;
+
+
 	//  Primary dispatch interface for CProMoDiagramAuto and CWinProMoDoc
 	[uuid(358D4991-FD35-11F0-9740-000C2976A615)]
 		dispinterface IDiagram
@@ -69,7 +84,7 @@ library WinProMo_App
 			[id(10)] void Save(boolean noPrompt);
 			[id(11)] BSTR Path();
 			[id(12)] BSTR Type();
-			[id(13)] void Export(VARIANT fileName, short format, short scope, double zoom, short resolution);
+			[id(13)] void Export(VARIANT fileName, ExportFormat format, ExportElement scope, double zoom, short resolution);
 			// from IProMoAppChildAuto
 			[id(14)] IDispatch* Application();
 			//}}AFX_ODL_METHOD

@@ -131,6 +131,8 @@ BEGIN_MESSAGE_MAP(CWinProMoView, CView)
 	ON_UPDATE_COMMAND_UI(ID_STYLE_DOTDASHDOTTED, &CWinProMoView::OnUpdateStyleDotdashdotted)
 	ON_COMMAND(ID_STYLE_DASHDOTTED, &CWinProMoView::OnStyleDashdotted)
 	ON_UPDATE_COMMAND_UI(ID_STYLE_DASHDOTTED, &CWinProMoView::OnUpdateStyleDashdotted)
+	ON_COMMAND(ID_STYLE_TRANSPARENT, &CWinProMoView::OnStyleTransparent)
+	ON_UPDATE_COMMAND_UI(ID_STYLE_TRANSPARENT, &CWinProMoView::OnUpdateStyleTransparent)
 	ON_COMMAND(ID_WIDTH_1PT, &CWinProMoView::OnWidth1pt)
 	ON_UPDATE_COMMAND_UI(ID_WIDTH_1PT, &CWinProMoView::OnUpdateWidth1pt)
 	ON_COMMAND(ID_WIDTH_2PT, &CWinProMoView::OnWidth2pt)
@@ -1290,8 +1292,8 @@ void CWinProMoView::OnUpdateStyleSolid(CCmdUI* pCmdUI)
 {
 	if (GetEditor()) {
 		if (GetEditor()->IsAnyEdgeSelected() || GetEditor()->IsAnyBlockSelected()) {
-			pCmdUI->Enable(!GetEditor()->IsLocked(LOCK_LINESTYLE) && GetEditor()->GetLineWidth() == 1);
-			pCmdUI->SetCheck((GetEditor()->GetLineStyle() == PS_SOLID) || GetEditor()->GetLineWidth() != 1);
+			pCmdUI->Enable(!GetEditor()->IsLocked(LOCK_LINESTYLE));
+			pCmdUI->SetCheck((GetEditor()->GetLineStyle() == PS_SOLID));
 		}
 		else {
 			pCmdUI->Enable(FALSE);
@@ -1376,6 +1378,27 @@ void CWinProMoView::OnUpdateStyleDashdotted(CCmdUI* pCmdUI)
 		if (GetEditor()->IsAnyEdgeSelected() || GetEditor()->IsAnyBlockSelected()) {
 			pCmdUI->Enable(!GetEditor()->IsLocked(LOCK_LINESTYLE) && GetEditor()->GetLineWidth() == 1);
 			pCmdUI->SetCheck((GetEditor()->GetLineStyle() == PS_DASHDOT) && GetEditor()->GetLineWidth() == 1);
+		}
+		else {
+			pCmdUI->Enable(FALSE);
+			pCmdUI->SetCheck(FALSE);
+		}
+	}
+}
+
+void CWinProMoView::OnStyleTransparent()
+{
+	if (GetEditor()) {
+		GetEditor()->SetLineStyle(PS_NULL);
+	}
+}
+
+void CWinProMoView::OnUpdateStyleTransparent(CCmdUI* pCmdUI)
+{
+	if (GetEditor()) {
+		if (GetEditor()->IsAnyBlockSelected()) {
+			pCmdUI->Enable(!GetEditor()->IsLocked(LOCK_LINESTYLE));
+			pCmdUI->SetCheck((GetEditor()->GetLineStyle() == PS_NULL));
 		}
 		else {
 			pCmdUI->Enable(FALSE);

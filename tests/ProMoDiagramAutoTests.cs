@@ -11,6 +11,35 @@ namespace WinProMo_App.Tests
     [TestClass]
     public class ProMoDiagramAutoTests : AutomationTestDiagrams
     {
+
+        private string _testDir;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            base.Setup();
+            _testDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(_testDir);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            base.Cleanup();
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Directory.Delete(_testDir, true);
+                    break;
+                }
+                catch
+                {
+                    System.Threading.Thread.Sleep(50);
+                }
+            }
+        }
+
         [STATestMethod]
         public void Can_Set_Diagram_Size()
         {
@@ -85,6 +114,58 @@ namespace WinProMo_App.Tests
             Assert.AreEqual(oldWidth, diagram1.Width, "Undo failed");
             diagram1.Redo(1);
             Assert.AreEqual(newWidth, diagram1.Width, "Redo failed");
+        }
+
+        [STATestMethod]
+        public void Can_Save_Diagram_As()
+        {
+            string filePath = Path.Combine(_testDir, "test.wpd");
+
+            diagram1.SaveAs(filePath);
+            Assert.IsTrue(File.Exists(filePath), "File was not created.");
+            Assert.IsTrue(new FileInfo(filePath).Length > 0, "File is empty.");
+        }
+
+        [STATestMethod]
+        public void Can_Save_Diagram()
+        {
+            string filePath = Path.Combine(_testDir, "test2.wpd");
+
+            diagram1.SaveAs(filePath);
+            Assert.IsTrue(File.Exists(filePath), "File was not created.");
+            Assert.IsTrue(new FileInfo(filePath).Length > 0, "File is empty.");
+
+            DateTime firstWrite = File.GetLastWriteTime(filePath);
+
+            diagram1.Width += 100; // Make a change to ensure the diagram is dirty
+
+            System.Threading.Thread.Sleep(1100);
+
+            diagram1.Save(FromBool(true));
+
+            DateTime secondWrite = File.GetLastWriteTime(filePath);
+
+            Assert.IsTrue(secondWrite > firstWrite, $"Expected timestamp to increase. Before: {firstWrite}, After: {secondWrite}");
+        }
+
+        [STATestMethod]
+        public void Can_Export_Diagram_Metafile()
+        {
+            string filePath = Path.Combine(_testDir, "test.wmf");
+
+            diagram1.Export(filePath, tagExportFormat.efMetafile, tagExportElement.eeDiagram, 1.0, 300);
+            Assert.IsTrue(File.Exists(filePath), "File was not created.");
+            Assert.IsTrue(new FileInfo(filePath).Length > 0, "File is empty.");
+        }
+
+        [STATestMethod]
+        public void Can_Export_Diagram_Raster()
+        {
+            string filePath = Path.Combine(_testDir, "test.bmp");
+
+            diagram1.Export(filePath, tagExportFormat.efBitmap, tagExportElement.eeCanvas, 1.0, 300);
+            Assert.IsTrue(File.Exists(filePath), "File was not created.");
+            Assert.IsTrue(new FileInfo(filePath).Length > 0, "File is empty.");
         }
     }
 }

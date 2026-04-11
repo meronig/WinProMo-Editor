@@ -24,7 +24,7 @@ namespace WinProMo_App.Tests
         {
             uint lineColor = 1000;
             short lineWidth = 2;
-            short lineStyle = 5;
+            tagLineStyle lineStyle = tagLineStyle.lsDotted;
 
             blockA.LineColor = lineColor;
             blockA.LineWidth = lineWidth;
@@ -67,7 +67,7 @@ namespace WinProMo_App.Tests
         public void Can_Set_Element_Background_Style()
         {
             uint bkColor = 1000;
-            short bkMode = 0;
+            tagBkMode bkMode = tagBkMode.bkTransparent;
 
             blockA.BkColor = bkColor;
             blockA.BkMode = bkMode;
@@ -79,8 +79,8 @@ namespace WinProMo_App.Tests
         [STATestMethod]
         public void Can_Set_Element_Text_Position()
         {
-            short vAlign = 0;
-            short hAlign = 0;
+            tagHorizontalAlignment hAlign = tagHorizontalAlignment.haLeft;
+            tagVerticalAlignment vAlign = tagVerticalAlignment.vaTop;
             bool multiline = true;
 
             blockA.TextMultiLine = FromBool(multiline);

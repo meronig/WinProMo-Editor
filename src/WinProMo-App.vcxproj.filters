@@ -140,6 +140,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="WinProMo.mak" />
+    <None Include="DemoScripts\automation.js" />
+    <None Include="DemoScripts\automation.ps1" />
+    <None Include="DemoScripts\automation.xlsm" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinProMo.rc">

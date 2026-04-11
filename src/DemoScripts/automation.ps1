@@ -85,6 +85,7 @@ function Main {
     Write-Host "Demo diagram created."
     
     $diagram.Close(1)
+	$app.Quit(0)
 
     # Cleanup COM objects
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($edge1) | Out-Null

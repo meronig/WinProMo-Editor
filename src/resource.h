@@ -74,6 +74,7 @@
 #define ID_ALIGNMENT_MULTILINE          32837
 #define ID_CANCEL_EDIT_SRVR             32841
 #define ID_FILE_EXPORT                  32850
+#define ID_STYLE_TRANSPARENT            32851
 
 // Next default values for new objects
 // 
@@ -81,7 +82,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        142
-#define _APS_NEXT_COMMAND_VALUE         32851
+#define _APS_NEXT_COMMAND_VALUE         32854
 #define _APS_NEXT_CONTROL_VALUE         2007
 #define _APS_NEXT_SYMED_VALUE           106
 #endif

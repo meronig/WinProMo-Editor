@@ -57,7 +57,7 @@ namespace WinProMo_App.Tests
         {
             uint fillColor = 1000; // White color in RGB
             bool fillPattern = true;
-            short fillStyle = 3;
+            tagFillStyle fillStyle = tagFillStyle.fsFDiagonal;
 
             blockA.FillColor = fillColor;
             blockA.FillPattern = FromBool(fillPattern);
@@ -87,7 +87,7 @@ namespace WinProMo_App.Tests
         public void Can_Get_Block_Boundary_Attachment()
         {
             Assert.IsFalse(ToBool(blockA.IsBoundaryBlock()), "Block A is unexpectedly a boundary block");
-            Assert.AreEqual(0, blockA.BoundaryAttachment, "Block A boundary attachment is not zero");           
+            Assert.AreEqual(tagBoundaryAttachment.baNone, blockA.BoundaryAttachment, "Block A boundary attachment is not zero");           
         }
 
         [STATestMethod]
