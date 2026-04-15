@@ -130,8 +130,8 @@ library WinProMo_App
 			[id(6)] void Close(boolean saveChanges);
 			// from IProMoAppChildAuto
 			[id(7)] IDispatch* Application();
-			[id(8), propget] IDispatch* Item(VARIANT item);
-			[id(8), propputref] void Item(VARIANT item, IDispatch* newValue);
+			[id(9999), propget] IDispatch* Item(VARIANT item);
+			[id(9999), propputref] void Item(VARIANT item, IDispatch* newValue);
 			[id(0), propget] IDispatch* _Item(VARIANT item);
 			[id(0), propputref] void _Item(VARIANT item, IDispatch* newValue);
 			//}}AFX_ODL_METHOD

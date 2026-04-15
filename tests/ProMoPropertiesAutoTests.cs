@@ -16,7 +16,7 @@ namespace WinProMo_App.Tests
         {
             IProperties properties = blockA.Properties;
             Assert.IsNotNull(properties, "properties collection is null");
-            Assert.AreEqual(1, properties.Count(), "Expected 1 properties for block A");
+            Assert.AreEqual(2, properties.Count(), "Expected 2 properties for block A");
         }
 
         [STATestMethod]
@@ -26,8 +26,9 @@ namespace WinProMo_App.Tests
             Assert.IsNotNull(properties, "properties collection is null");
             string[] names = properties.Names;
             Assert.IsNotNull(names, "Names collection is null");
-            Assert.AreEqual(1, names.Length, "Expected 1 properties for block A");
+            Assert.AreEqual(2, names.Length, "Expected 2 properties for block A");
             Assert.IsTrue(names.Contains("Title"), "Expected property Title not found");
+            Assert.IsTrue(names.Contains("MyBlockProperty"), "Expected property MyBlockProperty not found");
         }
 
         [STATestMethod]
@@ -37,6 +38,8 @@ namespace WinProMo_App.Tests
             Assert.IsNotNull(properties, "properties collection is null");
             IProperty property = properties[1];
             Assert.IsNotNull(property, "first property is null");
+            property = properties[2];
+            Assert.IsNotNull(property, "second property is null");
         }
 
         [STATestMethod]
@@ -46,6 +49,8 @@ namespace WinProMo_App.Tests
             Assert.IsNotNull(properties, "properties collection is null");
             IProperty property = properties["Title"];
             Assert.IsNotNull(property, "property Title is null");
+            property = properties["MyBlockProperty"];
+            Assert.IsNotNull(property, "property MyBlockProperty is null");
         }
 
         [STATestMethod]
